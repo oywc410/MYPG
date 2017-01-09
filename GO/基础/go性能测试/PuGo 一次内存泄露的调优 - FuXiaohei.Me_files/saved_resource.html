@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<!-- saved from url=(0406)http://disqus.com/embed/comments/?base=default&version=d074862f091cd9585b295f3979a4eb15&f=fuxiaohei&t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&s_o=default -->
+<html lang="en" dir="ltr" class="js no-touch localstorage sessionstorage contenteditable use-opacity-transitions"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Disqus Comments</title>
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    
+    
+    <style>
+        html {
+            overflow: hidden;
+        }
+
+        
+    </style>
+
+<link rel="stylesheet" href="./lounge.f668c82e65f78693a6a62a5c7d3e54b8.css"><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="remote/config" src="./config.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="common.bundle" src="./common.bundle.2604ea86c00f3bcc98e8fdc57114c1cc.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="lounge.bundle" src="./lounge.bundle.453d0281788b539960d8683df769dd95.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="ga" src="./ga.js"></script><style id="css_1459954903657"></style><!--<base target="_parent">--><base href="." target="_parent"><link rel="stylesheet" href="./discovery.449c10a436c997c3eee5afd5021da3a2.css"><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="discovery/main" src="./discovery.bundle.188b7afdc0cb75bb665bca3eb0ce9ba7.js"></script></head>
+<body>
+    
+
+    
+    <!--[if lt IE 10]><p style="color: #fff; background-color: #f05f70; padding: 10px; margin-top: 20px;">
+        You're using a browser that Disqus plans to stop supporting soon. For more information, visit our list of 
+        <a href="https://help.disqus.com/customer/portal/articles/466228-which-browsers-does-disqus-work-with-" style="color: #fff; text-decoration: underline;">supported browsers</a>
+        and consider upgrading.
+    </p><![endif]-->
+    <div id="error" style="display:none; text-align: center">
+        <p>We were unable to load Disqus. If you are a moderator please see our <a href="https://docs.disqus.com/help/83/"> troubleshooting guide</a>. </p>
+    </div>
+
+    
+    <script type="text/json" id="disqus-forumData">{"session":{"canModerate":false,"audienceSyncVerified":false,"mustVerify":false,"canReply":true,"mustVerifyEmail":false},"features":{},"forum":{"category":null,"description":"","founder":"71212163","twitterName":"","url":"","raw_description":"","guidelines":null,"favicon":{"permalink":"http://disqus.com/api/forums/favicons/fuxiaohei.jpg","cache":"//a.disquscdn.com/1457379538/images/favicon-default.png"},"raw_guidelines":null,"language":"en","daysThreadAlive":0,"avatar":{"small":{"permalink":"http://disqus.com/api/forums/avatars/fuxiaohei.jpg?size=32","cache":"//a.disquscdn.com/1457379538/images/noavatar32.png"},"large":{"permalink":"http://disqus.com/api/forums/avatars/fuxiaohei.jpg?size=92","cache":"//a.disquscdn.com/1457379538/images/noavatar92.png"}},"channel":null,"daysAlive":0,"pk":"3873386","signedUrl":"","settings":{"supportLevel":0,"adsDRNativeEnabled":false,"disable3rdPartyTrackers":false,"adsVideoEnabled":false,"adsProductVideoEnabled":false,"adsPositionTopEnabled":false,"ssoRequired":false,"linkAffiliationEnabled":false,"adsProductLinksThumbnailsEnabled":false,"adsProductStoriesEnabled":false,"organicDiscoveryEnabled":true,"allowMedia":true,"discoveryMax":false,"discoveryLocked":false,"moderatorText":"","adsEnabled":false,"allowAnonPost":false,"hasCustomAvatar":false,"adultContent":false,"promotedDiscoveryEnabled":false,"allowAnonVotes":false,"mustVerify":false,"colorScheme":"light","adsSettingsLocked":false,"mustVerifyEmail":false,"audienceSyncEnabled":false,"typeface":"sans-serif","adsPositionBottomEnabled":false,"mediaembedEnabled":true,"adsProductLinksEnabled":false,"discoveryThumbnailsEnabled":false,"isVIP":false},"id":"fuxiaohei","createdAt":"2015-11-08T19:01:40.943634","name":"fuxiaohei"}}</script>
+
+    
+    <script type="text/json" id="disqus-threadData">{"cursor":{"hasPrev":false,"prev":null,"total":4,"hasNext":false,"next":"1:0:0"},"code":0,"response":{"lastModified":1459605093,"posts":[{"forum":"fuxiaohei","parent":null,"isApproved":true,"author":{"username":"disqus_UWEA4bUFbH","about":"","name":"\u62c9\u5b50","disable3rdPartyTrackers":false,"isPowerContributor":false,"isAnonymous":false,"rep":1.2324929999999998,"profileUrl":"https://disqus.com/by/disqus_UWEA4bUFbH/","url":"","reputation":1.2324929999999998,"location":"","isPrivate":false,"signedUrl":"","isPrimary":true,"joinedAt":"2016-03-29T03:58:53","id":"202181177","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/disqus_UWEA4bUFbH.jpg","cache":"//a.disquscdn.com/1457379538/images/noavatar32.png"},"isCustom":false,"permalink":"http://disqus.com/api/users/avatars/disqus_UWEA4bUFbH.jpg","cache":"//a.disquscdn.com/1457379538/images/noavatar92.png","large":{"permalink":"http://disqus.com/api/users/avatars/disqus_UWEA4bUFbH.jpg","cache":"//a.disquscdn.com/1457379538/images/noavatar92.png"}}},"media":[],"isDeleted":false,"isFlagged":false,"dislikes":0,"raw_message":"\u56fe\u8dea\u4e86\uff0c\u8def\u5f84\u9519\u5566\uff01\uff01\uff01","createdAt":"2016-03-30T04:47:13","id":"2596279240","thread":"4349406334","depth":0,"numReports":0,"isDeletedByAuthor":false,"likes":0,"isEdited":false,"message":"\u003cp>\u56fe\u8dea\u4e86\uff0c\u8def\u5f84\u9519\u5566\uff01\uff01\uff01\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"forum":"fuxiaohei","parent":2596279240,"isApproved":true,"author":{"username":"fuxiaohei","about":"gopher guy","name":"FuXiaoHei","disable3rdPartyTrackers":false,"isPowerContributor":false,"isAnonymous":false,"rep":1.236183,"profileUrl":"https://disqus.com/by/fuxiaohei/","url":"http://fuxiaohei.me","reputation":1.236183,"location":"Xiamen, Fujian, China","isPrivate":false,"signedUrl":"http://disq.us/?url=http%3A%2F%2Ffuxiaohei.me&key=16HwTRpESpXhVligJPzdfQ","isPrimary":true,"joinedAt":"2013-09-03T09:29:13","id":"71212163","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/fuxiaohei.jpg","cache":"//a.disquscdn.com/uploads/users/7121/2163/avatar32.jpg?1459605093"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/fuxiaohei.jpg","cache":"//a.disquscdn.com/uploads/users/7121/2163/avatar92.jpg?1459605093","large":{"permalink":"http://disqus.com/api/users/avatars/fuxiaohei.jpg","cache":"//a.disquscdn.com/uploads/users/7121/2163/avatar92.jpg?1459605093"}}},"media":[],"isDeleted":false,"isFlagged":false,"dislikes":0,"raw_message":"\u8c22\u8c22\uff0c\u5df2\u7ecf\u5904\u7406\u4e86","createdAt":"2016-04-02T13:51:32","id":"2602233207","thread":"4349406334","depth":1,"numReports":0,"isDeletedByAuthor":false,"likes":0,"isEdited":false,"message":"\u003cp>\u8c22\u8c22\uff0c\u5df2\u7ecf\u5904\u7406\u4e86\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"forum":"fuxiaohei","parent":null,"isApproved":true,"author":{"username":"wencan","about":"","name":"wencan","disable3rdPartyTrackers":false,"isPowerContributor":false,"isAnonymous":false,"rep":1.236921,"profileUrl":"https://disqus.com/by/wencan/","url":"http://blog.wencan.org","reputation":1.236921,"location":"shanghai","isPrivate":false,"signedUrl":"http://disq.us/?url=http%3A%2F%2Fblog.wencan.org&key=KsN70FzV8Vm2j-pWopf0aw","isPrimary":true,"joinedAt":"2012-11-23T11:52:26","id":"37152759","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/wencan.jpg","cache":"//a.disquscdn.com/uploads/users/3715/2759/avatar32.jpg?1452237002"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/wencan.jpg","cache":"//a.disquscdn.com/uploads/users/3715/2759/avatar92.jpg?1452237002","large":{"permalink":"http://disqus.com/api/users/avatars/wencan.jpg","cache":"//a.disquscdn.com/uploads/users/3715/2759/avatar92.jpg?1452237002"}}},"media":[],"isDeleted":false,"isFlagged":false,"dislikes":0,"raw_message":"800\u653910  \u95ee\u9898\u8fd8\u662f\u5728\uff0c\u53ea\u662f\u4e0d\u90a3\u4e48\u660e\u663e\u4e86\u5427\uff1f\uff1f","createdAt":"2016-01-05T03:19:39","id":"2440145840","thread":"4349406334","depth":0,"numReports":0,"isDeletedByAuthor":false,"likes":0,"isEdited":false,"message":"\u003cp>800\u653910  \u95ee\u9898\u8fd8\u662f\u5728\uff0c\u53ea\u662f\u4e0d\u90a3\u4e48\u660e\u663e\u4e86\u5427\uff1f\uff1f\u003c/p>","isSpam":false,"isHighlighted":false,"points":0},{"forum":"fuxiaohei","parent":2440145840,"isApproved":true,"author":{"username":"fuxiaohei","about":"gopher guy","name":"FuXiaoHei","disable3rdPartyTrackers":false,"isPowerContributor":false,"isAnonymous":false,"rep":1.236183,"profileUrl":"https://disqus.com/by/fuxiaohei/","url":"http://fuxiaohei.me","reputation":1.236183,"location":"Xiamen, Fujian, China","isPrivate":false,"signedUrl":"http://disq.us/?url=http%3A%2F%2Ffuxiaohei.me&key=16HwTRpESpXhVligJPzdfQ","isPrimary":true,"joinedAt":"2013-09-03T09:29:13","id":"71212163","avatar":{"small":{"permalink":"http://disqus.com/api/users/avatars/fuxiaohei.jpg","cache":"//a.disquscdn.com/uploads/users/7121/2163/avatar32.jpg?1459605093"},"isCustom":true,"permalink":"http://disqus.com/api/users/avatars/fuxiaohei.jpg","cache":"//a.disquscdn.com/uploads/users/7121/2163/avatar92.jpg?1459605093","large":{"permalink":"http://disqus.com/api/users/avatars/fuxiaohei.jpg","cache":"//a.disquscdn.com/uploads/users/7121/2163/avatar92.jpg?1459605093"}}},"media":[],"isDeleted":false,"isFlagged":false,"dislikes":0,"raw_message":"\u662f\u7684\uff0c\u4e0d\u662f\u903b\u8f91\u95ee\u9898\uff0c\u662f\u9ed8\u8ba4\u503c\u8bbe\u7f6e\u7684\u4e0d\u5bf9\u3002","createdAt":"2016-01-05T03:35:22","id":"2440163305","thread":"4349406334","depth":1,"numReports":0,"isDeletedByAuthor":false,"likes":0,"isEdited":false,"message":"\u003cp>\u662f\u7684\uff0c\u4e0d\u662f\u903b\u8f91\u95ee\u9898\uff0c\u662f\u9ed8\u8ba4\u503c\u8bbe\u7f6e\u7684\u4e0d\u5bf9\u3002\u003c/p>","isSpam":false,"isHighlighted":false,"points":0}],"thread":{"feed":"https://fuxiaohei.disqus.com/pugo_fuxiaoheime_16/latest.rss","identifiers":[],"dislikes":0,"likes":0,"message":"","id":"4349406334","isDeleted":false,"category":"4103228","author":"71212163","userScore":0,"userSubscription":false,"isSpam":false,"signedLink":"http://disq.us/?url=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&key=H8IRIvFb8yDNhF_LAz6NXw","createdAt":"2015-11-25T11:05:17","hasStreaming":false,"raw_message":"","isClosed":false,"link":"http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile","slug":"pugo_fuxiaoheime_16","forum":"fuxiaohei","clean_title":"Pugo \u4e00\u6b21\u5185\u5b58\u6cc4\u9732\u7684\u8c03\u4f18","posts":4,"moderators":[71212163],"title":"Pugo \u4e00\u6b21\u5185\u5b58\u6cc4\u9732\u7684\u8c03\u4f18 - FuXiaohei.Me","highlightedPost":null}},"order":"popular"}</script>
+
+    
+
+    <div id="fixed-content"></div>
+
+
+    
+        
+        <!--[if lte IE 8]>
+<script src="//a.disquscdn.com/1457379538/build/vendor/ie8.js"></script>
+<![endif]-->
+<!--[if IE 9]>
+<script src="//a.disquscdn.com/1457379538/build/vendor/ie9.js"></script>
+<![endif]-->
+
+        
+<script type="text/json" id="disqus-urls">{
+    "root":"//disqus.com",
+    "next":"//a.disquscdn.com/next/current/embed"
+}</script>
+
+        <script src="./lounge.load.d074862f091cd9585b295f3979a4eb15.js" id="bootstrap-script" data-app="lounge" async=""></script>
+    
+
+
+<div id="layout" data-tracking-area="layout">
+
+<div id="onboard" data-tracking-area="onboard"></div>
+
+<div id="highlighted-post" data-tracking-area="highlighted" class="highlighted-post" style="display: none;"></div>
+
+<div id="global-alert"></div>
+
+<header id="main-nav" data-tracking-area="main-nav">
+<nav class="nav nav-primary">
+<ul>
+<li class="tab-conversation active" data-role="post-count"><a class="publisher-nav-color">
+<span class="comment-count">
+4 comments
+</span>
+
+<span class="comment-count-placeholder">
+Comments
+</span>
+</a>
+</li>
+<li class="tab-community">
+<a href="https://disqus.com/home/forums/fuxiaohei/" class="publisher-nav-color" data-action="community-sidebar" data-forum="fuxiaohei" id="community-tab">
+<span class="community-name">
+<strong>fuxiaohei</strong>
+
+</span>
+
+<strong class="community-name-placeholder">Community</strong>
+</a>
+</li>
+<li class="dropdown user-menu" data-role="logout"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="dropdown-toggle" data-toggle="dropdown">
+<span class="dropdown-toggle-wrapper">
+
+<span>
+Login
+</span>
+
+</span> <span class="caret"></span>
+</a>
+<ul class="dropdown-menu">
+
+
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="auth:disqus">Disqus</a>
+</li>
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="auth:facebook">Facebook</a>
+</li>
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="auth:twitter">Twitter</a>
+</li>
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="auth:google">Google</a>
+</li>
+
+
+
+</ul>
+</li>
+<li class="notification-menu unread" data-role="notification-menu"><a href="https://disqus.com/home/inbox/" class="notification-container" data-action="home" data-home-path="home/inbox/">
+<span class="notification-icon icon-comment" aria-hidden=""></span>
+<span class="notification-count" data-role="notification-count">1</span>
+</a>
+</li>
+</ul>
+</nav>
+</header>
+
+<section id="conversation" data-role="main" data-tracking-area="main">
+<div class="nav nav-secondary" data-tracking-area="secondary-nav">
+<ul>
+<li id="recommend-button" class="recommend dropdown">
+<div class="thread-likes"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="recommend" title="Recommend this discussion" class="dropdown-toggle ">
+<span class="icon-heart"></span>
+<span class="label label-default">Recommend</span>
+<span class="label label-recommended">Recommended</span>
+</a>
+<ul class="dropdown-menu coachmark">
+<li>
+<h2>Discussion Recommended!</h2>
+<p>Recommending means this is a discussion worth sharing. It gets shared to your followers' Disqus feeds, and gives the creator kudos!</p>
+<a href="http://disqus.com/home/?utm_source=disqus_embed&amp;utm_content=recommend_btn" class="btn btn-primary" target="_blank">
+ Find More Discussions 
+</a>
+</li>
+</ul>
+</div></li>
+<li id="thread-share-menu" class="dropdown share-menu hidden-sm"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="dropdown-toggle" data-toggle="dropdown" title="Share">
+<span class="icon-export"></span>
+<span class="label">Share</span>
+</a>
+<ul class="share-menu dropdown-menu">
+<li class="share">Share this discussion on
+<ul>
+<li class="twitter">
+<a data-action="share:twitter" href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#">Twitter</a>
+</li>
+<li class="facebook">
+<a data-action="share:facebook" href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#">Facebook</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li data-role="post-sort" class="dropdown sorting pull-right">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="dropdown-toggle" data-toggle="dropdown">
+Sort by Best
+
+
+<span class="caret"></span>
+</a>
+<ul class="dropdown-menu pull-right">
+<li class="selected">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="sort" data-sort="popular">Best<i aria-hidden="true" class="icon-checkmark"></i></a>
+</li>
+
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="sort" data-sort="desc">Newest<i aria-hidden="true" class="icon-checkmark"></i></a>
+</li>
+
+<li>
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="sort" data-sort="asc">Oldest<i aria-hidden="true" class="icon-checkmark"></i></a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+
+<div id="posts">
+<div id="form"><form class="reply">
+<div class="postbox">
+<div role="alert"></div>
+<div class="avatar">
+<span class="user">
+<img data-role="user-avatar" src="./noavatar92.4549c5353ccf103d32a8b81a856576ed.png" alt="Avatar">
+</span>
+</div>
+
+<div class="textarea-wrapper" data-role="textarea" dir="auto"><div><span class="placeholder">Join the discussion…</span><div class="textarea" tabindex="0" role="textbox" aria-multiline="true" contenteditable="PLAINTEXT-ONLY" data-role="editable" aria-label="Join the discussion…" style="overflow: auto; max-height: 350px;"><p><br></p></div><div style="display: none;"><ul class="suggestions">
+<li class="header">
+<h5>in this conversation</h5>
+</li>
+</ul>
+</div></div>
+<div data-role="drag-drop-placeholder" class="media-drag-hover" style="display: none">
+<div class="drag-text">
+⬇ Drag and drop your images here to upload them.
+</div>
+</div>
+<div class="media-preview empty" data-role="media-preview"><ul data-role="media-legacy-list"></ul>
+<ul data-role="media-progress-list"></ul>
+<ul data-role="media-rich-list"></ul>
+<div class="media-expanded empty" data-role="media-preview-expanded">
+<img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-role="media-preview-expanded-image" alt="Media preview placeholder">
+</div>
+</div>
+<div class="edit-alert" role="postbox-alert"></div>
+<div class="post-actions">
+<ul class="wysiwyg">
+<li data-role="media-uploader"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" tabindex="-1" data-action="attach" class="attach" title="Upload Images"><span>Attach</span></a>
+<input type="file" data-role="media-upload" tabindex="-1" accept="image/*">
+</li>
+</ul>
+</div>
+</div>
+
+<div data-role="login-form"><div><section class="auth-section logged-out">
+<div class="connect">
+<h6>Log in with</h6>
+<ul data-role="login-menu" class="services login-buttons">
+
+
+<li class="auth-disqus">
+<button type="button" data-action="auth:disqus" title="Disqus"><i class="icon-disqus"></i></button>
+</li>
+<li class="auth-facebook">
+<button type="button" data-action="auth:facebook" title="Facebook"><i class="icon-facebook-circle"></i></button>
+</li>
+<li class="auth-twitter">
+<button type="button" data-action="auth:twitter" title="Twitter"><i class="icon-twitter-circle"></i></button>
+</li>
+<li class="auth-google">
+<button type="button" data-action="auth:google" title="Google"><i class="icon-google-plus-circle"></i></button>
+</li>
+</ul>
+</div>
+<div class="guest">
+<h6 class="guest-form-title">
+<span class="register-text"> or sign up with Disqus </span>
+<span class="guest-text"> or pick a name </span>
+</h6>
+
+<div class="what-is-disqus help-icon">
+<div id="rules" class="tooltip show">
+<h3>Disqus is a discussion network</h3>
+<ul>
+<li><span>Disqus never moderates or censors. The rules on this community are its own.</span></li>
+<li><span>Your email is safe with us. It's only used for moderation and optional notifications.</span></li>
+<li><span>Don't be a jerk or do anything illegal. Everything is easier that way.</span></li>
+</ul>
+<p class="clearfix"><a href="https://docs.disqus.com/kb/terms-and-policies/" class="btn btn-small" target="_blank">Read full terms and conditions</a></p>
+</div>
+</div>
+
+<p class="input-wrapper">
+<input dir="auto" type="text" placeholder="Name" name="display_name" id="view38_display_name" maxlength="30">
+</p>
+
+<div class="guest-details " data-role="guest-details">
+<p class="input-wrapper">
+<input dir="auto" type="email" placeholder="Email" name="email" id="view38_email">
+</p>
+
+<p class="input-wrapper">
+<input dir="auto" type="password" class="register-text" placeholder="Password" name="password" id="view38_password">
+</p>
+
+<div class="acceptance-wrapper register-text">
+By signing up, you agree to the Disqus <a target="_blank" href="https://help.disqus.com/customer/portal/articles/1753105-basic-rules-for-disqus-powered-profiles-and-discussions">Basic Rules</a>, <a target="_blank" href="https://help.disqus.com/customer/portal/articles/466260-terms-of-service">Terms of Service</a>, and <a target="_blank" href="https://help.disqus.com/customer/portal/articles/466259-privacy-policy">Privacy Policy</a>.
+</div>
+<div class="acceptance-wrapper guest-text">
+By posting, you agree to the Disqus <a target="_blank" href="https://help.disqus.com/customer/portal/articles/1753105-basic-rules-for-disqus-powered-profiles-and-discussions">Basic Rules</a>, <a target="_blank" href="https://help.disqus.com/customer/portal/articles/466260-terms-of-service">Terms of Service</a>, and <a target="_blank" href="https://help.disqus.com/customer/portal/articles/466259-privacy-policy">Privacy Policy</a>.
+</div>
+
+<input type="checkbox" name="author-guest" style="display:none">
+
+<div class="proceed" data-role="submit-btn-container">
+<button type="submit" class="btn submit" aria-label="Next"><span class="icon-proceed"></span><div class="spinner"></div></button>
+</div>
+</div>
+</div>
+</section>
+
+</div></div>
+</div>
+</form></div>
+
+<button class="alert realtime" style="display: none" data-role="realtime-notification">
+</button>
+
+<div id="no-posts" style="display:none"></div>
+
+<ul id="post-list" class="post-list"><li class="post" id="post-2596279240"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/by/disqus_UWEA4bUFbH/" class="user" data-action="profile" data-username="disqus_UWEA4bUFbH">
+<img data-role="user-avatar" data-user="202181177" src="./noavatar92.png" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/by/disqus_UWEA4bUFbH/" data-action="profile" data-username="disqus_UWEA4bUFbH" data-role="username">拉子</a></span>
+
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile.html#comment-2596279240" data-role="relative-time" class="time-ago" title="Wednesday, March 30, 2016 1:47 PM">
+7 days ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>图跪了，路径错啦！！！</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" data-action="downvote" title="Vote down">
+
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile.html#comment-2596279240">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:2596279240">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"><li class="post" id="post-2602233207"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/by/fuxiaohei/" class="user" data-action="profile" data-username="fuxiaohei">
+<img data-role="user-avatar" data-user="71212163" src="./avatar92.jpg" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/by/fuxiaohei/" data-action="profile" data-username="fuxiaohei" data-role="username">FuXiaoHei</a></span>
+<span class="badge moderator">Mod</span>
+
+<span><a href="http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile.html#comment-2596279240" class="parent-link" data-role="parent-link"><i aria-hidden="true" class="icon-forward" title="in reply to"></i> 拉子</a></span>
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile.html#comment-2602233207" data-role="relative-time" class="time-ago" title="Saturday, April 2, 2016 10:51 PM">
+4 days ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>谢谢，已经处理了</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" data-action="downvote" title="Vote down">
+
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile.html#comment-2602233207">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:2602233207">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"></ul>
+
+</li></ul>
+
+</li><li class="post" id="post-2440145840"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/by/wencan/" class="user" data-action="profile" data-username="wencan">
+<img data-role="user-avatar" data-user="37152759" src="./avatar92(1).jpg" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/by/wencan/" data-action="profile" data-username="wencan" data-role="username">wencan</a></span>
+
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile.html#comment-2440145840" data-role="relative-time" class="time-ago" title="Tuesday, January 5, 2016 12:19 PM">
+3 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>800改10  问题还是在，只是不那么明显了吧？？</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" data-action="downvote" title="Vote down">
+
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile.html#comment-2440145840">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:2440145840">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"><li class="post" id="post-2440163305"><div role="alert"></div>
+<div data-role="post-content" class="post-content">
+<ul class="post-menu dropdown" data-role="menu">
+<li class="collapse">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="collapse" title="Collapse"><span>−</span></a>
+</li>
+<li class="expand">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="collapse" title="Expand"><span>+</span></a>
+</li>
+
+<li class="" role="menu">
+<a class="dropdown-toggle" href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="flag" data-role="flag" title="Flag as inappropriate">
+<i aria-hidden="true" class="icon icon-flag"></i>
+</a>
+</li>
+</ul>
+<div class="indicator"></div>
+
+<div class="avatar hovercard">
+<a href="https://disqus.com/by/fuxiaohei/" class="user" data-action="profile" data-username="fuxiaohei">
+<img data-role="user-avatar" data-user="71212163" src="./avatar92.jpg" alt="Avatar">
+</a>
+</div>
+<div class="post-body">
+<header>
+<span class="post-byline">
+<span class="author publisher-anchor-color"><a href="https://disqus.com/by/fuxiaohei/" data-action="profile" data-username="fuxiaohei" data-role="username">FuXiaoHei</a></span>
+<span class="badge moderator">Mod</span>
+
+<span><a href="http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile.html#comment-2440145840" class="parent-link" data-role="parent-link"><i aria-hidden="true" class="icon-forward" title="in reply to"></i> wencan</a></span>
+</span>
+
+<span class="post-meta">
+<span class="bullet time-ago-bullet" aria-hidden="true">•</span>
+
+<a href="http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile.html#comment-2440163305" data-role="relative-time" class="time-ago" title="Tuesday, January 5, 2016 12:35 PM">
+3 months ago
+</a>
+</span>
+
+</header>
+
+<div class="post-body-inner">
+<div class="post-message-container" data-role="message-container">
+<div class="publisher-anchor-color" data-role="message-content">
+<div class="post-message " data-role="message" dir="auto">
+<p>是的，不是逻辑问题，是默认值设置的不对。</p>
+</div>
+
+<span class="post-media"><ul data-role="post-media-list"></ul></span>
+</div>
+</div>
+<a class="see-more hidden" title="see more" data-action="see-more">see more</a>
+</div>
+
+<footer>
+<menu>
+
+<li class="voting" data-role="voting">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="vote-up  count-0" data-action="upvote" title="Vote up">
+
+<span class="updatable count" data-role="likes">0</span>
+<span class="control"><i aria-hidden="true" class="icon icon-arrow-2"></i></span>
+</a>
+<span role="button" class="vote-down  count-0" data-action="downvote" title="Vote down">
+
+<span class="control"><i aria-hidden="true" class="icon icon-arrow"></i></span>
+</span>
+</li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="reply" data-role="reply-link">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="reply">
+<i class="icon icon-mobile icon-reply"></i><span class="text">Reply</span></a></li>
+<li class="bullet" aria-hidden="true">•</li>
+
+
+<li class="share">
+<a class="toggle"><i class="icon icon-mobile icon-share"></i><span class="text">Share ›</span></a>
+<ul>
+<li class="twitter"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="share:twitter">Twitter</a></li>
+<li class="facebook"><a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="share:facebook">Facebook</a></li>
+<li class="link"><a href="http://fuxiaohei.me/2015/10/14/pugo-mem-leak-profile.html#comment-2440163305">Link</a></li>
+</ul>
+</li>
+
+<li class="realtime" data-role="realtime-notification:2440163305">
+<span style="display:none;" class="realtime-replies"></span>
+<a style="display:none;" href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" class="btn btn-small"></a>
+</li>
+
+</menu>
+</footer>
+</div>
+
+<div data-role="blacklist-form"></div>
+<div class="reply-form-container" data-role="reply-form"></div>
+</div>
+
+<ul data-role="children" class="children"></ul>
+
+</li></ul>
+
+</li></ul>
+
+<div class="load-more" data-role="more" style="display:none">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" data-action="more-posts" class="btn">Load more comments</a>
+</div>
+</div>
+
+</section>
+
+<div id="placement-bottom" data-tracking-area="discovery-south"><div class="post-list" style="height: auto; visibility: visible;"><div style="display: block; width: 100%;"><div id="discovery-main-c140" class="discovery-main">
+
+<section id="col-organic-c158" class="col-organic">
+<header class="discovery-col-header">
+<h2>Also on <strong>fuxiaohei</strong>
+</h2>
+</header>
+<ul class="discovery-posts" data-role="discovery-posts"><li class="discovery-post post-0" id="discovery-link-organic-4449914255">
+<a href="http://disq.us/url?url=http%3A%2F%2Ffuxiaohei.me%2F2016%2F1%2F1%2F2015-2016%3Aq8utfhPCFbhcv1AuPeIh34f0Eqs&amp;imp=9764l8du9tmtv&amp;prev_imp=9762s9b2s0f5gh&amp;forum_id=3873386&amp;forum=fuxiaohei&amp;thread_id=4349406334&amp;thread=4449914255&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=4449914255" class="publisher-anchor-color">
+
+<header class="discovery-post-header">
+<h3 title="2015，2016">
+<span data-role="discovery-thread-title" class="title line-truncate" data-line-truncate="2">
+2015，2016
+</span>
+</h3>
+
+<ul class="meta">
+<li class="comments">
+5 comments
+</li>
+<li class="time">3 months ago</li>
+</ul>
+</header>
+
+</a><a href="http://disq.us/url?url=http%3A%2F%2Ffuxiaohei.me%2F2016%2F1%2F1%2F2015-2016%3Aq8utfhPCFbhcv1AuPeIh34f0Eqs&amp;imp=9764l8du9tmtv&amp;prev_imp=9762s9b2s0f5gh&amp;forum_id=3873386&amp;forum=fuxiaohei&amp;thread_id=4349406334&amp;thread=4449914255&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=4449914255" class="top-comment" data-role="discovery-top-comment">
+<img alt="Avatar" data-role="discovery-avatar" src="./noavatar92.png">
+<p><span class="user" data-role="discovery-top-comment-author">libi</span> — <span data-role="discovery-top-comment-snippet" class="line-truncate" data-line-truncate="3">她。。。他。。。。，</span></p>
+</a>
+
+</li>
+<li class="discovery-post post-1" id="discovery-link-organic-4388979968">
+<a href="http://disq.us/url?url=http%3A%2F%2Ffuxiaohei.me%2F2015%2F12%2F9%2Fmistake-in-bufio-reader%3A_-hi8WBNDMY5LkVAOoIpiyIM3KQ&amp;imp=9764l8du9tmtv&amp;prev_imp=9762s9b2s0f5gh&amp;forum_id=3873386&amp;forum=fuxiaohei&amp;thread_id=4349406334&amp;thread=4388979968&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=4388979968" class="publisher-anchor-color">
+
+<header class="discovery-post-header">
+<h3 title="被golang bufio.Reader小坑">
+<span data-role="discovery-thread-title" class="title line-truncate" data-line-truncate="2">
+被golang bufio.Reader小坑
+</span>
+</h3>
+
+<ul class="meta">
+<li class="comments">
+3 comments
+</li>
+<li class="time">4 months ago</li>
+</ul>
+</header>
+
+</a><a href="http://disq.us/url?url=http%3A%2F%2Ffuxiaohei.me%2F2015%2F12%2F9%2Fmistake-in-bufio-reader%3A_-hi8WBNDMY5LkVAOoIpiyIM3KQ&amp;imp=9764l8du9tmtv&amp;prev_imp=9762s9b2s0f5gh&amp;forum_id=3873386&amp;forum=fuxiaohei&amp;thread_id=4349406334&amp;thread=4388979968&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=4388979968" class="top-comment" data-role="discovery-top-comment">
+<img alt="Avatar" data-role="discovery-avatar" src="./avatar92(2).jpg">
+<p><span class="user" data-role="discovery-top-comment-author">kn007</span> — <span data-role="discovery-top-comment-snippet" class="line-truncate" data-line-truncate="3">Nice，看起来很爽。速度也快。</span></p>
+</a>
+
+</li>
+<li class="discovery-post post-2" id="discovery-link-organic-4478818816">
+<a href="http://disq.us/url?url=http%3A%2F%2Ffuxiaohei.me%2F2016%2F1%2F11%2Fgamma-tech-share%3A_3VKbpIQ9cD-gmHWYnr8snOk1Ag&amp;imp=9764l8du9tmtv&amp;prev_imp=9762s9b2s0f5gh&amp;forum_id=3873386&amp;forum=fuxiaohei&amp;thread_id=4349406334&amp;thread=4478818816&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=4478818816" class="publisher-anchor-color">
+
+<header class="discovery-post-header">
+<h3 title="Gamma 技术分享会">
+<span data-role="discovery-thread-title" class="title line-truncate" data-line-truncate="2">
+Gamma 技术分享会
+</span>
+</h3>
+
+<ul class="meta">
+<li class="comments">
+2 comments
+</li>
+<li class="time">3 months ago</li>
+</ul>
+</header>
+
+</a><a href="http://disq.us/url?url=http%3A%2F%2Ffuxiaohei.me%2F2016%2F1%2F11%2Fgamma-tech-share%3A_3VKbpIQ9cD-gmHWYnr8snOk1Ag&amp;imp=9764l8du9tmtv&amp;prev_imp=9762s9b2s0f5gh&amp;forum_id=3873386&amp;forum=fuxiaohei&amp;thread_id=4349406334&amp;thread=4478818816&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=4478818816" class="top-comment" data-role="discovery-top-comment">
+<img alt="Avatar" data-role="discovery-avatar" src="./avatar92.jpg">
+<p><span class="user" data-role="discovery-top-comment-author">FuXiaoHei</span> — <span data-role="discovery-top-comment-snippet" class="line-truncate" data-line-truncate="3">因为这个网站时静态的</span></p>
+</a>
+
+</li>
+<li class="discovery-post post-3" id="discovery-link-organic-4348554725">
+<a href="http://disq.us/url?url=http%3A%2F%2Ffuxiaohei.me%2F%2F2015%2F11%2F25%2Fdeep-in-fasthttp-package%3AoDX08yHpME4Ul0_k9xnPI18nT1w&amp;imp=9764l8du9tmtv&amp;prev_imp=9762s9b2s0f5gh&amp;forum_id=3873386&amp;forum=fuxiaohei&amp;thread_id=4349406334&amp;thread=4348554725&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=4348554725" class="publisher-anchor-color">
+
+<header class="discovery-post-header">
+<h3 title="阅读 valyala/fasthttp —— 比官方库更快的 HTTP 包">
+<span data-role="discovery-thread-title" class="title line-truncate" data-line-truncate="2">
+阅读 valyala/fasthttp —— 比官方库更快的 HTTP 包
+</span>
+</h3>
+
+<ul class="meta">
+<li class="comments">
+1 comment
+</li>
+<li class="time">4 months ago</li>
+</ul>
+</header>
+
+</a><a href="http://disq.us/url?url=http%3A%2F%2Ffuxiaohei.me%2F%2F2015%2F11%2F25%2Fdeep-in-fasthttp-package%3AoDX08yHpME4Ul0_k9xnPI18nT1w&amp;imp=9764l8du9tmtv&amp;prev_imp=9762s9b2s0f5gh&amp;forum_id=3873386&amp;forum=fuxiaohei&amp;thread_id=4349406334&amp;thread=4348554725&amp;zone=thread&amp;area=bottom&amp;object_type=thread&amp;object_id=4348554725" class="top-comment" data-role="discovery-top-comment">
+<img alt="Avatar" data-role="discovery-avatar" src="./noavatar92.png">
+<p><span class="user" data-role="discovery-top-comment-author">roy lieu</span> — <span data-role="discovery-top-comment-snippet" class="line-truncate" data-line-truncate="3">不错哦，写的挺好的。</span></p>
+</a>
+
+</li>
+</ul>
+</section>
+
+</div>
+</div></div></div>
+
+<div id="footer" data-tracking-area="footer">
+<ul class="disqus-footer">
+<li class="logo disqus-footer__item"><a href="https://disqus.com/" rel="nofollow" title="Powered by Disqus">Powered by Disqus</a></li>
+<li id="thread-subscribe-button" class="email disqus-footer__item"> 
+<div class="default">
+<a href="http://disqus.com/embed/comments/?base=default&amp;version=d074862f091cd9585b295f3979a4eb15&amp;f=fuxiaohei&amp;t_u=http%3A%2F%2Ffuxiaohei.me%2F2015%2F10%2F14%2Fpugo-mem-leak-profile&amp;t_d=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;t_t=PuGo%20%E4%B8%80%E6%AC%A1%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E8%B0%83%E4%BC%98%20-%20FuXiaohei.Me&amp;s_o=default#" rel="nofollow" data-action="subscribe" title="Subscribe and get email updates from this discussion"><i aria-hidden="true" class="icon icon-mail"></i><span class="clip">Subscribe</span> <i aria-hidden="true" class="icon icon-checkmark"></i></a>
+</div>
+<div class="form">
+<div class="input-wrapper"><input id="thread-subscribe-email" type="email" placeholder="yourname@email.com"></div>
+</div>
+</li>
+<li class="install disqus-footer__item">
+<a href="https://publishers.disqus.com/engage?utm_source=fuxiaohei&amp;utm_medium=Disqus-Footer" rel="nofollow" target="_blank">
+<i aria-hidden="true" class="icon icon-disqus"></i>
+<span class="clip hidden-sm">Add Disqus to your site</span>
+<span class="clip visible-sm hidden-xs">Add Disqus</span>
+<span class="clip visible-xs">Add</span>
+</a>
+</li>
+<li class="privacy disqus-footer__item">
+<a href="https://help.disqus.com/customer/portal/articles/1657951?utm_source=disqus&amp;utm_medium=embed-footer&amp;utm_content=privacy-btn" rel="nofollow" target="_blank">
+<i aria-hidden="true" class="icon icon-lock"></i>
+<span class="clip">Privacy</span>
+</a>
+</li>
+</ul>
+</div>
+</div></body></html>

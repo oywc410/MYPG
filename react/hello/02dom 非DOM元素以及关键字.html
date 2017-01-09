@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>dom</title>
+	<script type="text/javascript" src="../react-0.13.3/build/react.js"></script>
+	<script type="text/javascript" src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+		//关键字:dangerouslySetInnerHTML    refs  key
+		var style = {
+			color : "red",
+			border : "1px #000 solid",
+		}
+
+		var rawHTML = {
+			//直接添加HTML
+			//使用dangerouslySetInnerHTML将直接插入一下HTML
+			__html : "<h1>Im inner HTML</h1>"
+		}
+
+		var HelloWorld = React.createClass({
+			//this.refs.childp 引用DOM (虚拟 不能正常操作)
+			render : function () {
+				return <p ref="childp">Hello, World</p>
+			}
+		})
+
+		var HelloWorld2 = React.createClass({
+			//HelloWorld2中 key 必须不相同  列表属性的元素必须使用key
+			render : function () {
+				return <ul>
+						<li key="1">1</li>
+						<li key="2">2</li>
+						<li key="3">3</li>
+						</ul>
+			}
+		})
+
+		React.render(<div style={style} dangerouslySetInnerHTML={rawHTML}></div>, document.body)
+
+		React.render(<HelloWorld2></HelloWorld2>, document.body)
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

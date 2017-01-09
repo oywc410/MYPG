@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery-2.1.4.js"></script>
+	<script src="../react-0.13.3/build/react.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+		
+		var HelloWord = React.createClass({
+
+			getInitialState: function() {
+				return {
+					x: 0,
+					y: 0
+				}
+			},
+
+			handleMouseMove: function(event) {
+				this.setState({
+					x: event.clientX,
+					y: event.clientY
+				});
+			},
+
+			render: function() {
+				return <div onMouseMove={this.handleMouseMove} style={{
+					height: '1000px',
+					width: '700px',
+					backgroundColor: 'gray'
+				}}>
+				{this.state.x + ', ' + this.state.y}
+				</div>
+			}
+
+		});
+
+		React.render(<HelloWord></HelloWord>, document.body);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

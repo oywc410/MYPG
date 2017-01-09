@@ -1,0 +1,59 @@
+.post h1{
+font-family: "微软雅黑", sans-serif;
+font-size: 30px;
+}
+.post h2{
+font-family: "微软雅黑", sans-serif;
+font-size: 22px;
+}
+.post h3{
+font-family: "微软雅黑", sans-serif;
+font-size: 18px;
+}
+div#MySignature{
+    background-color: #f8f8ee;
+    border: solid 1px #e8e7d0;
+    padding: 5px 10px 0px 10px;
+    min-height: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    color: #666666
+}
+div#MySignature p{
+    margin: 5px auto;
+    text-indent: 0px;
+}
+div#MySignature p a{
+    border-bottom: dashed 1px;
+}
+div#MySignature img{
+    margin: 16px 8px 0 0;
+}
+
+.syntaxhighlighter {
+    background-color: #FFFFFF !important;
+    font-size: 10pt !important;
+    line-height: 140%;
+    margin: 0 10px !important;
+}
+
+div.post div.entry h1 {
+    background-color: #999999;
+    color: #FFFFFF;
+    font-size: 26px;
+    font-weight: normal;
+    padding: 8px 10px;
+}
+
+div.post div.entry h2 {
+    background-image: none;
+    color: #336699;
+    font-size: 22px;
+    font-weight: normal;
+}
+
+div.post div.entry h3 {
+    color: #666666;
+    font-size: 18px;
+    font-weight: bold;
+}

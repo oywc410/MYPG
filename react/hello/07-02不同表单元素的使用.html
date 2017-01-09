@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+	<script src="https://fb.me/react-0.13.3.js"></script>
+	<script type="text/jsx">
+		var MyForm = React.createClass({
+			getInitialState: function() {
+				return {
+					username: "",
+					gender: "man",
+					checked: true
+				};
+			},
+			handleUsernameChange: function(event) {
+				this.setState({
+					username: event.target.value
+				});
+			},
+			handleGenderChange: function(event) {
+				this.setState({
+					gender: event.target.value
+				});
+			},
+			submitHandler: function(event) {
+				event.preventDefault();
+				console.log(this.state);
+			},
+			handleCheckboxChange: function(event) {
+
+				this.setState({
+					checked: event.target.checked ? event.target.value = true : event.target.value = false
+				});
+			},
+			render: function() {
+				return <form onSubmit={this.submitHandler}>
+					<label htmlFor="username">请输入用户名:</label>
+					<input 
+						id="username" 
+						type="text" 
+						value={this.state.username} 
+						placeholder=""
+						onChange={this.handleUsernameChange}/>
+					<br />						
+					<select 
+						value={this.state.gender} 
+						onChange={this.handleGenderChange}>
+						<option value="man">男</option>
+						<option value="woman">女</option>
+					</select>
+					<br />
+					<input
+						type="checkbox"
+						value="同意用户协议"
+						checked={this.state.checked}
+						onChange={this.handleCheckboxChange}/>
+					<button type="submit">注册</button>
+				</form>
+			}
+		});
+		React.render(<MyForm></MyForm>, document.body);
+	</script>
+</head>
+<body>
+	<input
+		type="checkbox"
+		value="A"
+		checked={this.state.checked}
+		onChange={this.handleChange} />
+
+	在react中使用textarea取值赋值时使用value
+	<textarea 
+		value={this.state.helloTo}
+		onChange={this.handleChange}/>	
+
+	在select中使用textarea取值赋值时使用value
+	<select value={this.state.helloTo}
+		onChange={this.handleChange}>
+		<option value="one">1</option>
+		<option value="two">2</option>
+	</select>
+</body>
+</html>
+

@@ -1,0 +1,78 @@
+URL
+http://nodeapi.ucdok.com/#/api/url.html
+
+url.parse url变成js对象
+url.format js对象变成url
+url.resolve('主域名/'，'子路径名'） 变成完整的url路径
+
+解析地址:
+> url.parse('http://www.imooc.com/video/6710/?sad=dgdsa#sd=asd')
+{ protocol: 'http:',
+  slashes: true,
+  auth: null,
+  host: 'www.imooc.com',
+  port: null,
+  hostname: 'www.imooc.com',
+  hash: '#sd=asd',
+  search: '?sad=dgdsa',
+  query: 'sad=dgdsa',
+  pathname: '/video/6710/',
+  path: '/video/6710/?sad=dgdsa',
+  href: 'http://www.imooc.com/video/6710/?sad=dgdsa#sd=asd' }
+>
+
+> url.parse('http://www.imooc.com/video/6710/?sad=dgdsa#sd=asd', true)
+{ protocol: 'http:',
+  slashes: true,
+  auth: null,
+  host: 'www.imooc.com',
+  port: null,
+  hostname: 'www.imooc.com',
+  hash: '#sd=asd',
+  search: '?sad=dgdsa',
+  query: { sad: 'dgdsa' },
+  pathname: '/video/6710/',
+  path: '/video/6710/?sad=dgdsa',
+  href: 'http://www.imooc.com/video/6710/?sad=dgdsa#sd=asd' }
+>
+
+> url.parse('//www.imooc.com/video/6710/?sad=dgdsa#sd=asd', true, true)
+{ protocol: null,
+  slashes: true,
+  auth: null,
+  host: 'www.imooc.com',
+  port: null,
+  hostname: 'www.imooc.com',
+  hash: '#sd=asd',
+  search: '?sad=dgdsa',
+  query: { sad: 'dgdsa' },
+  pathname: '/video/6710/',
+  path: '/video/6710/?sad=dgdsa',
+  href: '//www.imooc.com/video/6710/?sad=dgdsa#sd=asd' }
+>
+
+利用对象生成地址
+> url.format({ protocol: 'http:',)
+...   slashes: true,
+...   auth: null,
+...   host: 'www.imooc.com',
+...   port: null,
+...   hostname: 'www.imooc.com',
+...   hash: '#sd=asd',
+...   search: '?sad=dgdsa',
+...   query: { sad: 'dgdsa' },
+...   pathname: '/video/6710/',
+...   path: '/video/6710/?sad=dgdsa',
+...   href: 'http://www.imooc.com/video/6710/?sad=dgdsa#sd=asd' }
+... >
+
+querystring
+http://nodeapi.ucdok.com/#/api/querystring.html
+
+1.序列化
+querystring.stringify({name:'scott',course:['jade','node'],from:''})
+'name=scott&course=jade&course=node&from='
+2.反序列化
+querystring.parse( )
+3.转义
+querystring.unescape

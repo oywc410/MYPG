@@ -1,0 +1,7 @@
+常用命令
+
+go tool pprof http://127.0.0.1:6060/debug/pprof/goroutine?debug=1
+go tool pprof http://localhost:6060/debug/pprof/heap
+go build -o blockHttp.exe && GODEBUG="gctrace=1" ./blockHttp.exe
+
+http://www.vckai.com/p/33

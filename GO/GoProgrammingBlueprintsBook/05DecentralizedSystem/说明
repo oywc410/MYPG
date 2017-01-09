@@ -1,0 +1,25 @@
+NSQ实时的分布式消息处理平台
+http://wiki.jikexueyuan.com/project/nsq-guide/
+
+
+开启nsqd
+    nsqlookupd
+    nsqd --lookupd-tcp-address=localhost:4160
+
+开启mongod
+    mongod --dbpath ./db
+    mongo
+
+建立数据库与表
+    use ballots
+    db.polls.insert({"title": "????", "options":["happy","sad","fail","win"]})
+
+
+//显示
+nsq:    nsq_tail --topic="votes" --lookupd-http-address=localhost:4161
+mongod: db.polls.find().pretty()
+
+
+db.polls.insert({"title":"test1","options":["one", "two", "three"]})
+
+db.polls.insert({"title":"test2","options":["four", "five", "six"]})

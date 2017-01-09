@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../react-0.13.3/build/react.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+		var Positioner = React.createClass({
+			getInitialState: function() {
+				return {
+					position: 0
+				};
+			},
+			resolveSetTimeout: function() {
+				if(this.state.position < this.props.position) {
+					this.setState({
+						position: this.state.position + 1
+					});
+				}
+			},
+			componentDidUpdate: function() {
+				if(this.props.position) {
+					setTimeout(this.resolveSetTimeout, this.props.timeoutMe);
+				}
+			},
+			render: function() {
+				var divStyle = {
+					marginLeft: this.state.position
+				};
+				return <div style={divStyle}>This will animate!</div>
+			}
+		});
+		React.render(<Positioner></Positioner>, document.body);
+		//改变状态时执行componentDidUpdate
+		React.render(<Positioner position={100} timeoutMe={10}></Positioner>, document.body);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

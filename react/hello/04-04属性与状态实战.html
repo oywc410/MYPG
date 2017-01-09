@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery-2.1.4.js"></script>
+	<script src="../react-0.13.3/build/react.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+		var Content = React.createClass({
+
+			getInitialState: function() {
+				return {
+					text: "replay To:" + this.props.selectName,//在此运算无效 此处只运行一次 有属性更新时 不执行
+					inputText: "",
+				};
+			},
+
+			handleChange: function(event) {
+				this.setState({inputText: event.target.value});
+			},
+
+			handleSubmit: function() {
+				console.log("replay To:" + this.props.selectName + "\n" + this.state.inputText);
+			},
+
+			render: function() {
+				return <div>
+				<textarea onChange={this.handleChange} placeholder="..."></textarea>
+				<button onClick={this.handleSubmit}>submit</button>
+				</div>;
+			}
+		});
+
+		var Comment = React.createClass({
+
+			getInitialState: function() {
+				return {
+					names: ["Time", "John", "Hank"],
+					selectName: '',
+				}
+			},
+
+			handleChange: function (event) {
+				this.setState({selectName: event.target.value});
+			},
+
+			render: function() {
+
+				//生成下拉菜单选项
+				var options = [];
+				for (var option in this.state.names) {
+					options.push(<option value={this.state.names[option]}>{this.state.names[option]}</option>)
+				};
+
+				return <div>
+				<select onChange={this.handleChange}>
+					{options}
+				</select>
+				<Content selectName={this.state.selectName}></Content>
+				</div>;
+			}
+		});
+
+		React.render(<Comment></Comment>, document.body);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

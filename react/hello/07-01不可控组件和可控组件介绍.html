@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+	<script src="https://fb.me/react-0.13.3.js"></script>
+	<script type="text/jsx">
+
+		var MyForm = React.createClass({
+			submitHandler: function(event) {
+				event.preventDefault();//禁止游览器默认行为(提交页面)
+				var helloTo = React.findDOMNode(this.refs.helloTo).value;
+				alert(helloTo);
+			},
+			render: function() {
+				//不可控组件
+				return <form onSubmit={this.submitHandler}>
+					<input 
+						ref="helloTo"
+						type="text"
+						defaultValue="Hello World!" />
+					<br />
+					<button type="submit">Speak</button>
+				</form>
+			}
+		});
+
+		var MyForm = React.createClass({
+			getInitialState: function() {
+				return {
+					helloTo: "Hello World"
+				};
+			},
+			handleChange: function(event) {
+				this.setState({
+					helloTo: event.target.value
+				});
+			},
+			submitHandler: function(event) {
+				event.preventDefault();
+				alert(this.state.helloTo);
+			},
+			render: function() {
+				//可控组件
+				return <form onSubmit={this.submitHandler}>
+					<input 
+						ref="helloTo"
+						type="text"
+						defaultValue={this.state.helloTo}
+						onChange={this.handleChange} />
+					<br />
+					<button type="submit">Speak</button>
+				</form>
+			}
+		});
+
+		React.render(<MyForm></MyForm>, document.body);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

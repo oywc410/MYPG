@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery-2.1.4.js"></script>
+	<script src="../react-0.13.3/build/react.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+		$(function() {
+			var count = 0;
+			var style = {
+				color: "red",
+				borlder: "1px #000 solid",
+			}
+
+			var HelloWorld = React.createClass({
+
+				//默认属性
+				getDefaultProps: function () {
+					//在引用createClass时就执行
+					console.log("getDefaultProps, 1");
+					return {name: "Tom"}//默认值
+				},
+				getInitialState: function () {
+					console.log("getInitialState, 2");
+					return {myCount: count++, ready: false};
+				},
+				componentWillMount: function () {
+					console.log("componentWillMount, 3");
+					this.setState({ready: true})
+				},
+				render: function () {
+					console.log("render, 4");
+					return <p ref="childp">Hello, {this.props.name ? this.props.name : "Wrold"}<br/>{"" + this.state.ready}</p>
+				},
+				componentDidMount: function() {
+					console.log("componentDidMount, 5");
+					$(React.findDOMNode(this)).append("surprise!");
+
+					/**
+						可以执行:React.findDOMNode(this).removeChild(this.el);
+									React.createElement()
+						不可以执行:$(this.el).off();
+
+					*/
+				}
+			});
+
+			React.render(<HelloWorld name="noTom"></HelloWorld>, document.body);
+		});
+
+
+		
+
+	</script>
+</head>
+<body>
+	<!--
+		getDefaultProps:只调用一次,实例之间共享引用
+		getInitialState:初始化买个实例特有的状态
+		componentWillMount:render之前最后一次修改状态的机会
+		render:只能访问this.props和this.state,只有一个顶层组件,不许修改状态和DOM输出(render结束后渲染到游览器)
+		componentDidMount:成功render并渲染完成真实DOM之后触发,可以修改DOM
+	-->
+</body>
+</html>

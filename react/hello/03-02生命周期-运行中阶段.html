@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery-2.1.4.js"></script>
+	<script src="../react-0.13.3/build/react.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+
+	$(function() {
+		var style = {
+			color: "red",
+			border: "1px #000 solid",
+		};
+
+		var HelloWorld = React.createClass({
+			componentWillReceiveProps: function (newProps) {
+				console.log("componentWillReceiveProps 1");
+				console.log(newProps);
+			},
+			shouldComponentUpdate: function () {
+				console.log("shouldComponentUpdate 2");
+				return true;
+			},
+			componentWillUpdate: function () {
+				console.log("componentWillUpdate 3");
+			},
+			render: function () {
+				console.log("render 4");
+				return <p>Hello, {this.props.name ? this.props.name : "World"}</p>;
+			},
+			componentDidUpdate: function () {
+				console.log("componentDidUpdate 5");
+				$(React.findDOMNode(this)).append("surprise!");
+			}
+		});
+
+		var HelloUniverse = React.createClass({
+			getInitialState: function() {
+				return {name: ''};
+			},
+			handleChange: function (event) {
+				this.setState({name: event.target.value});
+			},
+			render: function () {
+				return <div>
+				<HelloWorld name={this.state.name}></HelloWorld>
+				<br/>
+				<input type="text" onChange={this.handleChange} />
+				</div>
+			}
+		});
+
+		React.render(<div style={style}><HelloUniverse></HelloUniverse></div>, document.body);
+	});
+
+		
+
+	</script>
+</head>
+<body>
+	<!--
+		componentWillReceiveProps: 父组件修改属性触发,可以修改新属性,修改状态(父组件修改属性 传入前调用)
+		shouldComponentUpdate: 返回false会阻止render调用
+		componentWillUpdate: 组件修改前 不能修改属性和状态
+		render: 只能访问this.props和this.state, 只有一个顶层组件,不允许修改状态和DOM输出
+		componentDidUpdate: 可以修改DOM
+	-->	
+</body>
+</html>

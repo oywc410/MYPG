@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery-2.1.4.js"></script>
+	<!-- 双向绑定 React.addons.LinkedStateMixin -->
+	<script src="../react-0.13.3/build/react-with-addons.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+		var BindingExample = React.createClass({
+			mixins: [React.addons.LinkedStateMixin],
+			
+			getInitialState: function() {
+				return {
+					text: '',
+					comment: '',
+				}
+			},
+
+			render: function() {
+				return <div>
+				<input type="text" placeholder="...." valueLink={this.linkState('text')}/>
+				<textarea valueLink={this.linkState('comment')}></textarea>
+				<p>{this.state.text}</p>
+				<p>{this.state.comment}</p>
+				</div>
+			}
+
+		});
+
+		React.render(<BindingExample></BindingExample>, document.body)
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

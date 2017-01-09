@@ -1,0 +1,6 @@
+express -e -s shoutbox 建立项目
+-e 启用EJS支持
+
+到shoutdox目录下
+npm install
+npm install cookie-session

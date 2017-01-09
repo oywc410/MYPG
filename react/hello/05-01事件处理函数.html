@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery-2.1.4.js"></script>
+	<script src="../react-0.13.3/build/react.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+	</script>
+</head>
+<body>
+<!--
+
+触摸:
+	onTouchCancel
+	onTouchEnd
+	onTouchMove
+	onTouchStart
+
+键盘类:
+	onKeyDown
+	onKeyPress
+	onKeyUp
+
+剪切类:
+	onCopy
+	onCut
+	onPaste
+
+表单
+	onChange
+	onInput
+	onSubmit
+
+焦点:
+	onFocus
+	onBlur
+
+UI元素:
+	onScroll
+
+滚动:
+	onWheel
+
+鼠标:
+	onClick
+	onContextMenu
+	onDoubleClick
+	onMouseDown
+	onMouseEnter
+	onMouseLeave
+	onMouseMove
+	onMouseOut
+	onMouseOver
+	onMouseUp
+    
+    (拖拽)
+	onDrop
+	onDrag
+	onDragEnd
+	onDragEnter
+	onDragExit
+	onDragLeave
+	onDragOver
+	onDragStart
+
+
+var Content = React.createClass({
+
+getInitialState: function() {
+
+},
+
+handleChange: function(event) {
+	this.setState({inputText: event.target.value});
+},
+
+handleSubmit: function() {
+	console.log("replay To:" + this.props.selectName + "\n" + this.state.inputText);
+},
+
+render: function() {
+	return <div>
+	<textarea onChange={this.handleChange} placeholder="..."></textarea>
+	<button onClick={this.handleSubmit}>submit</button>
+	</div>;
+}
+});
+-->
+</body>
+</html>

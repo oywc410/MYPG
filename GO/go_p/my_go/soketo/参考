@@ -1,0 +1,5 @@
+https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/08.1.md
+
+不管服务器客户端
+Write与Read都为非堵塞
+ReadAll将堵塞读取到连接关闭为止

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery-2.1.4.js"></script>
+	<script src="../react-0.13.3/build/react.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+		/*
+		var BindingExample = React.createClass({
+			getInitialState: function() {
+				return {
+					text: ''
+				}
+			},
+
+			handleChange: function(event) {
+				this.setState({text:event.target.value});
+			},
+
+			render: function() {
+				return <div>
+				<input type="text" placeholder="..." onChange={this.handleChange} />
+				<p>{this.state.text}</p>
+				</div>
+			}
+		});
+		*/
+
+		var BindingMixin = {
+			getInitialState: function() {
+				return {
+					text1: '1',
+					text2: '2',
+				}
+			},
+			
+			handleChange: function(key) {
+				var that = this;
+				return function(event) {
+					var newState = {};
+					newState[key] = event.target.value;
+					that.setState(newState);
+				}
+			},
+
+			componentDidUpdate: function() {
+				console.log("1");
+			}
+		};
+
+		//BindingExample 相当于 拥有了BindingMixin中的方法
+		//componentDidUpdate 等方法的执行操作顺序: BindingMixin => BindingExample
+		var BindingExample = React.createClass({
+			mixins: [BindingMixin],
+			getInitialState: function() {
+				return {
+					//此处不能声明text1,text2 由于在mixin中已存在
+					text3: '4',
+				}
+			},
+			
+			render: function() {
+				console.log(this.state);
+				return <div>
+				<input type="text" placeholder="..." onChange={this.handleChange('text')} />
+				<p>{this.state.text}</p>
+				</div>
+			},
+
+			componentDidUpdate: function() {
+				console.log("2");
+			}
+		});
+
+
+
+		React.render(<BindingExample></BindingExample>, document.body);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

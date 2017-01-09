@@ -1,0 +1,16 @@
+方法一:
+
+<HelloWorld name="1" name="{1}" name="{[1,2,3]}" name="{variable}"></HelloWorld>
+
+
+方法二:
+var props = {
+	one: "123",
+	two: 321
+}
+
+<HelloWorld {...props}></HelloWorld>
+
+方法三:
+var instace = React.render(<HelloWorld></HelloWorld>, document.body);
+instance.setProps({name:"Tim"});

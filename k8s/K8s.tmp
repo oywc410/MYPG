@@ -1,0 +1,144 @@
+192.168.99.100 etcd + master
+
+
+1. master
+
+#修改配置
+/etc/etcd/etcd.conf
+ETCD_NAME=default
+ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
+ETCD_LISTEN_PEER_URLS="http://192.168.99.100:2380"
+ETCD_LISTEN_CLIENT_URLS="http://192.168.99.100:2379"
+ETCD_ADVERTISE_CLIENT_URLS="http://192.168.99.100:2379"
+
+#安装flannel
+sudo yum install flannel
+
+# 设置 IP 段
+etcdctl --endpoints http://192.168.99.100:2379 set /coreos.com/network/config '{"NetWork":"10.0.0.0/16"}'
+
+sudo vim /etc/sysconfig/flanneld
+
+# 配置如下 enp0s3 为监听网卡
+FLANNEL_ETCD="http://192.168.99.100:2379"
+FLANNEL_ETCD_KEY="/coreos.com/network"
+FLANNEL_OPTIONS="--iface=enp0s3"
+
+vim /usr/lib/systemd/system/docker.service
+# 在 ExecStart 后增加 $DOCKER_NETWORK_OPTIONS 参数
+ExecStart=/usr/bin/dockerd $DOCKER_NETWORK_OPTIONS
+# 重启 docker
+vim systemctl daemon-reload
+vim systemctl restart docker
+
+# 编辑配置文件
+vim /etc/kubernetes/apiserver
+# 配置信息如下
+KUBE_API_ADDRESS="--insecure-bind-address=192.168.99.100"
+# The port on the local server to listen on.
+KUBE_API_PORT="--insecure-port=8080"
+# Port minions listen on
+KUBELET_PORT="--kubelet_port=10250"
+# Comma separated list of nodes in the etcd cluster
+KUBE_ETCD_SERVERS="--etcd_servers=http://192.168.1.108:2379"
+# Address range to use for services
+KUBE_SERVICE_ADDRESSES="--service-cluster-ip-range=10.254.0.0/16"
+# default admission control policies
+KUBE_ADMISSION_CONTROL="--admission_control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota"
+# Add your own!
+KUBE_API_ARGS=""
+
+
+
+
+(ssh-keygen -R ip  ssh 链接失败 提示证书错误时)
+(yum remove -y docker-engine*
+yum -y install kubernetes etcd flannel)
+
+
+
+集群的创建
+https://mritd.me/2016/09/07/Kubernetes-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/#flannel
+
+ui:
+
+创建文件kube-system.json
+{
+  "kind": "Namespace",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "kube-system"
+  }
+}
+
+kubectl --server=192.169.99.100:8080 create -f ./kube-system.json
+kubectl create -f https://rawgit.com/kubernetes/dashboard/master/src/deploy/kubernetes-dashboard.yaml
+
+
+
+教程!! http://www.kubernetes.org.cn/
+
+
+
+
+
+
+基本环境为 3 台虚拟机，虚拟机信息如下
+
+IP 地址	节点
+192.168.99.110	master
+192.168.99.111	node1
+"""
+echo "master" > /etc/hostname
+# 替换一下 hosts 中的 localhost 等
+vim /etc/hosts
+# 修改后内容如下
+127.0.0.1   master
+::1         master
+192.168.99.110	master
+192.168.99.112	node1
+
+"""
+
+http://kubernetes.io/docs/getting-started-guides/kubeadm/
+https://mritd.me/2016/10/09/kubernetes-1.4-create-cluster/
+
+ui 参考:http://www.itdadao.com/articles/c15a760553p0.html
+kubeadm init 错误处理:http://www.itdadao.com/articles/c15a760553p0.html
+
+
+?https://seanzhau.com/blog/post/seanzhau/6261234da213
+
+命令：
+http://www.jikexueyuan.com/course/2092.html (视频教程)
+http://blog.csdn.net/qq1010885678/article/details/48832067
+
+pod状态:
+STATUS
+Running： 稼働中
+Pending： Pod起動待ち
+ImageNotReady: dockerイメージ取得中
+PullImageError： dockerイメージ取得失敗
+CreatingContainer: Pod(コンテナ)起動中
+Error: エラー
+#kubectl get pods -o wide
+
+
+( sundaybot TQQlbmQovL9ZTpDu   / 720733022da53768cbab9526e441bfc6a74f3bc8)
+
+
+1.https://www.youtube.com/playlist?list=PLO5e_-yXpYLDyeADG7xbFaJxvYyeAjHah
+2.http://www.jikexueyuan.com/course/2092.html
+3.http://www.jikexueyuan.com/course/go/
+4.https://material.google.com/　| http://qiita.com/nogson/items/804dd3a879f482fb7018
+-5.https://angular.io/
+-6.https://angular.cn/docs/ts/latest/quickstart.html
+7.http://www.haobanfa.info/tag/react/page/2/
+
+
+http://qiita.com/advent-calendar/2016
+--------------------------------------
+http://qiita.com/advent-calendar/2016/math_for_ml
+http://qiita.com/advent-calendar/2016/go
+http://qiita.com/advent-calendar/2016/go1
+http://qiita.com/advent-calendar/2016/go2

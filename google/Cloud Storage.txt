@@ -1,0 +1,54 @@
+﻿
+https://cloud.google.com/storage/docs/?hl=ja
+
+コマンド
+
+ファイルダ作成:
+gsutil mb gs://my-awesome-bucket/
+
+ファイルコッピー/ダウンロード:
+gsutil cp Desktop/cloud-storage-logo.png gs://my-awesome-bucket
+
+ファイルリスト
+gsutil ls gs://my-awesome-bucket
+
+詳細情報:
+gsutil ls -l gs://my-awesome-bucket/cloud-storage-logo.png
+
+使用gsutil acl ch命令授予所有用户对存储在存储桶中的对象的读取权限:
+gsutil acl ch -u AllUsers:R gs://my-awesome-bucket/cloud-storage-logo.png
+
+権限削除:
+gsutil acl ch -d AllUsers gs://my-awesome-bucket/cloud-storage-logo.png
+
+单用户控制
+gsutil acl ch -u user@gmail.com:W gs://my-awesome-bucket
+gsutil acl ch -d user@gmail.com gs://my-awesome-bucket
+
+删除:
+gsutil rm gs://my-awesome-bucket/cloud-storage-logo.png
+
+删除文件夹:
+gsutil rm -r gs://my-awesome-bucket
+
+https://cloud.google.com/storage/docs/gsutil/commands/cp?hl=ja
+
+注意点:
+ファイル最大5TB
+
+バケット内でのオブジェクトの作成または更新操作の間隔に制限はありません。
+ただし、同じオブジェクトを更新または上書きする操作は、
+1 秒あたり 1 回しか実行できません。たとえば、
+バケット foo にオブジェクト bar がある場合、foo/bar の新しいコピーの
+アップロードは 1 秒あたり 1 回しか行えません。
+同じオブジェクトを 1 秒あたり 1 回以上の速さで更新すると、
+503 Service Unavailable エラーが発生する可能性があります。
+
+上書き操作を 1 回行うと、1 つの不変オブジェクトの保存期間が終了し、
+別の新たな不変オブジェクトの保存期間が開始することになります。
+
+多操作冲突https://cloud.google.com/storage/docs/generations-preconditions?hl=ja
+
+
+需要加入服务用户 与 环境变量的json 才可以使用google api
+GOOGLE_APPLICATION_CREDENTIALS

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery-2.1.4.js"></script>
+	<script src="../react-0.13.3/build/react.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+		$(function (){
+			var HelloWorld = React.createClass({
+				render: function () {
+					return <p>{this.props.item1}, {this.props.item2}</p>;
+				},
+				componentWillUnmount: function () {
+					console.log("BOOOOOOOOOM!");
+				}
+			});
+
+			var HelloUniverse = React.createClass({
+
+				getInitialState: function () {
+					return {name: '', item1: 'item1', item2: 'item2'};
+				},
+
+				handleChange: function (event) {
+
+					if(event.target.value == "456") {
+						//由函数删除
+						//unmountComponentAtNode删除的节点必须删除转载时的节点
+						React.unmountComponentAtNode(document.getElementsByTagName("body")[0]);
+						return;
+					}
+
+					this.setState({name: event.target.value});
+					this.setState({item1: event.target.value});
+					this.setState({item2: event.target.value});
+				},
+				render: function () {
+					if (this.state.name == "123") {
+						//HelloWorld消失
+						return <div>123</div>;
+					}
+					return <div>
+					<HelloWorld {...this.state}></HelloWorld>
+					<br/>
+					<input type="text" onChange={this.handleChange} />
+					</div>
+				}
+			});
+
+			React.render(<HelloUniverse name="" name2="{[1,2,3]}"></HelloUniverse>, document.body);
+		});
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

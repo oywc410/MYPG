@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery-2.1.4.js"></script>
+	<script src="../react-0.13.3/build/react.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+		 var GenderSelect = React.createClass({
+		 	//使用{this.props.handleSelect}来进行与父组件进行通信
+		 	render: function () {
+		 		return <select onChange={this.props.handleSelect}>
+		 		<option value="0">男</option>
+		 		<option value="1">女</option>
+		 		</select>
+		 	}
+		 });
+
+		 var SignuForm = React.createClass({
+		 	getInitialState: function() {
+		 		return {
+		 			name: '',
+		 			password: '',
+		 			gender: '',
+		 		}
+		 	},
+
+		 	handleChange: function(name, event) {
+		 		//此处可以用Name来区分 进行逻辑处理
+		 		var newState = {};
+		 		newState[name] = event.target.value;
+		 		this.setState(newState);
+		 	},
+
+		 	handleSelect: function(event) {
+		 		this.setState({gender: event.target.value});
+		 	},
+
+		 	render: function() {
+
+		 		//<GenderSelect handleSelect={this.handleSelect}></GenderSelect> 传递方法到子组件中 进行通信
+		 		//bind 为绑定事件添加默认值
+
+		 		console.log(this.state);
+		 		return <form>
+		 		<input type="text" placeholder="..." onChange={this.handleChange.bind(this, 'name')} />
+		 		<input type="password" placeholder="..." onChange={this.handleChange.bind(this, 'password')} />
+		 		<GenderSelect handleSelect={this.handleSelect}></GenderSelect>
+		 		</form>
+		 	}
+		 });
+
+		 React.render(<SignuForm></SignuForm>, document.body);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

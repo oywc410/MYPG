@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../jquery-2.1.4.js"></script>
+	<script src="../react-0.13.3/build/react.js"></script>
+	<script src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+		var style = {
+			color: "red",
+			border: "1px #000 solid",
+		};
+
+		var HelloWorld = React.createClass({
+			render: function() {
+				return <p>Hello, {this.props.name}</p>;
+			},
+		});
+
+		var HelloUniverse = React.createClass({
+			getInitialState: function() {
+				return {
+					name: 'Time',
+				};
+			},
+
+			handleChange: function(event) {
+				this.setState({name: event.target.value});
+			},
+
+			render: function() {
+				return <div>
+				<HelloWorld name={this.state.name}></HelloWorld>
+				<br/>
+				<input type="text" onChange={this.handleChange} />
+				</div>
+			}
+		});
+
+		$(function() {
+			React.render(<div style={style}><HelloUniverse></HelloUniverse></div>, document.body);
+		});
+
+	</script>
+</head>
+<body>
+<!--
+	状态函数:
+		getInitialState:初始化每个实例特有的状态
+		setState:更新组件状态
+-->
+</body>
+</html>

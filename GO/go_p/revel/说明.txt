@@ -1,0 +1,5 @@
+set GOPATH=%CD%
+
+go get -v github.com/revel/cmd/revel
+
+go build -o bin\revel.exe github.com/revel/cmd/revel

@@ -1,0 +1,10 @@
+启动服务器
+
+http://dim5.net/windows-server/redis2-8-12-install.html
+
+D:\WEB\redis-64.2.8.2101
+redis-server.exe redis.windows.conf
+
+
+无法启动时参考:
+http://segmentfault.com/a/1190000002417521

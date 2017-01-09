@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css" media="screen">
+
+		/*添加*/
+		.example-enter{
+			opacity: 0.01;
+			transition:opacity .5s ease-in;
+		}
+	
+		/*添加结束*/
+		.example-enter.example-enter-active{
+			opacity: 1;
+		}
+
+		/*删除*/
+		.example-leave{
+			opacity: 1;
+			transition:opacity .5s ease-in;
+		}
+
+		/*删除结束*/
+		.example-leave.example-leave-active{
+			opacity: 0.01;
+		}
+	</style>
+	<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+	<script src="../react-0.13.3/build/react-with-addons.js"></script>
+	<script type="text/jsx">
+		var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
+		var TodoList = React.createClass({
+			getInitialState: function() {
+				return {items:['hello','world','click','me']};
+			},
+			handleAdd: function() {
+				//prompt输入框  concat添加数组
+				var newItems = this.state.items.concat([prompt('Enter some text')]);
+				this.setState({items:newItems});
+			},
+			handleRemove: function(i) {
+				var newItems = this.state.items;
+				newItems.splice(i, 1);
+				this.setState({items:newItems});
+			},
+			render: function() {
+				//遍历
+				var items = this.state.items.map(function(item, i) {
+					//key内容表示 使用 ReactCSSTransitionGroup 必须使用key
+					return (
+						<div key={item} onClick={this.handleRemove.bind(this, i)}>{item}
+						</div>);
+				}.bind(this));
+
+				return (
+					<div>
+						<button onClick={this.handleAdd}>Add Item</button>
+						<ReactCSSTransitionGroup transitionName="example">
+							{items}
+						</ReactCSSTransitionGroup>
+					</div>
+				);
+			}
+		});
+
+		React.render(<TodoList></TodoList>, document.body);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

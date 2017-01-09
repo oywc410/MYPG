@@ -1,0 +1,26 @@
+set GOPATH=%cd%
+
+go get -v github.com/revel/cmd/revel
+
+revel.exe new test
+
+revel.exe run test
+
+运行模式
+revel.exe run test dev
+revel.exe run test prod
+
+监听端口
+revel.exe run test dev 8000
+
+生成执行文件(可直接拷贝到目标服务器运行)
+revel build test ../dir
+
+打包项目(生成执行文件 tar.gz)
+revel package test
+
+删除tmp文件
+revel clean test
+
+单元测试
+revel tess test

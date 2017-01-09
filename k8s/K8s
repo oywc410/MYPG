@@ -1,0 +1,433 @@
+K8s
+
+#集群
+	1.修改计算机名 
+		sudo hostnamectl --static set-hostname master / node1 / node2
+	2.关闭SE 
+		setenforce 0
+	3.关闭firewalld
+		systemctl stop firewalld.service
+		systemctl disable firewalld.service
+	4.配置kubernetes yum源
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=http://yum.kubernetes.io/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+       https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOF
+	5.安装docker kubelet...
+		yum install -y docker kubelet kubeadm kubectl kubernetes-cni
+		systemctl enable docker && systemctl start docker
+		systemctl enable kubelet && systemctl start kubelet
+	6.master
+		 kubeadm init --api-advertise-addresses=xxx.xxx.xxx
+		 #单机 kubectl taint nodes --all dedicated-
+	7.测试
+		kubectl get nodes
+	8.查找系统Pod 
+		kubectl get po --namespace=kube-system
+		kube-dns-654381707-ajsnt          0/3       ContainerCreating   0          3m
+	9.查看POD日志
+		kubectl describe po kube-dns-654381707-ajsnt --namespace=kube-system
+		#未配置 POD 网络，默认的 KUBE-DNS 是无法启动的
+	10.kubectl apply -f https://git.io/weave-kube
+	11.kubectl get po --namespace=kube-system
+		#再次查看
+	13.案例演示
+		git clone https://github.com/microservices-demo/microservices-demo
+		kubectl apply -f microservices-demo/deploy/kubernetes/manifests
+
+
+#查看所有节点
+kubectl get nodes
+
+	NAME               STATUS     AGE
+	master             Ready      2d
+	node1              Ready      2d
+	node2              Ready      16h
+	ouyou-virtualbox   NotReady   16h
+
+#查看所有pods (管理的最小单元)
+kubectl get pods
+	Running： 稼働中
+	Pending： Pod被系统接收 镜像1个或多个未被创建(包括镜像下载的时间)
+	ImageNotReady: dockerイメージ取得中
+	PullImageError： dockerイメージ取得失敗
+	CreatingContainer: Pod(コンテナ)起動中
+	Error: エラー
+
+#yaml文件创建pods
+vim nginx.yml    or kubectl run kubernetes-bootcamp --image=docker.io/jocatalin/kubernetes-bootcamp:v1 --port=8080
+	apiVersion: v1
+	kind: Pod
+	metadata: #属性值
+	  name: nginx
+	spec:  # 当前pod内容的声明
+	  containers:
+	  - name: nginx
+	    image: nginx
+	    ports:
+	    -  containerPort: 80
+	    #command: ["/bin/echo","hello”,”world"]
+kubectl create -f pod.yml
+#定位无法启动错误
+ kubectl describe pod podname
+
+#删除pods
+kubectl delete pods nginx
+kubectl delete -f nginx.yml
+
+#数据的保存
+http://dockone.io/article/556
+emptyDir/hostPath/gce/nfs/aws/glusterfs...
+
+emtyDir : 删除pods时 将被删除
+vim pod.yml
+	apiVersion: v1
+	kind: Pod
+	metadata: #属性值
+	  name: redis
+	spec:  # 当前pod内容的声明
+	  containers:
+	  - name: redis
+	    image: redis
+	    volumeMounts:
+	    - name: redis-peristent-storage
+	      mountPath: /data/redis
+	  volumes:
+      - name: redis-peristent-storage
+        emptyDir: {}
+
+#查看pod yaml
+kubectl get pods redis -o yaml
+
+#Labels
+pod.yml
+	apiVersion: v1
+	kind: Pod
+	metadata: #属性值
+	  name: nginx
+	  labels:
+	  	app: nginx
+	spec:  # 当前pod内容的声明
+	  containers:
+	  - name: nginx
+	    image: nginx
+	    ports:
+	    -  containerPort: 80
+
+查看含有label值得pod
+kubectl get pods -l app=nginx
+
+#RC
+kubectl get rc
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nginx-controller #namespace: kube-system
+spec:
+  replicas: 2
+  selector:
+    app: nginx
+  template:
+    metadata: #属性值
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+
+#Services 提供固定的DNS与IP地址 来实现服务发现(DNS OR 环境变量) 提供负载均衡
+vim service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  ports:
+  - port: 8000
+    targetPort: 80 #映射至主机端口 虚拟 只能内部访问
+    protocol: TCP
+  selector:
+    app: nginx #对应!
+#查看服务
+kubectl get service
+
+#Namespaces
+
+#Annotations  key/value 用于保存自定义信息(版本号 联系人等)
+
+
+-----------------------
+#secretes 保存敏感数据
+	vim secretes.yaml
+	apiVersion: v1
+	kind: Secret
+	metadata:
+	  name: mysecret
+	type: Opaque
+	data:
+	  password: dmFsdWutMgOk
+	  username: dmFsdWutMgOk
+
+查询 kubectl get secret
+
+#secretes 的使用
+创建rc/pods
+	apiVersion: v1
+	kind: ReplicationController
+	metadata:
+	  name: redis
+	spec:
+	  template:
+	    metadata:
+	      labels:
+	        app: redis
+	        tier: backend
+	    spec:
+	      volumes:
+	        - name: data
+	          emptyDir: {}
+	        - name: supersecret #密码数据
+	          secret:
+	            secretName: mysecret
+	      containers:
+	      - name: redis
+	        image: kubernetes/redis:v1
+	        ports:
+	        - containerPort: 6379
+	        volumeMounts:
+	        - mountPath: /redis-master-data
+	          name: data
+	        - mountPath: /var/run/secrets/super
+	          name: supersecret
+
+#resources 资源管理 (cpu, memory)
+#健康检测 liveness/readinessProbes (发生错误将重启)
+# 生命周期钩子函数与退出警告 lifecycle
+"""
+liveness probes是用来检测你的应用程序是否正在运行。通常情况下，你的程序一崩溃，Kubernetes就会看到这个程序已经终止，然后重启这个程序。但是liveness probes的目的就是捕捉到当程序还没有终止，还没有崩溃或者还没陷入死锁的情况。所以一个简单的HTTP回应能够满足。
+"""
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: redis
+spec:
+  template:
+    metadata:
+      labels:
+        app: redis
+        tier: backend
+    spec:
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: supersecret #密码数据
+          secret:
+            secretName: mysecret
+      containers:
+      - name: redis
+        image: kubernetes/redis:v1
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - mountPath: /redis-master-data
+          name: data
+        - mountPath: /var/run/secrets/super
+          name: supersecret
+        resources:
+          limits:
+            cpu: 500m
+            memory: 64Mi
+        liveness:
+          httpGet:
+            path: /index.html
+            port: 80
+          initialDelaySeconds: 30 #每隔30秒
+          timeoutSeconds: 1
+        lifecycle:
+          postStart:
+            exec:
+              command:
+              - ''
+            httpGet:
+              path: ''
+              port: ''
+              host: ''
+              scheme: ''
+            tcpSocket:
+              port: ''
+          preStop:
+            exec:
+              command:
+              - ''
+            httpGet:
+              path: ''
+              port: ''
+              host: ''
+              scheme: ''
+            tcpSocket:
+              port: ''
+        env: #自定义环境变量
+        - name: GET_HOSTS_FROM
+          value: dns
+
+# 在线升级与回退
+1.kubect1 run inspector \
+--labels="app=inspector,track=stable" \
+--image=b.gcr.io/kuar/inspector:1.0.0
+2.kubectl scale rc inspector --replicas=5 #追加rc 动态调整
+3.vim upgrade.yml
+	apiVersion: v1
+	kind: Service
+	metadata:
+	  name: inspector
+	  labels:
+	    app: inspector
+	spec:
+	  type: NodePort #会在每个工作节点打开端口
+	  selector:
+	    app: inspector
+	  ports:
+	  - name: http
+	    nodePort: 32000
+	    port: 80
+	    protocol: TCP
+
+4.kubectl rolling-update inspector --update-period=3s --image=b.grc.io/kuar/inspector:2.0.0
+  kubect1 rolling-update frontend-v1 -f frontend-v2.json
+
+# kubectl patch 时时更新
+kubectl patch pod rc-nginx-2-kpiqt -p '{"metadata":{"labels":{"app":"nginx-3"}}}'
+
+# replace 更新
+kubectl replace -f rc-nginx.yaml
+
+# logs
+kubectl logs rc-nginx-2-kpiqt
+
+# autoscale 弹性
+kubectl autoscale rc rc-nginx-3 —min=1 —max=4
+#cordon, drain, uncordon 更改节点 可平滑的过度pods
+
+#attach 类似于docker 中的 attach
+attach命令类似于docker的attach命令，可以直接查看容器中以daemon形式运行的进程的输出，效果类似于logs -f，退出查看使用ctrl-c。如果一个pod中有多个容器，要查看具体的某个容器的的输出，需要在pod名后使用-c containers name指定运行的容器。
+
+#exec  kubectl exec -it xxxx /bin/bash
+为在一个已经运行的容器中执行一条shell命令，如果一个pod容器中，有多个容器，需要使用-c选项指定容器。
+
+#使用kubectl get endpoints命令可以看到frontend service的endpoints。
+Endpoints即外部服务端访问service时访问的对应的cluster的后端端口，是cluster需要对外暴露的端口号。在service的定义文件中配置可以对外暴露多个端口。
+每一个启动了frontend的pod都会打开80端口。
+
+#为volume添加谷歌磁盘 (运行节点的机器必须为谷歌的虚拟服务器 并且需要在同一zone中)  (p31)
+gcloud compute disks create --size=500G --zone=xxx my-data-disp
+volumes:
+	-name: test-volume
+	gcePersistentDisk:
+		pdName: my-data-disp
+		fsType: ext4
+
+#资源限制
+1. 容器级别 cpu 内存
+2. pod级别 pod中所有的容器 资源限制
+3. 名前空间基本
+	pod 数量
+	Service 数量
+	ResourceQuota 数量
+	Secret 数量
+	持有PV数量
+
+#Endpoint
+创建对于pod的service时 会自动创建Endpoint
+创建不存在pod的service时 不会创建Endpoint 需要创建手动创建Endpoint
+
+#创建 Service中会自动向pod中的容器的系统变量
+(REDIS_MASTER 为 Service名称:redis-master)
+REDIS_MASTER_SERVICE_HOST=10.0.0.11
+REDIS_MASTER_SERVICE_PORT=6479
+REDIS_MASTER_ROPT=tcp://10.0.0.11:6379
+REDIS_MASTER_PORT_6379_TCP=tcp://10.0.0.11:6479
+REDIS_MASTER_PORT_6379_TCP_PROTO=tcp
+REDIS_MASTER_PORT_6379_TCP_PORT=6379
+REDIS_MASTER_PORT_6379_TCP_ADDR=10.0.0.11
+
+#REDIS_MASTER 中的IP访问方式(NodePort端口范围:3000~32767)
+ClusterIP 默认值 仅使用集群内部虚拟IP
+NodePort 使用虚拟IP 同时通过在每个节点上暴露相同的端口来暴露Service
+LoadBalancer 使用虚拟UP和NodePort 同时请求云服务商作转向Service的负载均衡器
+
+#容器健康状态
+1. ExecAction 在容器内部执行一个命令,如果该命令的退出状态码为0,则表明容器健康。
+	spec.containers.容器
+		livenessProbe:
+			exec:
+				command:
+					- cat
+					- /tmp/health
+			initialDelaySeconds: 15 #每隔30秒
+			timeoutSeconds: 1
+2. TCPSocketAction 通过容器的IP地址和端口号执行TCP检查,如果端口能被访问,则表明容器健康
+3. HTTPGetAction 通过容器的IP地址和端口号及路径调用HTTP Get方法,如果响应码的状态大于等于200且小于等于400则认为容器健康
+	spec.containers.容器
+		httpGet:
+            path: /index.html
+            port: 80
+          initialDelaySeconds: 30 #每隔30秒
+          timeoutSeconds: 1
+
+#资源使用限制
+	1. ResourceQuota namespace 级别 所用资源数限制
+		apiVersion: v1
+		kind: ResourceQuota
+		metadata:
+			name: quta
+		spec:
+			hard:
+				memory: 1Gi
+				cpu: 20
+				pods: 10
+				services: 5
+				replicationcontrollers: 20
+				resourcequotas: 1
+		kubectl create -f xxx.yaml namespace=myspace
+
+	2. LimitRanger pod与容器的资源限制
+		apiVersion: v1
+		kind: LimitRange
+		metadata:
+			name: mylimits
+		spec:
+			limits:
+			- max:
+				cpu: "2"
+				memory: 1Gi
+			  min:
+			  	cpu: 250m
+			  	memory: 6Mi
+			  type: Pod
+			- default:
+			    cpu: 250m
+			    memory: 100Mi
+              max:
+                cpu: "2"
+                memory: 2Gi
+              min:
+                cpu: 250m
+                memory: 6Mi
+              type: Container
+        kubectl create -f xxx.yaml namespace=myspace
+
+    3.Secret 保存敏感数据
+    4.Service Account 是多个Secret的合集
+    	Service Account概念的引入是基于这样的使用场景：运行在pod里的进程需要调用Kubernetes API以及非Kubernetes API的其它服务（如image repository/被mount到pod上的NFS volumes中的file等）。我们使用Service Account来为pod提供id。
+    	http://dockone.io/article/599

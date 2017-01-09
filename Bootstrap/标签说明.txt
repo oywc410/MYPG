@@ -1,0 +1,517 @@
+1.<h1>  等于 <div class="h1">
+
+2.副标题:<h1>标题<small>副标题</small></h1>
+
+3.段落:<p>  重点段落<p class="lead">
+
+4.粗体:<strong>/<b>
+
+5.斜体:<em>/<i>
+
+6.class类强调文本类型
+	class="text-muted"			提示，使用浅灰色（#999）
+			"text-primary"		主要，使用蓝色（#428bca）
+			"text-success"		成功，使用浅绿色(#3c763d)
+			"text-info"			通知信息，使用浅蓝色（#31708f）
+			"text-warning"		警告，使用黄色（#8a6d3b）
+			"text-danger"		危险，使用褐色（#a94442）
+7.文本对齐风格
+	class="text-left"			居左
+			"text-center"		居中
+			"text-right"		居右
+			"text-justify"		两端对齐
+
+8.列表 
+	无序列表(ul>li*3)
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	有序列表
+		<ol>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ol>
+	定义列表(dl>dt+dd*2)
+		<dl>
+			<dt></dt>
+			<dd></dd>
+			<dd></dd>
+		</dl>
+
+9.不带符号的列表
+	<ul class="list-unstyled">
+		<li></li>
+		<li></li>
+	</ul>
+
+10.水平列表(无符号)
+	<ul class="list-inline">
+		<li></li>
+		<li></li>
+	</ul>
+
+11.水平定义列表 效果参见:http://www.imooc.com/code/2287
+	<dl class="dl-horizontal">
+		<dt></dt>
+		<dd></dd>
+		<dd></dd>
+	</dl>
+
+12.代码风格 效果参见:http://www.imooc.com/code/2288
+	a.code风格
+		<div>Bootstrap的代码风格有三种：
+		  <code>&lt;code&gt;</code>
+		  <code>&lt;pre&gt;</code>
+		  <code>&lt;kbd&gt;</code>
+		</div>
+	b.pre风格
+		<div>
+			<pre>
+				&lt;ul&gt;
+				&lt;li&gt;...&lt;/li&gt;
+				&lt;li&gt;...&lt;/li&gt;
+				&lt;li&gt;...&lt;/li&gt;
+				&lt;/ul&gt;
+			</pre>
+		</div>
+	c.kbd风格
+		<div>请输入<kbd>ctrl+c</kbd>来复制代码，然后使用<kbd>ctrl+v</kbd>来粘贴代码</div>
+
+13.代码二(适用于大段代码 超过340px出现滚轴)
+	<pre class="pre-scrollable">
+	</pre>
+
+14.表格
+	<table class="table">
+	</table>
+		.table：基础表格
+	  	.table-striped：斑马线表格			(table table-striped)
+	  	.table-bordered：带边框的表格
+	  	.table-hover：鼠标悬停高亮的表格
+	  	.table-condensed：紧凑型表格
+	  	.table-responsive：响应式表格
+	  	(可以组合使用)
+
+15.表格行的类型 (效果参见:http://www.imooc.com/code/2294)
+	<tr class="active">
+	</tr>
+		.active:表示当前活动的信息
+	    .success:表示成功或者正确的行为
+	    .info:表示中立的信息或行为
+	    .warning:表示警告，需要特别注意
+	    .danger:表示危险或者可能是错误的行为
+
+16.基础表格 (效果参见:http://www.imooc.com/code/2296)
+	<table class="table">
+	    <thead>
+	        <tr>
+	            <th>表格标题</th>
+	            <th>表格标题</th>
+	            <th>表格标题</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	        <tr>
+	            <td>表格单元格</td>
+	            <td>表格单元格</td>
+	            <td>表格单元格</td>
+	        </tr>
+	        <tr>
+	            <td>表格单元格</td>
+	            <td>表格单元格</td>
+	            <td>表格单元格</td>
+	        </tr>
+	    </tbody>
+	</table>
+
+17.基础表单
+	<form role="form">
+	    <div class="form-group">
+	        <label for="exampleInputEmail1">邮箱：</label>
+	        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="请输入您的邮箱地址">
+	    </div>
+	    <div class="form-group">
+	        <label for="exampleInputPassword1">密码</label>
+	        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="请输入您的邮箱密码">
+	    </div>
+	    <div class="checkbox">
+	        <label>
+	            <input type="checkbox"> 记住密码
+	        </label>
+	    </div>
+	    <button type="submit" class="btn btn-default">进入邮箱</button>
+	</form>
+
+17.水平表单
+	在Bootstrap框架中要实现水平表单效果，必须满足以下两个条件：
+	a、在<form>元素是使用类名“form-horizontal”。
+	b、配合Bootstrap框架的网格系统。（网格布局会在以后的章节中详细讲解）
+
+18.内联表单 (效果参见:http://www.imooc.com/code/2344)
+	在<form>元素是使用类名“form-inline”。
+
+19.下拉菜单控件 (效果参见:http://www.imooc.com/code/2346)
+	<form role="form">
+		<div class="form-group">
+		    <select class="form-control">
+		        <option>1</option>
+		        <option>2</option>
+		    </select>
+		</div>
+		<div class="form-group">  (可多选|添加multiple属性即可)
+		    <select multiple class="form-control">
+		        <option>1</option>
+		        <option>2</option>
+		    </select>
+		</div>
+	</form>
+
+20.文本域
+	<form role="form">
+	    <div class="form-group">
+	        <textarea class="form-control" rows="3"></textarea>
+	    </div>
+	</form>
+
+21.复选框和单选框
+	<form role="form">
+	    <div class="checkbox">
+	        <label>
+	            <input type="checkbox" value=""> 记住密码
+	        </label>
+	    </div>
+	    <div class="radio">
+	        <label>
+	            <input type="radio" name="optionsRadios" id="optionsRadios1" value="love" checked> 喜欢
+	        </label>
+	    </div>
+	    <div class="radio">
+	        <label>
+	            <input type="radio" name="optionsRadios" id="optionsRadios2" value="hate"> 不喜欢
+	        </label>
+	    </div>
+	</form>
+
+22.复选框和单选框横排
+	<form role="form">
+	    <div class="form-group">
+	        <label class="checkbox-inline">
+	            <input type="checkbox" value="option1">游戏
+	        </label>
+	        <label class="checkbox-inline">
+	            <input type="checkbox" value="option2">摄影
+	        </label>
+	        <label class="checkbox-inline">
+	            <input type="checkbox" value="option3">旅游
+	        </label>
+	    </div>
+	    <div class="form-group">
+	        <label class="radio-inline">
+	            <input type="radio" value="option1" name="sex">男性
+	        </label>
+	        <label class="radio-inline">
+	            <input type="radio" value="option2" name="sex">女性
+	        </label>
+	        <label class="radio-inline">
+	            <input type="radio" value="option3" name="sex">中性
+	        </label>
+	    </div>
+	</form>
+
+23.按钮 (效果参照:http://www.imooc.com/code/2355)
+	元素input
+	class="btn"
+		"btn btn-primary"
+		"btn btn-info"
+		"btn btn-success"
+		"btn btn-warning"
+		"btn btn-danger"
+		"btn btn-inverse"
+
+24.表单控件大小
+	class="input-lg" 大
+			input-sm 小
+
+25.焦点下的控件效果焦点
+	form-control
+
+26.表单控制状态(禁用状态)
+	添加属性disable即可
+
+27.验证状态(演示参照:http://www.imooc.com/code/2362)
+	只有在form-group上应用才有效
+	<div class="form-group has-error">
+	    <label class="control-label" for="inputError1">错误状态</label>
+	    <input type="text" class="form-control" id="inputError1" placeholder="错误状态">
+	</div>
+	1、.has-warning:警告状态（黄色）
+	2、.has-error：错误状态（红色）
+	3、.has-success：成功状态（绿色）
+
+	在状态后再添加 has-feedback
+	将显示对应状态的图片
+
+28.表单提示状态
+	help-block
+	<form role="form">
+	    <div class="form-group has-success has-feedback">
+	        <label class="control-label" for="inputSuccess1">成功状态</label>
+	        <input type="text" class="form-control" id="inputSuccess1" placeholder="成功状态">
+	        <span class="help-block">你输入的信息是正确的</span>
+	        <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+	    </div>
+	</form>
+
+29.按钮(效果参照:http://www.imooc.com/code/2370)
+	元素:button
+	class="btn"				基础按钮
+		btn btn-default		默认按钮
+		btn btn-primary		主要按钮
+		btn btn-success		成功按钮
+		btn btn-info		信息按钮
+		btn btn-warning		警告按钮
+		btn btn-danger		危险按钮
+		btn btn-link		连接按钮
+
+30.按钮大小
+	class="btn-lg" 大
+			"btn-sm" 小
+			"btn-xs" 超小形
+
+31.将按钮填充容器(效果参照:http://www.imooc.com/code/2373)
+	class="btn-block"
+
+32.禁用按钮
+	class="disabled" 或者添加 disabled 属性
+
+33.图像(图片成像)
+	class="img-rounded"			圆角图片
+			"img-circle"		圆形图片
+			"img-thumbnail"		忽略图片
+			"img-responsive"	响应式图片
+
+34.图标(所有图标:http://getbootstrap.com/components/#glyphicons)
+	<span class="glyphicon glyphicon-search"></span>
+
+35.网格系统
+	<div class="container">
+		<div class="row">
+			<div class="col-md-1">.col-md-1</div>
+			....
+			<div class="col-md-12">.col-md-1</div>
+		</div>
+	</div>
+
+36.4种网格大小
+	.col-xs-
+	.col-sm-	750px
+	.col-md- 	970px
+	.col-lg-	1170px
+
+27.偏移网格(margin-left)
+	.col-xs-1 col-md-offset-1
+	...
+	.col-lg-12 col-lg-offset-12
+
+28.排序网格
+	.col-md-push-1(right)
+	...
+	.col-md-push-12
+
+	.col-md-pull-1(left)
+	...
+	.col-md-pull-12
+
+29.网格之间可以进行嵌套
+	<div class="container">
+	    <div class="row">
+	        <div class="col-md-4">.col-md-4</div>
+	        <div class="col-md-8">
+	            我的里面嵌套了一个网格
+	            <div class="row">
+	                <div class="col-md-4">col-md-4</div>
+	                <div class="col-md-4">col-md-4</div>
+	                <div class="col-md-4">col-md-4</div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+30.下拉菜单
+	http://www.imooc.com/code/2881
+
+31.下拉菜单(下拉分隔线)
+	http://www.imooc.com/code/2916
+
+32.下拉菜单(菜单标题)
+	http://www.imooc.com/code/2919
+
+33.下拉菜单(对齐方式)
+	http://www.imooc.com/code/2920
+
+34.下拉菜单(菜单项状态)
+	class="active"	当前状态(选中状态)
+		="disabled" 禁用状态
+
+35.按钮组(效果参照:http://www.imooc.com/code/2953)
+	<div class="btn-group">
+	    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-fast-forward"></span></button>
+	    <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-step-forward"></span></button>
+	</div>
+
+	class="btn-group btn-group-lg"		大按钮组
+						btn-group-sm	小按钮组
+						btn-group-xs	超小按钮
+
+36.按钮工具栏(效果参照:http://www.imooc.com/code/2965)
+	<div class="btn-toolbar">
+	    <div class="btn-group">
+	        …
+	    </div>
+	    <div class="btn-group">
+	        …
+	    </div>
+	</div>
+
+37.分组嵌套(效果参照:http://www.imooc.com/code/2980)
+	(嵌套形式的下拉菜单)
+	<div class="btn-group">
+	    <button class="btn btn-default" type="button">首页</button>
+	    <div class="btn-group">
+	        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button">关于我们<span class="caret"></span></button>
+	        <ul class="dropdown-menu">
+	            <li><a href="##">公司简介</a></li>
+	            <li><a href="##">企业文化</a></li>
+	            <li><a href="##">组织结构</a></li>
+	            <li><a href="##">客服服务</a></li>
+	        </ul>
+	    </div>
+	</div>
+
+38.按钮组(垂直分组)
+	btn-group-vertical
+
+39.等分按钮(平铺)
+	class="btn-group btn-group-justified"
+
+40.按钮类型的下拉菜单 (效果参照:http://www.imooc.com/code/3023)
+
+41.按钮的向下向上三角形 (效果参照:http://www.imooc.com/code/3026)
+	(选项向上拉)
+
+42.导航栏(效果参照:http://www.imooc.com/code/3031)
+	<ul class="nav nav-tabs">
+	    <li><a href="##">Home</a></li>
+	    <li><a href="##">CSS3</a></li>
+	</ul>
+	选中状态: li class="active"
+	禁用状态: li class="disabled"
+
+43.胶囊型导航(效果参照:http://www.imooc.com/code/3034)
+	<ul class="nav nav-pills">
+
+44.垂直型导航(效果参照:http://www.imooc.com/code/3036)
+	<ul class="nav nav-pills nav-stacked">
+
+45.自适应导航
+	<ul class="nav nav-tabs nav-justified">
+
+46.导航加下拉菜单(参照:http://www.imooc.com/code/3042)
+	<ul class="nav nav-pills">
+	    <li class="active"><a href="##">首页</a></li>
+	    <li class="dropdown">
+	        <a href="##" class="dropdown-toggle" data-toggle="dropdown">教程<span class="caret"></span></a>
+	        <ul class="dropdown-menu">
+	            <li><a href="##">CSS3</a></li>
+	            …
+	        </ul>
+	    </li>
+	    <li><a href="##">关于我们</a></li>
+	</ul>
+
+
+47.面包屑式导航(效果参照:http://www.imooc.com/code/3183)
+	<ol class="breadcrumb">
+	    <li><a href="#">首页</a></li>
+	    <li><a href="#">我的书</a></li>
+	    <li class="active">《图解CSS3》</li>
+	</ol>
+
+78.导航条(效果参照:http://www.imooc.com/code/3110)
+	class="navbar"
+
+79.基础导航条(效果参照:http://www.imooc.com/code/3111)
+	<div class="navbar navbar-default" role="navigation">
+	    <ul class="nav navbar-nav">
+	        <li class="active"><a href="##">网站首页</a></li>
+	        <li><a href="##">系列教程</a></li>
+	        <li><a href="##">名师介绍</a></li>
+	        <li><a href="##">成功案例</a></li>
+	        <li><a href="##">关于我们</a></li>
+	    </ul>
+	</div>
+
+80.为导航条添加标题、二级菜单及状态(效果参照:http://www.imooc.com/code/3120)
+
+81.带表单的导航条(效果参照:http://www.imooc.com/code/3121)
+	搜索框
+
+82.导航条中的按钮、文本和链接(效果参照:http://www.imooc.com/code/3122)
+
+83.固定导航条(效果参照:http://www.imooc.com/code/3123)
+	.navbar-fixed-top：导航条固定在浏览器窗口顶部
+	.navbar-fixed-bottom：导航条固定在浏览器窗口底部
+
+84.响应式导航条!!!!(效果参照:http://www.imooc.com/code/3124)
+
+85.反色导航条(效果参照:http://www.imooc.com/code/3182)
+
+86.分页导航（带页码的分页导航）(效果参照:http://www.imooc.com/code/3185)
+
+87.分页导航（翻页分页导航）(效果参照:http://www.imooc.com/code/3186)
+
+88.标签(参照:http://www.imooc.com/code/3187)
+	<h3>Example heading <span class="label label-default">New</span></h3>
+	<span class="label label-default">默认标签</span>
+	<span class="label label-primary">主要标签</span>
+	<span class="label label-success">成功标签</span>
+	<span class="label label-info">信息标签</span>
+	<span class="label label-warning">警告标签</span>
+	<span class="label label-danger">错误标签</span>
+
+89.徽章(效果参照:http://www.imooc.com/code/3190)
+	例子:提示现在有几条信息
+
+90.缩略图（一）(效果参照:http://www.imooc.com/code/3777)
+	点击小图显示大图
+
+91.缩略图（二）(效果参照:http://www.imooc.com/code/3780)
+	让缩略图配合标题、描述内容，按钮
+
+92.警示框(效果参照:http://www.imooc.com/code/3782)
+
+93.进度条(效果参照:http://www.imooc.com/code/3790)
+
+94.媒体对象(效果参照:http://www.imooc.com/code/3815)
+	对象内部元素浮动,对象的嵌套
+
+95.媒体对象--媒体对象列表(效果参照:http://www.imooc.com/code/3818)
+
+96.列表组(效果参照:http://www.imooc.com/code/3819)
+
+97.面板(效果参照:http://www.imooc.com/code/3828)
+
+98.导入js组件库(参照:http://www.imooc.com/code/3851)
+
+99.动画过度(参照:http://www.imooc.com/code/3852)
+<script src="http://cdn.bootcss.com/bootstrap/2.3.1/js/bootstrap-transition.js"></script>
+	默认情况之下，Bootstrap框架中以下组件使用了过渡动画效果：
+		模态弹出窗（Modal）的滑动和渐变效果；
+		选项卡（Tab）的渐变效果；
+		警告框（Alert）的渐变效果；
+		图片轮播（Carousel）的滑动效果。
+
+100.模拟弹出窗(参照:http://www.imooc.com/code/3854)

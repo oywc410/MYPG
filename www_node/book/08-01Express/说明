@@ -1,0 +1,29 @@
+用npm安装全局的Express
+npm install -g express-generator
+
+生成站点
+express -e photo
+
+安装依赖包
+npm install --save
+
+form表单里需要有 enctype 标识
+npm install connect-multiparty
+
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
+
+app.post('/formdata',multipartMiddleware, function (req, res) {
+  console.log(req.body);
+  res.send(req.body);
+});
+
+
+运行网站
+node bin/www
+
+http://qiita.com/TsutomuNakamura/items/7a8362efefde6bc3c68b
+//sudo npm install -g node-gyp
+sudo apt-get install libkrb5-dev
+ sudo apt-get install mongodb-server
+ sudo apt-get install ucommon-utils

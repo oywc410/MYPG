@@ -1,0 +1,2736 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0076)http://www.oschina.net/translate/debugging-performance-issues-in-go-programs -->
+<html lang="zh-CN" xml:lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <link rel="shortcut icon" type="image/x-icon" href="http://www.oschina.net/img/favicon.ico?t=1451964198000">
+  <title>Go 程序的性能调试问题 - 技术翻译 - 开源中国社区</title>
+        <link rel="stylesheet" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/channel.css" type="text/css" media="screen">
+  <link rel="stylesheet" type="text/css" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/jquery.fancybox-1.3.4.css" media="screen">
+  <link rel="alternate" type="application/rss+xml" title="最新开源项目" href="http://www.oschina.net/project/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新开源资讯" href="http://www.oschina.net/news/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新问题列表" href="http://www.oschina.net/question/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新翻译列表" href="http://www.oschina.net/translate/rss">
+  <link rel="alternate" type="application/rss+xml" title="最新博客列表" href="http://www.oschina.net/blog/rss">
+  <link rel="alternate" type="application/rss+xml" title="推荐博客列表" href="http://www.oschina.net/blog/rss?show=more">
+  <link rel="alternate" type="application/rss+xml" title="推荐软件列表" href="http://www.oschina.net/project/rss?show=recomms">
+  <link rel="alternate" type="application/rss+xml" title="最新代码分享列表" href="http://www.oschina.net/code/rss">
+  <link rel="alternate" type="application/rss+xml" title="开源中国 - 源码列表" href="http://www.oschina.net/code/source_rss">
+    <!--添加emoji支持-->
+    <link rel="stylesheet" type="text/css" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/nature.css">
+    <link rel="stylesheet" type="text/css" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/object.css">
+    <link rel="stylesheet" type="text/css" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/people.css">
+    <link rel="stylesheet" type="text/css" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/place.css">
+    <link rel="stylesheet" type="text/css" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/Sysmbols.css">
+    <link rel="stylesheet" type="text/css" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/twemoji.css">
+
+  <script src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/ca-pub-7090564139599510.js"></script><script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/jquery-1.7.1.min.js"></script>
+  <script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/jquery.form.js"></script>
+  <script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/jquery.fancybox-fixed.js"></script>
+    <link rel="stylesheet" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/tip-yellowsimple.css" type="text/css">
+  <script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/jquery.poshytip.min.js"></script>
+  <script type="text/javascript">
+  	g_user = {
+	id:0,
+	name:'',
+	login:false};  </script>
+    <script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/oschina.js"></script>
+  <script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/utils.js"></script>
+  <script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/channel.js"></script>
+    </head>
+<body>
+<div id="OSC_NavTop">
+	<div class="wp998">
+        <div id="OSC_Channels">
+        	<ul>
+        	<li class="item"><a href="http://www.oschina.net/" class="home">首页</a></li>        	<li class="item control_select"><a href="http://www.oschina.net/project" class="project">开源项目</a>
+				<ul class="cs_content">
+					<li><a href="http://www.oschina.net/project/zh">国产开源项目</a></li>
+					<li><a href="http://www.oschina.net/project/tags">项目分类</a></li>
+					<li><a href="http://www.oschina.net/project/list?sort=time">最新收录项目</a></li>
+					<li class="split"></li>
+                	                	<li><a href="http://www.oschina.net/project/lang/19/java">Java 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/194/csharp">C# 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/22/php">PHP 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/21/c">C/C++ 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/26/ruby">Ruby 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/25/python">Python 开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/358/go">Go开源软件</a></li>
+                	<li><a href="http://www.oschina.net/project/lang/28/javascript">JS开源软件</a></li>
+				</ul>
+			</li>
+        	<li class="item control_select">
+				<a href="http://www.oschina.net/question" class="question">问答</a>
+				<ul class="cs_content">
+                	<li><a href="http://www.oschina.net/question?catalog=1"> 技术问答 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=2"> 技术分享 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=3"> IT大杂烩 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=100"> 职业生涯 » </a></li>
+                	<li><a href="http://www.oschina.net/question?catalog=4"> 站务/建议 » </a></li>
+                	<li><a href="http://www.oschina.net/alipay"> 支付宝专区 » </a></li>
+                	<li><a href="http://www.oschina.net/mopaas"> MoPaaS专区 » </a></li>
+                	<li><a href="http://www.oschina.net/hardware"> 开源硬件专区 » </a></li>
+				</ul>
+			</li>
+        	<li class="item"><a href="http://www.oschina.net/code/list" class="code">代码</a></li>
+        	        	<li class="item"><a href="http://www.oschina.net/blog" class="blog">博客</a></li>
+        	<li class="item"><a href="http://www.oschina.net/translate" class="tran hl">翻译</a></li>
+            <li class="item"><a href="http://www.oschina.net/news" class="news">资讯</a></li>
+        	<li class="item control_select">
+				<a href="http://www.oschina.net/android" class="mobile">专题</a>
+				<ul class="cs_content cs_mobile">
+        			<li><a href="http://www.oschina.net/events" style="color:#c00">源创会</a> <a href="http://www.oschina.net/video">视频</a></li>
+        			<li><a href="http://www.oschina.net/question/tag/%E9%AB%98%E6%89%8B%E9%97%AE%E7%AD%94">高手问答</a> <a href="http://www.oschina.net/question/tag/%E5%BC%80%E6%BA%90%E8%AE%BF%E8%B0%88">访谈</a></li>
+        			<li><a href="http://www.oschina.net/question/tag/%E5%BC%80%E6%BA%90%E5%91%A8%E5%88%8A">周刊</a> <a href="http://my.oschina.net/xxiaobian/blog?catalog=547834">乱弹</a></li>
+            		<li><a href="http://www.oschina.net/company">公司开源导航页</a></li><a href="http://www.oschina.net/company">
+					<li class="split"></li>
+                	</a><li class="android_"><a href="http://www.oschina.net/company"></a><a href="http://www.oschina.net/android">Android开发专区</a></li>
+                	<li class="ios_"><a href="http://www.oschina.net/ios/home">iOS开发专区</a></li>
+                	<li class="ios_"><a href="http://www.oschina.net/ios/codingList">iOS代码库</a></li>
+                	<li class="wp7_"><a href="http://www.oschina.net/wp">Windows Phone</a></li>
+					
+				</ul>
+			</li>
+        	        										            <li class="item control_select">
+                <a href="http://city.oschina.net/" id="MyCities" title="城市圈">城市圈</a>
+							</li>
+        	</ul>
+        </div>
+		<div id="OSC_Userbar">
+                		    		当前访客身份：游客 [ <a href="http://www.oschina.net/home/login?goto_page=http%3A%2F%2Fwww.oschina.net%2Ftranslate%2Fdebugging-performance-issues-in-go-programs">登录</a> | <a href="http://www.oschina.net/home/reg">加入开源中国</a> ]
+    				</div>
+		<div class="clear"></div>
+	</div>
+
+</div>
+<div id="OSC_Banner"><div class="wp998"><a href="http://www.oschina.net/" class="Logo" title="OSChina 开源中国">开源中国</a>
+<h1><a href="http://www.oschina.net/translate">技术翻译</a></h1>
+<dl>
+    <dt>已有文章 <em>2222</em> 篇</dt>
+	<dt>
+		当前位置：
+            <a href="http://www.oschina.net/translate/list?type=2">译文列表</a>&nbsp;»&nbsp;<a href="http://www.oschina.net/translate/list/11?type=2">    编程语言技巧</a> , <a href="" class="deliver">投递原文</a>
+    		</dt>	
+</dl>
+<form action="http://www.oschina.net/search" class="search">
+	<input type="hidden" name="scope" value="translate">
+	<input id="channel_q" type="text" name="q" value="" placeholder="在 2222 篇翻译的文章中搜索" class="TXT">
+    <button type="submit" class="BTN">搜 索</button>
+</form>
+<script type="text/javascript">
+    $(document).ready(function(){
+        scrolltotop.offset(100,120);
+        scrolltotop.init();
+        $('.deliver').click(function(){
+            popup("/translate/deliver");
+            return false;
+        });
+    });
+</script>
+<div class="clear"></div></div></div>
+<div id="OSC_Screen">
+	<div id="OSC_Content" class="CenterDiv">
+<style type="text/css">
+.highlight {
+	color: #A00;
+	padding: 0 1px;
+	margin: 0 2px;
+}
+
+.NoData {
+	text-align: center;
+	padding: 20px 0;
+	color: #999;
+}
+
+.error_msg {
+	height: 16px;
+	color: #A00;
+	margin: 10px 0 10px 0;
+	background: url('/img/warning.gif') no-repeat left center;
+	padding-left: 24px;
+}
+
+.error_msg a {
+	padding: 0 5px 0 5px;
+	font-weight: bold;
+}
+
+.ajax_processing {
+	display: none;
+	background: url('/img/loading.gif') no-repeat left center;
+	padding-left: 20px;
+}
+
+label.SELECTED {
+	color: #C00;
+}
+
+input.TEXT,textarea.TEXT,input.SEARCH {
+	border: 1px solid #bbb;
+	font-size: 13px;
+	padding: 3px;
+}
+
+input.BUTTON {
+	height: 25px;
+	line-height: 25px;
+	padding: 0 3px;
+}
+
+.mb10 {
+	margin-bottom: 10px;
+}
+
+a.rndbutton {
+	background: #d1c0a5;
+	color: #fff;
+	text-decoration: none;
+	height: 30px;
+	float: left;
+	margin: 0;
+	border: 0px solid #000;
+	font-weight: bold;
+	font-size: 12pt;
+	cursor: pointer;
+}
+
+a.rndbutton:hover {
+	background-color: #bfaa88;
+}
+
+a.rndbutton span {
+	color: #fff;
+	float: left;
+	margin: 0 0 0 10px;
+	padding: 0 10px 0 0;
+	height: 30px;
+	line-height: 30px;
+}
+
+input.rndbutton {
+	background: #4E867B;
+	color: #fff;
+	border: 0px solid #000;
+	cursor: pointer;
+}
+
+input.rndbutton:hover {
+	background-color: #4F978A;
+}
+
+.SmallPortrait {
+	filter: alpha(opacity = 90); /* IE */
+	-moz-opacity: 0.9; /* Moz + FF */
+	opacity: 0.9;
+	padding: 1px;
+	background: #fff;
+	border: 1px solid #ccc;
+}
+
+a:hover .SmallPortrait {
+	filter: alpha(opacity = 100); /* IE */
+	-moz-opacity: 1.0; /* Moz + FF */
+	opacity: 1.0;
+	border: 1px solid #40AA53;
+}
+
+.TextContent p {
+	margin-bottom: 5pt;
+}
+
+.TextContent h1,.TextContent h2,.TextContent h3 {
+	margin-bottom: 10pt;
+	border-bottom: 1px solid #CCC;
+	padding-bottom: 5px;
+}
+
+.translate {
+	float: left;
+	width: 678px;
+}
+
+.translate_right {
+	float: right;
+	width: 300px;
+	overflow: hidden;
+}
+
+.translate_right .PopularTags {
+	margin: 0 0 10px 0;
+	background: white;
+	border: 1px solid #eee;
+	box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+}
+
+.translate_right .PopularTags p {
+	padding: 10px;
+}
+
+#top_nav {
+	width: 100%;
+	font-size: 14px;
+	line-height: 24px;
+	padding: 2px;
+	border-bottom: 1px solid #40AA53;
+}
+
+#top_nav a {
+	color: #005075;
+	outline: 0;
+	text-decoration: none;
+}
+
+#top_nav .right {
+	float: right;
+	color: #666;
+}
+
+ul.tabnav {
+	text-align: left;
+	margin: 1em 0 0 0;
+	font-weight: bold;
+	font-size: 10pt;
+	border-bottom: medium double #E3E3E3;
+	list-style-type: none;
+	padding: 3px 10px 15px 10px;
+}
+
+ul.tabnav li {
+	display: inline;
+	margin-left: 10px;
+}
+
+ul.tabnav li.current {
+	border-bottom: 1px solid #fff;
+	background-color: #fff;
+}
+
+ul.tabnav li.current a {
+	background-color: #0D5178;
+	color: #FFF;
+	cursor: text;
+}
+
+ul.tabnav li a {
+	padding: 4px 8px 5px 8px;
+	color: #666;
+	margin-right: 0px;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+ul.tabnav a:hover {
+	background: #FFF;
+	text-decoration: none;
+}
+
+.header span {
+	margin-left: 10px;
+	font-size: 9pt;
+	color: #666;
+}
+
+.header a.parent {
+	color: #40AA53;
+}
+
+.header em.child {
+	color: #46B;
+	font-style: normal;
+}
+
+.header .more .active {
+	color: #A00;
+}
+
+.remark {
+	margin-top: 8px;
+	font-size: 9pt;
+	color: #999999;
+}
+
+.sta_btn {
+	border: 1px solid #ccc;
+	padding: 2px 5px;
+	float: right;
+	margin-right: 10px;
+	-webkit-box-shadow: 0 1px 3px rgba(198, 198, 198, 0.5);
+	box-shadow: 0 1px 3px rgba(198, 198, 198, 0.5);
+}
+
+.remark a {
+	text-decoration: none;
+}
+
+.remark em {
+	margin-right: 8px;
+	font-style: normal;
+}
+
+.remark span {
+	margin-left: 8px;
+	margin-right: 8px;
+}
+
+.latest {
+	margin: 10px 10px 0px 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #e3e3e3;
+	_height: 1%;
+}
+
+.latest dt a {
+	font-size: 18px;
+}
+
+.latest .content {
+	font-size: 14px;
+	line-height: 24px;
+	height: auto;
+	overflow: hidden;
+	color: #333;
+}
+
+.recommendList {
+	margin-bottom: 10px;
+}
+
+.recommendList a {
+	text-decoration: none;
+}
+
+.recommendList a:hover {
+	text-decoration: underline;
+}
+
+.recommendList a.pic img {
+	float: right;
+	width: 140px;
+	height: 100px;
+	border: 0;
+	margin: 18px 5px;
+}
+
+.recommendList ul {
+	margin: 8px 0;
+}
+
+.recommendList li {
+	float: left;
+	width: 300px;
+	margin: 0 10px;
+	font-size: 12px;
+	line-height: 30px;
+	color: #3E62A6;
+	overflow: hidden;
+	white-space: nowrap;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+.recommendList li a {
+	font-size: 13px;
+}
+
+.latest span,.recommendList li span {
+	color: #999;
+	font-size: 12px;
+}
+
+.articleList {
+	background: #FFF;
+	padding-bottom: 10px;
+}
+
+.articleList .article {
+	margin: 10px;
+	padding-bottom: 10px;
+	border-bottom: medium double #e3e3e3;
+}
+
+.articleList .article a img {
+	float: right;
+	width: 80px;
+	height: 60px;
+	border: 0;
+	margin: 18px 5px;
+}
+
+.articleList .article dt a {
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.articleList .article dt a:hover {
+	text-decoration: underline;
+}
+
+.articleList .article dt a em {
+	font-style: normal;
+	color: #A00;
+}
+
+.articleList .article .status_0 {
+	padding-left: 20px;
+	height: 20px;
+	line-height: 20px;
+	margin-top: 8px;
+	font-style: normal;
+	color: #F90;
+	background: url(/img/translate.gif) 0 -30px no-repeat;
+}
+
+.articleList .article .status_2 {
+	padding-left: 20px;
+	height: 20px;
+	line-height: 20px;
+	margin-top: 8px;
+	font-style: normal;
+	color: #00BB4B;
+	background: url(/img/translate.gif) 0 0 no-repeat;
+}
+
+.articleList .article .status_0 em,.articleList .article .status_2 em {
+	font-style: normal;
+	color: #888;
+	margin-left: 10px;
+}
+
+.articleList .article .sub_title {
+	font-size: 12px;
+	color: #333;
+	margin-top: 5px;
+}
+
+.articleList .article .content {
+	font-size: 13px;
+	line-height: 24px;
+	height: auto;
+	overflow: hidden;
+	color: #333;
+}
+
+.articleList .pager {
+	margin: 0 10px;
+}
+
+.articleList .TagDetail {
+	margin: 10px 2px;
+	color: #666;
+	border: 2px solid #ccc;
+	padding: 5px;
+	background: #ffd;
+	font-size: 9pt;
+}
+
+.articleList .TagDetail img.project {
+	float: left;
+	width: 48px;
+	height: 48px;
+	margin: 0 20px 10px 0;
+}
+
+#categoryMenu {
+	margin-bottom: 10px;
+	background: white;
+}
+
+#categoryMenu ul {
+	margin: 10px 0;
+}
+
+#categoryMenu li a {
+	display: block;
+	text-decoration: none;
+	height: 36px;
+	line-height: 36px;
+	font-size: 14px;
+	color: #3B3B3B;
+	padding: 0 15px;
+}
+
+#categoryMenu li a:hover {
+	background: #EEE;
+	color: #080;
+}
+
+#categoryMenu li a em {
+	float: right;
+	padding: 0 5px;
+	margin-top: 8px;
+	height: 20px;
+	line-height: 20px;
+	background: #EEE;
+	font-size: 12px;
+	font-style: normal;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+#categoryMenu li a:hover em {
+	background: #00BC00;
+	color: white;
+}
+
+#categoryMenu li.current,#categoryMenu li.current a:hover {
+	background: #3dae4f;
+	background: -moz-linear-gradient(#3dae4f, #0c701c);
+	background: -webkit-linear-gradient(#3dae4f, #0c701c);
+}
+
+#categoryMenu li.current a {
+	color: white;
+}
+
+#categoryMenu li.current a em {
+	color: white;
+	background: none;
+}
+
+.hotList,.TopUsers {
+	margin-bottom: 10px;
+	background: #FFF;
+}
+
+.hotList a {
+	text-decoration: none;
+}
+
+.hotList a:hover {
+	text-decoration: underline;
+}
+
+.hotList ul {
+	margin: 10px 0;
+}
+
+.hotList ul li {
+	height: 24px;
+	width: 278px;
+	padding: 0 10px;
+	overflow: hidden;
+	white-space: nowrap;
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+}
+
+.hotList ul li a {
+	height: 24px;
+	line-height: 24px;
+	font-size: 10pt;
+}
+
+.hotList .dot {
+	height: 10px;
+	width: 10px;
+	font-size: 0;
+	margin-right: 5px;
+	overflow: hidden;
+	zoom: 1;
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+}
+
+.hotList .dot1 {
+	background-color: #f00;
+}
+
+.hotList .dot2 {
+	background-color: #f90;
+}
+
+.hotList .dot3 {
+	background-color: #aed900;
+}
+
+.hotList .dot4 {
+	background-color: #2bd600;
+}
+
+.hotList .dot5 {
+	background-color: #00bb4b;
+}
+
+.hotList .dot6 {
+	background-color: #01bebe;
+}
+
+.hotList .dot7 {
+	background-color: #035bdf;
+}
+
+.hotList .dot8 {
+	background-color: #2200a8;
+}
+
+.hotList .dot9 {
+	background-color: #510066;
+}
+
+.hotList .dot10 {
+	background-color: #3f0030;
+}
+
+.TopUsers ul {
+	padding-left: 12px;
+}
+
+.TopUsers ul li {
+	text-align: center;
+	margin: 0 7px 10px 0;
+	float: left;
+	overflow: hidden;
+	font-size: 7pt;
+}
+
+.TopUsers ul {
+	margin-top: 10px;
+}
+
+.TopUsers ul li a {
+	text-decoration: none;
+}
+
+.TopUsers ul li img {
+	width: 64px;
+	height: 64px;
+	background: #fff;
+}
+
+.TopUsers ul li a:hover img {
+	
+}
+
+a.cmdbutton {
+	background: #5CC26F;
+	color: #fff;
+	text-decoration: none;
+	float: left;
+	margin: 0 10px;
+	border: 0px solid #000;
+	font-size: 16pt;
+	cursor: pointer;
+}
+
+a.cmdbutton:hover {
+	background-position: left -30px;
+}
+
+a.cmdbutton span {
+	color: #fff;
+	float: left;
+	margin: 6px;
+	padding: 0 10px;
+	height: 30px;
+	line-height: 30px;
+}
+
+a.cmdbutton.paying-translation {
+	width: 240px;
+	margin-top: 20px;
+	padding: 6px;
+	text-align: center;
+}
+
+.Article {
+	margin-top: 10px;
+}
+
+.Article .Top {
+	padding: 10px;
+	background: #EDEDED;
+	color: #666;
+}
+
+.Article .Top h1 {
+	padding-bottom: 5px;
+	font-size: 28px;
+	line-height: 36px;
+	font-weight: normal;
+	color: #333;
+}
+
+.Article .Top h1 em.none {
+	font-style: normal;
+	color: #F90;
+}
+
+.Article .Top h1 em.pending {
+	font-style: normal;
+	color: #00BB4B;
+}
+
+.Article .Top h3 {
+	margin: 2px 0;
+	font-size: 18px;
+	color: #393939;
+	font-weight: normal;
+}
+
+.Article .Top h3 a {
+	text-decoration: none;
+}
+
+.Article .Top .Tags a {
+	margin-left: 5px;
+	text-decoration: none;
+}
+
+.Article .Top .Tags a.tag {
+	background: #46A6D2;
+	color: white;
+	padding: 2px 5px;
+}
+
+.Article .Top .Tags a.tag:hover {
+	background-color: #3a7bd2;
+}
+
+.Article .Top .rec_user {
+	height: 22px;
+	line-height: 22px;
+}
+
+.Article .Top .rec_user a {
+	text-decoration: none;
+}
+
+.Article .Top .rec_user .share a {
+	width: 16px;
+	height: 16px;
+	text-decoration: none;
+	display: inline-block;
+	zoom: 1;
+	vertical-align: middle;
+	margin-left: 5px;
+}
+
+.Article .Top .rec_user .share .sina {
+	background: url(/img/sina_weibo.png) no-repeat;
+}
+
+.Article .Top .rec_user .share .tencent {
+	background: url(/img/tencent_weibo.png) no-repeat;
+}
+
+.Article .Top .rec_user .options {
+	float: right;
+}
+
+.Article .Top .Vote {
+	float: right;
+	margin-right: 20px;
+	padding: 5px;
+	background: #005075;
+	color: #FFF;
+	width: 54px;
+	text-align: center;
+	display: block;
+}
+
+.Article .Top .Vote a {
+	font-size: 16pt;
+	color: #FFF;
+	display: block;
+	border-top: 1px solid #073f59;
+	text-decoration: none;
+}
+
+.Article .Top .Vote a:hover {
+	color: #ff0;
+}
+
+.Article .Top .Vote em {
+	font-size: 12pt;
+	font-style: normal;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #04608a;
+	display: block;
+}
+
+.Article .toolbar {
+	overflow: hidden;
+	padding: 5px 0 5px 5px;
+	color: #6A6A6A;
+	border-left: 1px solid #EDEDED;
+	border-right: 1px solid #EDEDED;
+}
+
+.Article .toolbar a {
+	text-decoration: none;
+}
+
+.Article .toolbar .label {
+	float: left;
+	width: 100px;
+}
+
+.Article .toolbar em {
+	color: #A3A3A3;
+	font-style: normal;
+	font-size: 12px;
+}
+
+.Article .toolbar a.t_user {
+	
+}
+
+.Article .toolbar .options {
+	float: right;
+	width: 260px;
+	text-align: right;
+	padding-right: 5px;
+}
+
+.Article .toolbar .options a.selected {
+	color: #b90000;
+	font-weight: bold;
+}
+
+.Article .toolbar .contributers {
+	width: 610px;
+	float: left;
+}
+
+.Article .Tags {
+	line-height: 22px;
+}
+
+.Article .copyright {
+	background: #efe;
+	text-align: left;
+	margin: 20px 10px;
+	padding: 3px 0 3px 10px;
+	color: #333;
+	font-size: 10pt;
+	line-height: 22px;
+	border-left: 10px solid #CFC;
+}
+
+.Article .Body {
+	border: 1px solid #EDEDED;
+}
+
+.Article .Body .paragraph_eng {
+	background: #FFF;
+	padding: 10px 0;
+	border: 1px solid #F9F9F9;
+}
+
+.Article .Body .paragraph_eng .TextContent {
+	width: 750px;
+	padding: 0 10px;
+	font-size: 10pt;
+	line-height: 180%;
+	overflow: hidden;
+}
+
+.Article .Body .paragraph_eng .TextContent span {
+	margin: 0 2px;
+}
+
+.Article .Body .paragraph_eng .translaters {
+	width: 210px;
+	padding: 0 6px;
+}
+
+.Article .Body .translate_chs {
+	padding: 0;
+	border: 3px solid #F9F9F9;
+}
+
+.Article .Body .translate_chs .bdt10 {
+	border-top: medium double #E3E3E3;
+}
+
+.Article .Body .bd10 {
+	border: 1px solid #A00;
+}
+
+.Article .Body .paragraph_chs {
+	background: #FFF;
+	padding: 10px 0;
+}
+
+.Article .Body .paragraph_chs .TextContent {
+	width: 750px;
+	font-size: 10.5pt;
+	padding: 0 10px;
+	overflow: hidden;
+}
+
+.Article .Body .paragraph_chs .translater {
+	width: 210px;
+	padding: 0 6px;
+}
+
+.translaters h3 {
+	color: #686868;
+	font-size: 14px;
+	font-weight: normal;
+	margin: 2px 0;
+}
+
+.translaters ul {
+	margin: 10px 0;
+}
+
+.translaters ul li {
+	text-align: center;
+	margin: 0 3px 5px 0px;
+	width: 45px;
+	height: 48px;
+	float: left;
+	overflow: hidden;
+	font-size: 7pt;
+}
+
+.translaters ul li a {
+	text-decoration: none;
+}
+
+.translaters ul li img {
+	width: 24px;
+	height: 24px;
+	border: 1px solid #ddd;
+	padding: 2px;
+	background: #fff;
+}
+
+.translaters ul li a:hover img {
+	border: 1px solid #40AA53;
+}
+
+a.TBUTTON {
+	text-decoration: none;
+	background: #4E867B;
+	border: none;
+	color: #FFF;
+	font-size: 18px;
+	padding: 4px 14px;
+	margin-right: 3px;
+}
+
+a.TBUTTON:hover {
+	background: #4f978a;
+}
+
+input.TBUTTON {
+	background: #4E867B;
+	border: none;
+	color: #FFF;
+	font-size: 18px;
+	padding: 4px 14px;
+	margin-right: 3px;
+	cursor: pointer;
+}
+
+input.TBUTTON:hover {
+	background: #4f978a;
+}
+
+.translater a {
+	text-decoration: none;
+}
+
+.translater a img {
+	float: left;
+	width: 46px;
+	height: 46px;
+	border: 1px solid #ddd;
+	padding: 2px;
+	margin-top: 5px;
+	background: #fff;
+}
+
+.translater .info {
+	float: left;
+	margin: 0 10px;
+	width: 126px;
+	height: 45px;
+}
+
+.translater .info h6 {
+	font-weight: normal;
+	font-size: 10pt;
+	color: #444;
+}
+
+.translater .info p {
+	color: #666;
+	margin: 5px 0;
+}
+
+.translater .info p em {
+	color: #A00;
+	margin: 0 2px;
+}
+
+.translater .vote {
+	height: 30px;
+	line-height: 30px;
+	margin-top: 20px;
+	color: #666;
+}
+
+.translater a.showOthers {
+	padding-left: 20px;
+	background: url(/img/translate.gif) 0 -218px no-repeat;
+	font-size: 10pt;
+	height: 30px;
+	line-height: 30px;
+}
+
+.translater a.closeOthers {
+	background: url(/img/translate.gif) 0 -250px no-repeat;
+}
+
+.EditTop {
+	width: 99%;
+	text-align: left;
+	margin: 0 auto;
+}
+
+.Edit .Top {
+	margin-top: 10px;
+	padding: 10px;
+	background: #EDEDED;
+	color: #666;
+}
+
+.Edit .Top h1 {
+	font-size: 20px;
+	line-height: 26px;
+	font-weight: normal;
+	color: #333;
+}
+
+.Edit .Top h3 {
+	margin: 2px 0;
+	font-size: 14px;
+	color: #393939;
+	font-weight: normal;
+}
+
+.Edit .Top h3 a {
+	text-decoration: none;
+}
+
+.Edit .Body {
+	margin-top: 10px;
+	padding: 10px;
+	background: #EDEDED;
+}
+
+.Edit .Body .p_content {
+	float: left;
+	width: 49%;
+	height: 650px;
+}
+
+.Edit .Body .p_content .title {
+	height: 28px;
+	line-height: 28px;
+	font-size: 12pt;
+	text-align: center;
+}
+
+.Edit .Body .p_content .title h3 {
+	color: #666;
+	font-weight: normal;
+}
+
+.Edit .Body .p_content .title a {
+	text-decoration: underline;
+}
+
+.Edit .Body .p_content .title .prev {
+	float: left;
+}
+
+.Edit .Body .p_content .title .next {
+	float: right;
+}
+
+.Edit .Body .p_content .TextContent {
+	height: 572px;
+	padding: 5px;
+	border: 1px solid #CCC;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background: #F6F6F6;
+	font-size: 10pt;
+}
+
+.Edit .Body .p_editor {
+	float: right;
+	width: 49.5%;
+	height: 650px;
+}
+
+.Edit .Body .p_toolbar {
+	float: left;
+	height: 650px;
+	line-height: 650px;
+	text-align: center;
+	width: 1.3%;
+}
+
+.Edit .Body .p_toolbar a {
+	text-decoration: none;
+	width: 100%;
+	background: #4E867B;
+	color: white;
+	font-size: 8pt;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-border-radius: 2px;
+}
+
+.Edit .action {
+	margin-top: 20px;
+	float: right;
+}
+
+.Bottom {
+	margin: 20px 0;
+}
+
+.Bottom .comments {
+	float: left;
+	width: 680px;
+}
+
+.comments h2 {
+	font-size: 12pt;
+	border-bottom: medium double #E3E3E3;
+	margin: 5px;
+	padding: 0 0 3px 5px;
+}
+
+.comments h2 span {
+	margin-left: 10px;
+	color: #444;
+	font-size: 10pt;
+	font-weight: normal;
+}
+
+.comments h2 em.reply_count {
+	font-style: normal;
+	color: #A00;
+}
+
+.comments h2 .more {
+	float: right;
+	font-weight: normal;
+	font-size: 10pt;
+	color: #666;
+}
+
+.comments .comment {
+	margin: 5px 0 15px 0;
+	padding: 5px 0 5px 5px;
+	border-bottom: 1px dashed #ddd;
+}
+
+.comments .comment .user {
+	float: left;
+	width: 40px;
+	margin: 0 12px 0 0;
+	font-size: 9pt;
+	color: #666;
+}
+
+.comments .comment .user img {
+	width: 32px;
+	height: 32px;
+	margin: 3px 0 0 0;
+}
+
+.comments .comment .body {
+	float: left;
+	width: 620px;
+}
+
+.comments .comment .body .time {
+	float: left;
+	width: 380px;
+	font-size: 9pt;
+	color: #666;
+}
+
+.comments .comment .body .time a {
+	color: #999;
+}
+
+.comments .comment .body .time a:hover {
+	background: #666;
+	color: #fff;
+}
+
+.comments .comment .body .opts {
+	float: right;
+	width: 190px;
+	font-size: 9pt;
+	text-align: right;
+}
+
+.comments .comment .body .opts a {
+	color: #999;
+	padding: 0 2px;
+}
+
+.comments .comment .body .opts a:hover {
+	background: #666;
+	color: #fff;
+}
+
+.comments .comment .body .detail {
+	margin: 10px 0;
+	font-size: 10.5pt;
+}
+
+.comments .comment .body .detail div.ref {
+	border: 1px solid #999;
+	margin: 0 0 10px 0;
+	padding: 3px;
+	font-size: 9pt;
+	color: #333;
+	background: #ffe;
+}
+
+.comments .comment .body .detail div.ref h4 {
+	margin: 0;
+	padding: 2px 0px 3px 0px;
+	color: #1E50A2;
+	font-size: 9pt;
+	font-weight: normal;
+}
+
+.comments .comment .body .detail div.ref .ref_body {
+	margin: 0;
+	padding: 2px;
+	line-height: 20px;
+	color: #666;
+	font-size: 9pt;
+	color: #333;
+}
+
+.comments .comment .body .detail div.ref .ref_body img {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+.comments .pager {
+	margin-left: 60px;
+}
+
+.commentForm {
+	margin: 20px 0;
+}
+
+.commentForm .user {
+	float: left;
+	width: 60px;
+}
+
+.commentForm .user img {
+	width: 32px;
+	height: 32px;
+	margin: 0 0 0 5px;
+}
+
+.commentForm form {
+	float: left;
+}
+
+.commentForm form textarea {
+	border: 1px solid #999;
+}
+
+.commentForm form input.SUBMIT {
+	font-size: 18px;
+	padding: 4px 10px;
+	margin: 10px 0;
+	float: right;
+}
+
+.myList table {
+	margin: 10px;
+	font-size: 10pt;
+	table-layout: fixed;
+}
+
+.myList table td {
+	vertical-align: top;
+	overflow: hidden;
+}
+
+.myList a {
+	text-decoration: none;
+}
+
+.myList .title {
+	
+}
+
+.myList .title a {
+	text-decoration: none;
+	color: #46B;
+}
+
+.myList .title span {
+	font-size: 9pt;
+	color: #999;
+}
+
+.myList .vote {
+	width: 50px;
+	font-size: 9pt;
+	color: #999;
+}
+
+.myList .date {
+	width: 70px;
+	font-size: 9pt;
+	color: #999;
+}
+
+.myList .opts {
+	width: 100px;
+	text-align: right;
+	color: #999;
+}
+
+.myList .pager {
+	margin: 0 10px 10px 10px;
+}
+
+.cmptable {
+	table-layout: fixed;
+	background: #EDEDED;
+}
+
+.cmptable td.eng {
+	background-color: #FFFFFF;
+	padding: 5px;
+	overflow: hidden;
+	font-size: 10pt;
+	line-height: 1.5;
+}
+
+.cmptable td.chs {
+	background-color: #FFFFFF;
+	padding: 5px;
+	overflow: hidden;
+	font-size: 10.5pt;
+	line-height: 1.5;
+}
+
+.cmptable td p {
+	margin: 10px 0;
+}
+
+.cmptable td .infoicon {
+	float: right;
+	background: #EBEBEB;
+	height: 20px;
+	padding: 0 6px;
+	line-height: 20px;
+	z-index: 999;
+	text-align: center;
+	font-size: 11px;
+	color: #060;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.cmptable td .infoicon img {
+	margin-left: 5px;
+	vertical-align: middle;
+	padding-top: 2px;
+}
+
+.cmptable td .infocard {
+	position: absolute;
+	top: 30px;
+	right: 0px;
+	padding: 5px 10px;
+	font-size: 10pt;
+	border-radius: 8px;
+	z-index: 100;
+	background: #EDEDED;
+	display: none;
+}
+
+.cmptable td .infocard h1 {
+	height: 20px;
+	line-height: 20px;
+	font-size: 15px;
+	color: #666;
+	margin-bottom: 5px;
+	border-bottom: 1px dotted #CCC;
+}
+
+.cmptable td .infocard h1 a.close {
+	float: right;
+	font-size: 6pt;
+}
+
+.cmptable td .infocard h1 a.close img {
+	width: 15px;
+	height: 15px;
+}
+
+.cmptable td .infocard a {
+	text-decoration: none;
+}
+
+.cmptable td .infocard a img {
+	float: left;
+	width: 50px;
+	height: 50px;
+}
+
+.cmptable td .infocard .text {
+	float: left;
+	margin-left: 10px;
+}
+
+.cmptable td .infocard h6 {
+	font-weight: normal;
+	font-size: 10pt;
+	color: #444;
+}
+
+.cmptable td .infocard p {
+	color: #666;
+	margin: 0;
+	padding: 0;
+}
+
+.cmptable td .infocard p em {
+	color: #A00;
+	margin: 0 2px;
+}
+
+.cmptable td  ol {
+	list-style-type: decimal;
+	margin: 0.5em 0 0.5em 1.5em;
+	line-height: 1.5em;
+}
+
+.cmptable td  ul {
+	list-style-type: disc;
+	margin: 0.5em 0 0.5em 1.5em;
+	line-height: 1.5em;
+}
+
+.QuestionHeader {
+	height: 34px;
+	border-bottom: 1px solid #40AA53;
+	margin: 0 0 15px 0;
+}
+
+.QuestionHeader #portrait {
+	float: left;
+	width: 35px;
+}
+
+.QuestionHeader #portrait img {
+	width: 24px;
+	height: 24px;
+}
+
+.QuestionHeader #switcher {
+	float: left;
+	margin: 5px 0 0 2px;
+}
+
+.QuestionHeader #switcher h1 {
+	font-size: 12pt;
+	float: left;
+	color: #666;
+}
+
+.QuestionHeader #switcher h1 a {
+	text-decoration: none;
+}
+
+.QuestionHeader #switcher h1 em {
+	font-style: normal;
+	color: #40AA53;
+}
+
+.QATip {
+	margin: 40px 0 50px 100px;
+}
+
+.QATip h1 {
+	font-size: 13.5pt;
+}
+
+.QATip h1 em {
+	color: #A00;
+	font-style: normal;
+}
+
+.QATip .text {
+	margin: 20px 0 20px 20px;
+	font-size: 11pt;
+}
+
+.QATip .text p.hint {
+	color: #A00;
+	font-size: 10pt;
+	margin-top: 10px;
+}
+
+.QATip .text ul {
+	margin: 10px 0 0 0;
+	list-style-type: disc;
+	list-style-position: inside;
+	line-height: 24px;
+}
+
+.QATip .btn_view {
+	margin-left: 20px;
+}
+
+.AllTags {
+	padding-bottom: 10px;
+}
+
+.AllTags ul.tagList {
+	margin: 10px;
+}
+
+.AllTags ul.tagList li {
+	float: left;
+	width: 24%;
+}
+
+.AllTags ul.tagList li .stat {
+	color: #666;
+	font-size: 8pt;
+	-webkit-text-size-adjust: none;
+}
+
+.AllTags a.tag,.PopularTags a.tag {
+	background-color: #E0EAF1;
+	border-bottom: 1px solid #3E6D8E;
+	border-right: 1px solid #7F9FB6;
+	color: #3E6D8E;
+	font-size: 8pt;
+	-webkit-text-size-adjust: none;
+	line-height: 2.4;
+	margin: 2px 2px 2px 0;
+	padding: 2px 4px;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.AllTags a.tag em,.PopularTags a.tag em {
+	font-style: normal;
+	color: #666;
+	font-size: 7pt;
+	margin-left: 2px;
+}
+
+.AllTags a.tag:hover,.PopularTags a.tag:hover {
+	background-color: #3E6D8E;
+	color: #fff;
+}
+
+.AllTags a.tag:hover em,.PopularTags a.tag:hover em {
+	color: #fff;
+}
+
+.AllTags .pager {
+	margin: 0 10px;
+}</style>
+<div class="Article">
+	<div class="Top">
+		<div class="Vote"><em id="vote_count">14</em><a href="javascript:vote_article(2725);">顶</a></div>
+		<h1>
+            Go 程序的性能调试问题
+                    </h1>
+		<h3>英文原文：<a href="https://software.intel.com/en-us/blogs/2014/05/10/debugging-performance-issues-in-go-programs" target="_blank">Debugging performance issues in Go programs</a></h3>
+        <div class="Tags">
+		<strong>标签：</strong>
+						<a href="http://www.oschina.net/translate/tag/go" class="tag project image" data-id="11641" title="Google的编程语言 Go">Go</a> 		        		</div>
+		<div class="rec_user">
+            <span class="options">
+                                <style>
+#TagsSwitcher{color:#A00;}
+#RecTags,#MyTags{margin:5px 0;}
+#RecTags a.tag{line-height:24px;}
+#favor_form p:first-child{margin:5px 0;}
+#favor_form{width:200px;}
+#favor_form p {color:#666;}
+#favor_form form{min-height: 85px;width:200px;}
+#favor_form form ._favor_input{display:block;margin:2px 0;width:199px;}
+#favor_form form ._favor_button{float:left;padding:2px 5px;}
+.favor_ok {text-align:center;font-size:10.5pt;width:199px;height:60px;margin-top:10px;}
+#TagsSwitcher{cursor:pointer;float:right;margin-top:10px;}
+#MyTags{display:none;width:199px;}
+#MyTags a.tag {float:left; background-color: #E0EAF1;border-bottom: 1px solid #3E6D8E;border-right: 1px solid #7F9FB6;color: #3E6D8E;font-size: 8pt;line-height: 16px;margin: 2px 2px 2px 0;padding: 2px 4px;text-decoration: none;white-space: nowrap;}
+#MyTags a.tag:hover{background-color: #3E6D8E;color: #FFF;}
+</style>
+<script type="text/javascript">
+var favor_add = "<a href='javascript:add_to_favor(2725,7)' id='favor_trigger' title='添加到收藏夹'>我要收藏</a>";
+var favor_del = "<a href='javascript:delete_favor(2725,7)' id='favor_trigger' style='color:#a00;'>取消收藏</a>";
+var favor_ok = "<p class='favor_ok'>已成功添加到收藏夹<br/><br/> <a href='null/favorites?type=7'>我的收藏夹</a> | <a href='javascript:close_favor()'>关闭</a></p>";
+function delete_favor(obi_id, obj_type){
+	$('#attention_it').html(favor_add);
+	$("#p_attention_count").load("/action/favorite/cancel?type="+obj_type+"&id="+obi_id, {user: ''});
+}
+function add_to_favor(obj_id, obj_type){
+	if(confirm('必须登录后才能收藏，是否现在登录？')){
+		location.href="http://www.oschina.net/home/login?goto_page="+encodeURIComponent(location.href);
+	}
+}
+function close_favor(elem_id){
+    $('#favor_trigger').poshytip('destroy');
+}
+function setTag(tv){
+	var t = $("._favor_input");
+	var value = t.val();
+	var tags = value.replace(/，/ig,',').split(',');
+	var exist = false;
+	value = $.map(tags,function(v,i){
+		if($.trim(tv) == $.trim(v)){
+			exist = true;
+			return undefined;
+		}
+		return v;
+	}).join(',');
+	if(exist){
+		t.val(value);
+		return;
+	}
+	if(value!="")
+		t.val(value+","+tv);
+	else
+		t.val(tv)
+}
+function ltrim(str){
+    var whitespace = new String(" \t\n\r");
+    var s = new String(str);
+    if (whitespace.indexOf(s.charAt(0)) != -1){
+        var j=0, i = s.length;
+        while (j < i && whitespace.indexOf(s.charAt(j)) != -1){
+            j++;
+        }
+        s = s.substring(j, i);
+    }
+    return s;
+}
+
+function rtrim(str){
+    var whitespace = new String(" \t\n\r");
+    var s = new String(str);
+    if (whitespace.indexOf(s.charAt(s.length-1)) != -1){
+        var i = s.length - 1;
+        while (i >= 0 && whitespace.indexOf(s.charAt(i)) != -1){
+            i--;
+        }
+        s = s.substring(0, i+1);
+    }
+    return s;
+}
+ 
+function trim(str){
+    return rtrim(ltrim(str));
+}
+</script>
+<em id="p_attention_count">160</em>人收藏此文章,
+<span id="attention_it">
+	<script type="text/javascript">document.write(favor_add);</script><a href="javascript:add_to_favor(2725,7)" id="favor_trigger" title="添加到收藏夹">我要收藏</a>
+</span>
+<script type="text/javascript">
+	$(document).ready(function(){
+    	$.ajax({
+    		url:"/action/favorite/attentionUsersCount",
+    		type:"get",
+    		data:"id="+2725+"&type="+7,
+    		success:function(msg){
+				$("#p_attention_count").html(msg);
+    		}
+    	});
+	});
+</script>            </span>
+			<a href="http://my.oschina.net/seago123" target="_blank">大蓝妹</a> 推荐于 11个月前 (共 25 段, 翻译完成于 03-26) (<a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#comments">15评</a>)
+            <span class="share">
+                                <a class="sina" title="分享到新浪微博" href="javascript:void((function(s,d,e,r,l,p,t,z,c){var%20f='http://v.t.sina.com.cn/share/share.php?appkey=858381728',u=z||d.location,p=['&url=',e(u),'&title=',e(t||d.title),'&source=',e(r),'&sourceUrl=',e(l),'&content=',c||'gb2312','&pic=',e(p||'')].join('');function%20a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=440,height=430,left=',(s.width-440)/2,',top=',(s.height-430)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent))setTimeout(a,0);else%20a();})(screen,document,encodeURIComponent,'','','','Go 程序的性能调试问题 - 技术翻译: 假设你手上有个Go语言编写的程序，你打算提升它的性能。目前有一些工具可以为此提供帮助。这些工具能帮你发现包括CPU、IO和内存在内多种类型的热点。所谓热点，是指那些...','','utf-8'));"></a><a class="tencent" title="分享到腾讯微博" href="javascript:(function(){window.open('http://v.t.qq.com/share/share.php?url='+encodeURIComponent(document.location)+'&appkey=96f54f97c4de46e393c4835a266207f4&site=&title='+encodeURIComponent(document.title)+encodeURIComponent(': 假设你手上有个Go语言编写的程序，你打算提升它的性能。目前有一些工具可以为此提供帮助。这些工具能帮你发现包括CPU、IO和内存在内多种类型的热点。所谓热点，是指那些...'),'', 'width=450, height=400, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, location=yes, resizable=no, status=no');}())"></a>
+            </span>
+		</div>
+		<div class="clear"></div>
+	</div>
+		<div class="toolbar">
+				<span class="label">参与翻译<em>(5人)</em>：</span>
+        <div class="contributers"><a href="http://my.oschina.net/u/2265702" target="_blank" class="t_user">社会主义好</a>, <a href="http://my.oschina.net/ybusad" target="_blank" class="t_user">Micooz</a>, <a href="http://my.oschina.net/dogstar" target="_blank" class="t_user">暗夜在火星</a>, <a href="http://my.oschina.net/u/2000608" target="_blank" class="t_user">ScriptKid</a>, <a href="http://my.oschina.net/u/2322725" target="_blank" class="t_user">霍啸林</a></div>		
+				<div class="options">
+                    <a href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/Go 程序的性能调试问题 - 技术翻译 - 开源中国社区.html" class="selected">仅中文</a> | <a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs?cmp" target="_blank">中英文对照</a> | <a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs?lang=eng">仅英文</a> | <a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs?print" target="_blank">打印此文章</a>
+                </div>
+	</div>
+			<div class="Body" style="position:relative;">
+								                    <div id="translate_42046" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p>假设你手上有个Go语言编写的程序，你打算提升它的性能。目前有一些工具可以为此提供帮助。这些工具能帮你发现包括CPU、IO和内存在内多种类型的热点。所谓热点，是指那些为了能显著提升性能而值得你去关注的地方。有时候这些工具还能帮助你发现程序中主要的性能瑕疵。举个例子，你没必要每次执行SQL查询前都对SQL语句进行参数化解析，你可以将这个准备过程在程序启动时一次完成。再举个例子，当前某个算法的复杂度是O(N²)，但其实存在一个复杂度是O(N)的解决方案。为了能发现这些问题，需要理智地检查你在优化分析器中获取到的信息。比如上面提到的第一个问题，你会注意到相当长的时间被花费在了对SQL语句的准备上。</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2322725" title="霍啸林" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2322725_50.png" align="absmiddle" alt="霍啸林" title="霍啸林" class="SmallPortrait" user="2322725"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2322725" target="_blank">霍啸林</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42079">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42079);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42047" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 了解针对性能的不同边界因素也是比较重要的。比方说，如果一个程序使用100 Mbps带宽的网络进行通信，而目前已经占用了超过90 Mbps的带宽，为了提升它的性能，你拿这样的程序也没啥办法了。在磁盘IO、内存消耗和计算密集型任务方面，也有类似的边界因素。 </p> 
+<p> 将这点牢记在心，让我们看看有哪些工具可以用。 </p> 
+<p> 注意：这些工具会彼此互相影响。例如，对内存使用优化分析器会导致针对CPU的优化分析器产生误差，对goroutine阻塞使用优化分析器会影响调度器跟踪等等。为了获得更加精确的信息，请在隔离的环境中使用这些工具。 </p> 
+<p> 注意：本文描述的用法基于Go语言发布的1.3版。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2322725" title="霍啸林" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2322725_50.png" align="absmiddle" alt="霍啸林" title="霍啸林" class="SmallPortrait" user="2322725"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2322725" target="_blank">霍啸林</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42080">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42080);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42048" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_3_5"> CPU 分析器 </h2> 
+<p> Go 运行时包含了内建的CPU分析器，它用来展示某个函数耗费了多少CPU百分时间。这里有三种方式来使用它： </p> 
+<p> 1. 最简单的是用"go test"的<a href="http://golang.org/cmd/go/#hdr-Description_of_testing_flags" rel="nofollow">-cpuprofile</a>选项。例如下面的命令： </p> 
+<p> $ go test -run=none -bench=ClientServerParallel4 -cpuprofile=cprof net/http </p> 
+<p> 将会分析所给的基准并将结果写入"cprof"文件中。 </p> 
+<p> 然后: </p> 
+<p> $ go tool pprof --text http.test cprof </p> 
+<p> 将会打印耗费最多CPU时间的函数列表。 </p> 
+<p> 这里有几种可用的输出形式，最实用的有 --text, --web 和 --list。运行 "go tool pprof" 来得到完整的列表。 </p> 
+<p> 这个选项最明显的缺点是它只能用来做测试。 </p> 
+<p> 2. <a href="http://golang.org/pkg/net/http/pprof" rel="nofollow">net/http/pprof</a>&nbsp;包。这是网络服务器的理想解决方案。你可能仅仅需要导入net/http/pprof，然后使用下面的方法收集分析结果： </p> 
+<p> $ go tool pprof --text mybin http://myserver:6060:/debug/pprof/profile </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/ybusad" title="Micooz" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/580940_50.jpg" align="absmiddle" alt="Micooz" title="Micooz" class="SmallPortrait" user="580940"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/ybusad" target="_blank">Micooz</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42082">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42082);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42049" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 3. 手动收集. 你需要导入&nbsp;<a href="http://golang.org/pkg/runtime/pprof/" rel="nofollow">runtime/pprof</a> 然后再main函数中添加下面的代码：</p>
+<div><div id="highlighter_574634" class="syntaxhighlighter  cpp"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;</code><code class="cpp keyword bold">if</code>&nbsp;<code class="cpp plain">*flagCpuprofile&nbsp;!=&nbsp;</code><code class="cpp string">""</code>&nbsp;<code class="cpp plain">{</code></div><div class="line number2 index1 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">f,&nbsp;err&nbsp;:=&nbsp;os.Create(*flagCpuprofile)</code></div><div class="line number3 index2 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp keyword bold">if</code>&nbsp;<code class="cpp plain">err&nbsp;!=&nbsp;nil&nbsp;{</code></div><div class="line number4 index3 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp functions bold">log</code><code class="cpp plain">.Fatal(err)</code></div><div class="line number5 index4 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">}</code></div><div class="line number6 index5 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">pprof.StartCPUProfile(f)</code></div><div class="line number7 index6 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">defer&nbsp;pprof.StopCPUProfile()</code></div><div class="line number8 index7 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">}</code></div></div></td></tr></tbody></table></div></div>
+<p> 分析结果会被写入指定的文件中，像第一种方式一样使之可视化。</p>
+<p> 这里有一个使用 --web 选项来实现可视化的例子：</p>
+<p><a href="https://software.intel.com/sites/default/files/managed/d1/c3/cpu_profile.png" rel="nofollow"><img alt="cpu profile" title="cpu profile" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/06224355_aTWS.png"></a></p>
+<p> 你可以使用--list=funcname来审查单一函数。例如，下面的结果显示了附加函数中的时间流逝：</p>
+<div><div id="highlighter_691231" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;93:&nbsp;func&nbsp;(bp&nbsp;*buffer)&nbsp;WriteRune(r&nbsp;rune)&nbsp;error&nbsp;{</code></div><div class="line number2 index1 alt1"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;94:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;r&nbsp;&lt;&nbsp;utf8.RuneSelf&nbsp;{</code></div><div class="line number3 index2 alt2"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5&nbsp;&nbsp;&nbsp;95:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*bp&nbsp;=&nbsp;append(*bp,&nbsp;byte(r))</code></div><div class="line number4 index3 alt1"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;96:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;nil</code></div><div class="line number5 index4 alt2"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;97:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></div><div class="line number6 index5 alt1"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;98:&nbsp;</code></div><div class="line number7 index6 alt2"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;&nbsp;99:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;:=&nbsp;*bp</code></div><div class="line number8 index7 alt1"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;100:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n&nbsp;:=&nbsp;len(b)</code></div><div class="line number9 index8 alt2"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;101:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;n+utf8.UTFMax&nbsp;&gt;&nbsp;cap(b)&nbsp;{</code></div><div class="line number10 index9 alt1"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;102:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;=&nbsp;append(b,&nbsp;0)</code></div><div class="line number11 index10 alt2"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;103:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></div><div class="line number12 index11 alt1"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;104:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;w&nbsp;:=&nbsp;utf8.EncodeRune(b[n:n+utf8.UTFMax],&nbsp;r)</code></div><div class="line number13 index12 alt2"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;105:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*bp&nbsp;=&nbsp;b[:n+w]</code></div><div class="line number14 index13 alt1"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;106:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;nil</code></div><div class="line number15 index14 alt2"><code class="plain spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="plain plain">.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.&nbsp;&nbsp;107:&nbsp;}</code></div></div></td></tr></tbody></table></div></div>
+<p> 你可以在<a href="http://google-perftools.googlecode.com/svn/trunk/doc/cpuprofile.html" rel="nofollow">这里</a>找到pprof工具的详细信息以及上图中数字的描述。</p>
+<p> 在3种特殊的情形下<span style="font-size:13.3333330154419px;">分析器不能解开堆栈：GC，System和ExternalCode。GC 表示垃圾回收期间的用时，查看下面的内存分析器和垃圾回收跟踪器以得到优化建议。</span>System 表示goroutine调度程序，栈管理代码和其他辅助运行时代码的用时。E<span style="line-height:1.5;font-size:10pt;">xternalCode 表示本地动态库耗时。</span></p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/ybusad" title="Micooz" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/580940_50.jpg" align="absmiddle" alt="Micooz" title="Micooz" class="SmallPortrait" user="580940"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/ybusad" target="_blank">Micooz</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42086">1</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42086);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42050" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 对于你在简介中看到的东西的解释，这里有一些提示和技巧。</p>
+<p> 如果你看到大量的时间消耗在运行时间，内存分配的函数，那么暗示程序产生了大量过度的小内存分配工作。此描述将会告诉你这些分配来自哪里。查看内存分析器部分可以获得如何优化这种情况的建议。可考虑对程序进行重新调整以消除频繁对共享资源的获取和接入。对此，一般的解决技术方案包括有分片/分区，本地缓存/计量和写时拷贝。</p>
+<p> 如果大量的时间消耗在频道操作，同步。互斥代码和其他同步原语或者系统容器，那么程序很可能正在饱受资源争夺的痛苦。</p>
+<p> 如果大量的时间消耗在系统调用的读/写，那么暗示程序产生了大量过度的小块读写。对这种情况，围绕系统文件或者网络连接而包装的Bufio会很有帮助。</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/dogstar" title="暗夜在火星" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/256338_50.jpg" align="absmiddle" alt="暗夜在火星" title="暗夜在火星" class="SmallPortrait" user="256338"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/dogstar" target="_blank">暗夜在火星</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42105">1</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42105);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42051" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 如果大量的时间消耗在GC容器，那么程序要么分配了大量的短暂临时的对象，要么堆栈的空间非常小以致垃圾回收收集变得非常频繁。通过查看垃圾收集追踪器和内存分析器这两部分可以得到一些优化的建议。</p>
+<p> 温馨提示：<a target="_blank" href="https://code.google.com/p/go/issues/detail?id=6047" rel="nofollow">当前CPU分析器不能工作于darwin</a>。</p>
+<p> 温馨提示：在windows系统上你需要安装Cygwin, Perl和Graphviz才能生成svg/web简介。</p>
+<p> 温馨提示：在linux系统上你也可以尝试<a target="_blank" href="https://perf.wiki.kernel.org/index.php/Tutorial" rel="nofollow">PERF系统分析器</a>。它不能解开Go的栈，但它可以获得cgo或者SWIG的代码和kernel内核的快照并解开。所以它对于洞悉本地/kernel内核的性能瓶颈非常有帮助。</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/dogstar" title="暗夜在火星" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/256338_50.jpg" align="absmiddle" alt="暗夜在火星" title="暗夜在火星" class="SmallPortrait" user="256338"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/dogstar" target="_blank">暗夜在火星</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42104">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42104);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42052" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_7_5"> 内存分析器 </h2> 
+<p> 内存分析器展示了哪些函数申请了堆内存。你可以通过熟悉的途径来收集这些信息，一如使用CPU分析器：和 <a href="http://golang.org/cmd/go/#hdr-Description_of_testing_flags" rel="nofollow">'go test --memprofile'</a>, 以及通过 http://myserver:6060:/debug/pprof/heap的<a href="http://golang.org/pkg/net/http/pprof" rel="nofollow">net/http/pprof</a> 或者通过调用<a href="http://golang.org/pkg/runtime/pprof/#WriteHeapProfile" rel="nofollow">runtime/pprof.WriteHeapProfile</a>。 </p> 
+<p> 你仅仅可以可视化描述收集器当前时间内的申请（默认下--inuse_space标识指向pprof），或者自程序启动以来全部的申请（--alloc_space标识指向pprof）。前者对于在当前活动的程序通过net/http/pprof收集描述很有帮助，而后者则对在程序后端（否则你将会看到的几乎都是空的描述）收集描述有帮助。 </p> 
+<p> 温馨提示：内存分析器采取抽样的方式，也就是说，它仅仅从一些内存分配的子集中收集信息。有可能对一个对象的采样与被采样对象的大小成比例。你可以通过使用go test --memprofilerate标识，或者通过程序启动时 的运行配置中的MemProfileRate变量来改变调整这个采样的比例。如果比例为1，则会导致全部申请的信息都会被收集，但是这样的话将会使得执行变慢。默认的采样比例是每512KB的内存申请就采样一次。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/dogstar" title="暗夜在火星" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/256338_50.jpg" align="absmiddle" alt="暗夜在火星" title="暗夜在火星" class="SmallPortrait" user="256338"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/dogstar" target="_blank">暗夜在火星</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42106">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42106);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42053" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 你同样可以将分配的字节数或者分配的对象数形象化（分别是以--inuse/alloc_space和--inuse/alloc_objects为标志）。分析器倾向于在性能分析中对较大的对象采样。但是需要注意的是大的对象会影响内存消耗和垃圾回收时间，大量的小的内存分配会影响运行速度（某种程度上也会影响垃圾回收时间）。所以最好同时考虑它们。 </p> 
+<p> 对象可以是持续的也可以是瞬时的。如果你在程序开始的时候需要分配几个大的持续对象，它们很有可能能被分析器取样（因为它们比较大）这些对象会影响内存消耗量和垃圾回收时间，但它们不会影响正常的运行速度（在它们上没有内存管理操作）。另一方面，如果你有大量持续期很短的对象，它们几乎不会表现在曲线中（如果你使用默认的--inuse_space模式）。但它们的确显著影响运行速度，因为它们被不断地分配和释放。所以再说一遍，最好同时考虑这两种类型的对象。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42633">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42633);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42054" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 所以，大体上，如果你想减小内存消耗量，那么你需要查看程序正常运行时--inuse_space收集的概要。如果你想提升程序的运行速度，就要查看在程序特征运行时间后或程序结束之后--alloc_objects收集的概要。 </p> 
+<p> 报告间隔时间由几个标志控制，--functions让pprof报告在函数等级（默认）。--lines使pprof报告基于代码行等级，如果关键函数分布在不同的代码行上，这将变得很有用。同样还有--addresses和--files选项，&nbsp;分别定位到精确的指令地址等级和文件等级。 </p> 
+<p> 还有一个对内存概要很有用的选项，你可以直接在浏览器中查看它（需要你导入net/http/pprof包）。你打开http://myserver:6060/debug/pprof/heap?debug=1就会看到堆概要，如下： </p> 
+<div><div id="highlighter_911384" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div><div class="line number18 index17 alt1">18</div><div class="line number19 index18 alt2">19</div><div class="line number20 index19 alt1">20</div><div class="line number21 index20 alt2">21</div><div class="line number22 index21 alt1">22</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">heap&nbsp;profile:&nbsp;4:&nbsp;266528&nbsp;[123:&nbsp;11284472]&nbsp;@&nbsp;heap/1048576</code></div><div class="line number2 index1 alt1"><code class="plain plain">1:&nbsp;262144&nbsp;[4:&nbsp;376832]&nbsp;@&nbsp;0x28d9f&nbsp;0x2a201&nbsp;0x2a28a&nbsp;0x2624d&nbsp;0x26188&nbsp;0x94ca3&nbsp;0x94a0b&nbsp;0x17add6&nbsp;0x17ae9f&nbsp;0x1069d3&nbsp;0xfe911&nbsp;0xf0a3e&nbsp;0xf0d22&nbsp;0x21a70</code></div><div class="line number3 index2 alt2"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x2a201&nbsp;&nbsp;&nbsp;&nbsp;cnew+0xc1&nbsp;&nbsp;&nbsp;&nbsp;runtime/malloc.goc:718</code></div><div class="line number4 index3 alt1"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x2a28a&nbsp;&nbsp;&nbsp;&nbsp;runtime.cnewarray+0x3a&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;runtime/malloc.goc:731</code></div><div class="line number5 index4 alt2"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x2624d&nbsp;&nbsp;&nbsp;&nbsp;makeslice1+0x4d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;runtime/slice.c:57</code></div><div class="line number6 index5 alt1"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x26188&nbsp;&nbsp;&nbsp;&nbsp;runtime.makeslice+0x98&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;runtime/slice.c:38</code></div><div class="line number7 index6 alt2"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x94ca3&nbsp;&nbsp;&nbsp;&nbsp;bytes.makeSlice+0x63&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bytes/buffer.go:191</code></div><div class="line number8 index7 alt1"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x94a0b&nbsp;&nbsp;&nbsp;&nbsp;bytes.(*Buffer).ReadFrom+0xcb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bytes/buffer.go:163</code></div><div class="line number9 index8 alt2"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x17add6&nbsp;&nbsp;&nbsp;&nbsp;io/ioutil.readAll+0x156&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io/ioutil/ioutil.go:32</code></div><div class="line number10 index9 alt1"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x17ae9f&nbsp;&nbsp;&nbsp;&nbsp;io/ioutil.ReadAll+0x3f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;io/ioutil/ioutil.go:41</code></div><div class="line number11 index10 alt2"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x1069d3&nbsp;&nbsp;&nbsp;&nbsp;godoc/vfs.ReadFile+0x133&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;godoc/vfs/vfs.go:44</code></div><div class="line number12 index11 alt1"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0xfe911&nbsp;&nbsp;&nbsp;&nbsp;godoc.func·023+0x471&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;godoc/meta.go:80</code></div><div class="line number13 index12 alt2"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0xf0a3e&nbsp;&nbsp;&nbsp;&nbsp;godoc.(*Corpus).updateMetadata+0x9e&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;godoc/meta.go:101</code></div><div class="line number14 index13 alt1"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0xf0d22&nbsp;&nbsp;&nbsp;&nbsp;godoc.(*Corpus).refreshMetadataLoop+0x42&nbsp;&nbsp;&nbsp;&nbsp;godoc/meta.go:141</code></div><div class="line number15 index14 alt2">&nbsp;</div><div class="line number16 index15 alt1"><code class="plain plain">2:&nbsp;4096&nbsp;[2:&nbsp;4096]&nbsp;@&nbsp;0x28d9f&nbsp;0x29059&nbsp;0x1d252&nbsp;0x1d450&nbsp;0x106993&nbsp;0xf1225&nbsp;0xe1489&nbsp;0xfbcad&nbsp;0x21a70</code></div><div class="line number17 index16 alt2"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x1d252&nbsp;&nbsp;&nbsp;&nbsp;newdefer+0x112&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;runtime/panic.c:49</code></div><div class="line number18 index17 alt1"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x1d450&nbsp;&nbsp;&nbsp;&nbsp;runtime.deferproc+0x10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;runtime/panic.c:132</code></div><div class="line number19 index18 alt2"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0x106993&nbsp;&nbsp;&nbsp;&nbsp;godoc/vfs.ReadFile+0xf3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;godoc/vfs/vfs.go:43</code></div><div class="line number20 index19 alt1"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0xf1225&nbsp;&nbsp;&nbsp;&nbsp;godoc.(*Corpus).parseFile+0x75&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;godoc/parser.go:20</code></div><div class="line number21 index20 alt2"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0xe1489&nbsp;&nbsp;&nbsp;&nbsp;godoc.(*treeBuilder).newDirTree+0x8e9&nbsp;&nbsp;&nbsp;&nbsp;godoc/dirtrees.go:108</code></div><div class="line number22 index21 alt1"><code class="plain plain">#&nbsp;&nbsp;&nbsp;&nbsp;0xfbcad&nbsp;&nbsp;&nbsp;&nbsp;godoc.func·002+0x15d&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;godoc/dirtrees.go:100</code></div></div></td></tr></tbody></table></div></div> 
+<p> 每个条目开头的数字（"1: 262144 [4: 376832]"）分别表示目前存活的对象，存活对象占据的内存， 分配对象的个数和所有分配对象占据的内存总量。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42652">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42652);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42055" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 优化工作经常和特定应用程序相关，但也有一些普遍建议。</p>
+<p> 1. 将小对象组合成大对象。比如, 将 *bytes.Buffer 结构体成员替换为bytes。缓冲区 (你可以预分配然后通过调用bytes.Buffer.Grow为写做准备) 。这将减少很多内存分配(更快)并且减缓垃圾回收器的压力(更快的垃圾回收)&nbsp;。</p>
+<p> 2. 离开声明作用域的局部变量促进堆分配。编译器不能保证这些变量拥有相同的生命周期，因此为他们分别分配空间。所以你也可以对局部变量使用上述的建议。比如：将</p>
+<div><div id="highlighter_316625" class="syntaxhighlighter  cpp"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp keyword bold">for</code>&nbsp;<code class="cpp plain">k,&nbsp;v&nbsp;:=&nbsp;range&nbsp;m&nbsp;{</code></div><div class="line number2 index1 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">k,&nbsp;v&nbsp;:=&nbsp;k,&nbsp;v&nbsp;&nbsp;&nbsp;</code><code class="cpp comments">//&nbsp;copy&nbsp;for&nbsp;capturing&nbsp;by&nbsp;the&nbsp;goroutine</code></div><div class="line number3 index2 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">go&nbsp;func()&nbsp;{</code></div><div class="line number4 index3 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp comments">//&nbsp;use&nbsp;k&nbsp;and&nbsp;v</code></div><div class="line number5 index4 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">}()</code></div><div class="line number6 index5 alt1"><code class="cpp plain">}</code></div></div></td></tr></tbody></table></div></div>
+<p> 替换为:</p>
+<div><div id="highlighter_907044" class="syntaxhighlighter  cpp"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp keyword bold">for</code>&nbsp;<code class="cpp plain">k,&nbsp;v&nbsp;:=&nbsp;range&nbsp;m&nbsp;{</code></div><div class="line number2 index1 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">x&nbsp;:=&nbsp;</code><code class="cpp keyword bold">struct</code><code class="cpp plain">{&nbsp;k,&nbsp;v&nbsp;string&nbsp;}{k,&nbsp;v}&nbsp;&nbsp;&nbsp;</code><code class="cpp comments">//&nbsp;copy&nbsp;for&nbsp;capturing&nbsp;by&nbsp;the&nbsp;goroutine</code></div><div class="line number3 index2 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">go&nbsp;func()&nbsp;{</code></div><div class="line number4 index3 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp comments">//&nbsp;use&nbsp;x.k&nbsp;and&nbsp;x.v</code></div><div class="line number5 index4 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">}()</code></div><div class="line number6 index5 alt1"><code class="cpp plain">}</code></div></div></td></tr></tbody></table></div></div>
+<p> 这就将两次内存分配替换为了一次。然而，这样的优化方式会影响代码的可读性，因此要合理地使用它。</p>
+<p> 3. 组合内存分配的一个特殊情形是分片数组预分配。如果你清楚一个特定的分片的大小，你可以给末尾数组进行预分配：</p>
+<div><div id="highlighter_80637" class="syntaxhighlighter  cpp"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp plain">type&nbsp;X&nbsp;</code><code class="cpp keyword bold">struct</code>&nbsp;<code class="cpp plain">{</code></div><div class="line number2 index1 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">buf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[]byte</code></div><div class="line number3 index2 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">bufArray&nbsp;[16]byte&nbsp;</code><code class="cpp comments">//&nbsp;Buf&nbsp;usually&nbsp;does&nbsp;not&nbsp;grow&nbsp;beyond&nbsp;16&nbsp;bytes.</code></div><div class="line number4 index3 alt1"><code class="cpp plain">}</code></div><div class="line number5 index4 alt2">&nbsp;</div><div class="line number6 index5 alt1"><code class="cpp plain">func&nbsp;MakeX()&nbsp;*X&nbsp;{</code></div><div class="line number7 index6 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">x&nbsp;:=&nbsp;&amp;X{}</code></div><div class="line number8 index7 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp comments">//&nbsp;Preinitialize&nbsp;buf&nbsp;with&nbsp;the&nbsp;backing&nbsp;array.</code></div><div class="line number9 index8 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">x.buf&nbsp;=&nbsp;x.bufArray[:0]</code></div><div class="line number10 index9 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp keyword bold">return</code>&nbsp;<code class="cpp plain">x</code></div><div class="line number11 index10 alt2"><code class="cpp plain">}</code></div></div></td></tr></tbody></table></div></div>
+<p> 4. 尽可能使用小数据类型。比如用int8代替int。</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/ybusad" title="Micooz" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/580940_50.jpg" align="absmiddle" alt="Micooz" title="Micooz" class="SmallPortrait" user="580940"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/ybusad" target="_blank">Micooz</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42110">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42110);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42056" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p>5. 不包含任何指针的对象(注意 strings,slices,maps 和 chans 包含隐含指针)不会被垃圾回收器扫描到。比如，1GB 的分片实际上不会影响垃圾回收时间。因此如果你删除被频繁使用的对象指针，它会对垃圾回收时间造成影响。一些建议：使用索引替换指针，将对象分割为其中之一不含指针的两部分。</p>
+<p>6. 使用释放列表来重用临时对象，减少内存分配。标准库包含的&nbsp;<a target="_blank" href="http://tip.golang.org/pkg/sync/#Pool" rel="nofollow">sync.Pool</a> 类型可以实现垃圾回收期间多次重用同一个对象。然而需要注意的是，对于任何手动内存管理的方案来说，不正确地使用sync.Pool 会导致 use-after-free bug。</p>
+<p>你也可以使用Garbage Collector Trace(见后文)来获取更深层次的内存问题。</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/ybusad" title="Micooz" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/580940_50.jpg" align="absmiddle" alt="Micooz" title="Micooz" class="SmallPortrait" user="580940"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/ybusad" target="_blank">Micooz</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42111">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42111);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42057" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_12_5"> 阻塞分析器</h2>
+<p> 阻塞分析器展示了goroutine在等待同步原语(包括计时器通道)被阻塞的位置。你可以用类似CPU分析器的方法来收集这些信息：通过<a href="http://golang.org/cmd/go/#hdr-Description_of_testing_flags" rel="nofollow">'go test --blockprofile'</a>,&nbsp;<a href="http://golang.org/pkg/net/http/pprof" rel="nofollow">net/http/pprof</a>(经由h ttp://myserver:6060:/debug/pprof/block) 或者调用&nbsp;<a href="http://golang.org/pkg/runtime/pprof/#Profile.WriteTo" rel="nofollow">runtime/pprof.Lookup("block").WriteTo</a>。</p>
+<p> 值得警示的是，阻塞分析器默认未激活。'go test --blockprofile' 将为你自动激活它。然而，如果你使用net/http/pprof 或者 runtime/pprof，你就需要手动激活它(否则分析器将不会被载入)。通过调用&nbsp;<a href="http://golang.org/pkg/runtime/#SetBlockProfileRate" rel="nofollow">runtime.SetBlockProfileRate</a>&nbsp;来激活阻塞分析器。SetBlockProfileRate 控制着由阻塞分析器报告的goroutine阻塞事件的比率。分析器力求采样出每指定微秒数内，一个阻塞事件的阻塞平均数。要使分析器记录每个阻塞事件，将比率设为1。</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/ybusad" title="Micooz" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/580940_50.jpg" align="absmiddle" alt="Micooz" title="Micooz" class="SmallPortrait" user="580940"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/ybusad" target="_blank">Micooz</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42152">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42152);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42058" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 如果一个函数包含了几个阻塞操作而且并没有哪一个明显地占有阻塞优势，那就在pprof中使用--lines标志。<br> <br> 注意：并非所有的阻塞都是不利的。当一个goroutine阻塞时，底层的工作线程就会简单地转换到另一个goroutine。所以Go并行环境下的阻塞 与非并行环境下的mutex的阻塞是有很大不同的（例如典型的C++或Java线程库，当发生阻塞时会引起线程空载和高昂的线程切换）。为了让你感受一 下，我们来看几个例子。<br> <br> &nbsp;在 time.Ticker上发生的阻塞通常是可行的，如果一个goroutine阻塞Ticker超过十秒，你将会在profile中看到有十秒的阻塞，这 是很好的。发生在sync.WaitGroup上的阻塞经常也是可以的，例如，一个任务需要十秒，等待WaitGroup完成的goroutine会在 profile中生成十秒的阻塞。发生在sync.Cond上的阻塞可好可坏，取决于情况不同。消费者在通道阻塞表明生产者缓慢或不工作。生产者在通道阻塞，表明消费者缓慢，但这通常也是可以的。在基于通道的信号量发生阻塞，表明了限制在这个信号量上的goroutine的数量。发生在sync.Mutex或sync.RWMutex上的阻塞通常是不利的。你可以在可视化过程中，在pprof中使用--ignore标志来从profile中排除已知的无关阻塞。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42731">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42731);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42059" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> goroutine的阻塞会导致两个消极的后果： </p> 
+<ol> 
+ <li> <p> 程序与处理器之间不成比例，原因是缺乏工作。调度器追踪工具可以帮助确定这种情况。 </p> </li> 
+ <li> <p> 过多的goroutine阻塞/解除阻塞消耗了CPU时间。CPU分析器可以帮助确定这种情况（在系统组件中找）。 </p> </li> 
+</ol> 
+<p> 这里是一些通常的建议，可以帮助减少goroutine阻塞： </p> 
+<ol> 
+ <li> <p> 在生产者--消费者情景中使用充足的缓冲通道。无缓冲的通道实际上限制了程序的并发可用性。 </p> </li> 
+ <li> <p> 针对于主要为读取的工作量，使用sync.RWMutex而不是sync.Mutex。因为读取操作在sync.RWMutex中从来不会阻塞其它的读取操作。甚至是在实施级别。 </p> </li> 
+ <li> <p> 在某些情况下，可以通过使用copy-on-write技术来完全移除互斥。如果受保护的数据结构很少被修改，可以为它制作一份副本，然后就可以这样更新它： </p> </li> 
+</ol> 
+<div><div id="highlighter_962318" class="syntaxhighlighter  cpp"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp plain">type&nbsp;Config&nbsp;</code><code class="cpp keyword bold">struct</code>&nbsp;<code class="cpp plain">{</code></div><div class="line number2 index1 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">Routes&nbsp;&nbsp;&nbsp;map[string]net.Addr</code></div><div class="line number3 index2 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">Backends&nbsp;[]net.Addr</code></div><div class="line number4 index3 alt1"><code class="cpp plain">}</code></div><div class="line number5 index4 alt2">&nbsp;</div><div class="line number6 index5 alt1"><code class="cpp plain">var&nbsp;config&nbsp;unsafe.Pointer&nbsp;&nbsp;</code><code class="cpp comments">//&nbsp;actual&nbsp;type&nbsp;is&nbsp;*Config</code></div><div class="line number7 index6 alt2">&nbsp;</div><div class="line number8 index7 alt1"><code class="cpp comments">//&nbsp;Worker&nbsp;goroutines&nbsp;use&nbsp;this&nbsp;function&nbsp;to&nbsp;obtain&nbsp;the&nbsp;current&nbsp;config.</code></div><div class="line number9 index8 alt2"><code class="cpp plain">func&nbsp;CurrentConfig()&nbsp;*Config&nbsp;{</code></div><div class="line number10 index9 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp keyword bold">return</code>&nbsp;<code class="cpp plain">(*Config)(atomic.LoadPointer(&amp;config))</code></div><div class="line number11 index10 alt2"><code class="cpp plain">}</code></div><div class="line number12 index11 alt1">&nbsp;</div><div class="line number13 index12 alt2"><code class="cpp comments">//&nbsp;Background&nbsp;goroutine&nbsp;periodically&nbsp;creates&nbsp;a&nbsp;new&nbsp;Config&nbsp;object</code></div><div class="line number14 index13 alt1"><code class="cpp comments">//&nbsp;as&nbsp;sets&nbsp;it&nbsp;as&nbsp;current&nbsp;using&nbsp;this&nbsp;function.</code></div><div class="line number15 index14 alt2"><code class="cpp plain">func&nbsp;UpdateConfig(cfg&nbsp;*Config)&nbsp;{</code></div><div class="line number16 index15 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">atomic.StorePointer(&amp;config,&nbsp;unsafe.Pointer(cfg))</code></div><div class="line number17 index16 alt2"><code class="cpp plain">}</code></div></div></td></tr></tbody></table></div></div> 
+<p> 这种模式可以防止在更新时阻塞的读取对它的写入。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42730">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42730);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42060" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 4. 分割是另一种用于减少共享可变数据结构竞争和阻塞的通用技术。下面是一个展示如何分割哈希表（hashmap）的例子：</p>
+<div><div id="highlighter_485747" class="syntaxhighlighter  cpp"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp plain">type&nbsp;Partition&nbsp;</code><code class="cpp keyword bold">struct</code>&nbsp;<code class="cpp plain">{</code></div><div class="line number2 index1 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">sync.RWMutex</code></div><div class="line number3 index2 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">m&nbsp;map[string]string</code></div><div class="line number4 index3 alt1"><code class="cpp plain">}</code></div><div class="line number5 index4 alt2">&nbsp;</div><div class="line number6 index5 alt1"><code class="cpp keyword bold">const</code>&nbsp;<code class="cpp plain">partCount&nbsp;=&nbsp;64</code></div><div class="line number7 index6 alt2"><code class="cpp plain">var&nbsp;m&nbsp;[partCount]Partition</code></div><div class="line number8 index7 alt1">&nbsp;</div><div class="line number9 index8 alt2"><code class="cpp plain">func&nbsp;Find(k&nbsp;string)&nbsp;string&nbsp;{</code></div><div class="line number10 index9 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">idx&nbsp;:=&nbsp;hash(k)&nbsp;%&nbsp;partCount</code></div><div class="line number11 index10 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">part&nbsp;:=&nbsp;&amp;m[idx]</code></div><div class="line number12 index11 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">part.RLock()</code></div><div class="line number13 index12 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">v&nbsp;:=&nbsp;part.m[k]</code></div><div class="line number14 index13 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">part.RUnlock()</code></div><div class="line number15 index14 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp keyword bold">return</code>&nbsp;<code class="cpp plain">v</code></div><div class="line number16 index15 alt1"><code class="cpp plain">}</code></div></div></td></tr></tbody></table></div></div>
+<p>5. 本地缓存和更新的批处理有助于减少对不可分解的数据结构的争夺。下面你将看到如何分批处理向通道发送的内容：</p>
+<div><div id="highlighter_31312" class="syntaxhighlighter  cpp"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp keyword bold">const</code>&nbsp;<code class="cpp plain">CacheSize&nbsp;=&nbsp;16</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2"><code class="cpp plain">type&nbsp;Cache&nbsp;</code><code class="cpp keyword bold">struct</code>&nbsp;<code class="cpp plain">{</code></div><div class="line number4 index3 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">buf&nbsp;[CacheSize]</code><code class="cpp color1 bold">int</code></div><div class="line number5 index4 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">pos&nbsp;</code><code class="cpp color1 bold">int</code></div><div class="line number6 index5 alt1"><code class="cpp plain">}</code></div><div class="line number7 index6 alt2">&nbsp;</div><div class="line number8 index7 alt1"><code class="cpp plain">func&nbsp;Send(c&nbsp;chan&nbsp;[CacheSize]</code><code class="cpp color1 bold">int</code><code class="cpp plain">,&nbsp;cache&nbsp;*Cache,&nbsp;value&nbsp;</code><code class="cpp color1 bold">int</code><code class="cpp plain">)&nbsp;{</code></div><div class="line number9 index8 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">cache.buf[cache.pos]&nbsp;=&nbsp;value</code></div><div class="line number10 index9 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">cache.pos++</code></div><div class="line number11 index10 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp keyword bold">if</code>&nbsp;<code class="cpp plain">cache.pos&nbsp;==&nbsp;CacheSize&nbsp;{</code></div><div class="line number12 index11 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">c&nbsp;&lt;-&nbsp;cache.buf</code></div><div class="line number13 index12 alt2"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">cache.pos&nbsp;=&nbsp;0</code></div><div class="line number14 index13 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">}</code></div><div class="line number15 index14 alt2"><code class="cpp plain">}</code></div></div></td></tr></tbody></table></div></div>
+<p>这种技术并不仅限于通道，它还能用于批量更新映射（map）、批量分配等等。</p>
+<p> 6. 针对freelists，使用<a href="http://tip.golang.org/pkg/sync/#Pool" target="_blank" rel="nofollow">sync.Pool</a>代替基于通道的或互斥保护的freelists，因为sync.Pool内部使用智能技术来减少阻塞。</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2000608" title="ScriptKid" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2000608_50.jpg" align="absmiddle" alt="ScriptKid" title="ScriptKid" class="SmallPortrait" user="2000608"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2000608" target="_blank">ScriptKid</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42121">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42121);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42061" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_16_5"> Go协程分析器<br> </h2> 
+<p> Go协程分析器简单地提供给你当前进程中所有活跃的Go协程堆栈。它可以方便地调试负载平衡问题（参考下面的调度器追踪章节），或调试死锁。 </p> 
+<p> 这个配置仅仅对运行的程序有意义，所以去测试而不是揭露它.&nbsp;你可以用<a href="http://golang.org/pkg/net/http/pprof" rel="nofollow">net/http/pprof</a>通过http://myserver:6060:/debug/pprof/goroutine来收集配置，并将之形象化为svg/pdf或通过调用<a href="http://golang.org/pkg/runtime/pprof/#Profile.WriteTo" rel="nofollow">runtime/pprof.Lookup("goroutine").WriteTo</a>形象化。但最有用的方式是在你的浏览器中键入http://myserver:6060:/debug/pprof/goroutine?debug=2，它将会给出与程序崩溃时相同的符号化的堆栈。 </p> 
+<p> 需要注意的是：Go协程“syscall”将会消耗一个OS线程，而其他的Go协程则不会（除了名为runtime.LockOSThread的Go协程，不幸的是，它在配置中是不可见的）。同样需要注意的是在“IO wait”状态的Go协程同样不会消耗线程，他们停驻在非阻塞的网络轮询器（通常稍后使用epoll/kqueue/GetQueuedCompletionStatus来唤醒Go协程）。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42195">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42195);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42062" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_17_5"> 垃圾收集器追踪 </h2> 
+<p> 除了性能分析工具以外，还有另外几种工具可用——追踪器。它们可以追踪垃圾回收，内存分配和goroutine调度状态。要启用垃圾回收器（GC）追踪你需要将GODEBUG=gctrace=1加入环境变量，再运行程序： </p> 
+<p> $ GODEBUG=gctrace=1 ./myserver </p> 
+<p> 然后程序在运行中会输出类似结果： </p> 
+<div><div id="highlighter_671604" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">gc9(2):&nbsp;12+1+744+8&nbsp;us,&nbsp;2&nbsp;-&gt;&nbsp;10&nbsp;MB,&nbsp;108615&nbsp;(593983-485368)&nbsp;objects,&nbsp;4825/3620/0&nbsp;sweeps,&nbsp;0(0)&nbsp;handoff,&nbsp;6(91)&nbsp;steal,&nbsp;16/1/0&nbsp;yields</code></div><div class="line number2 index1 alt1"><code class="plain plain">gc10(2):&nbsp;12+6769+767+3&nbsp;us,&nbsp;1&nbsp;-&gt;&nbsp;1&nbsp;MB,&nbsp;4222&nbsp;(593983-589761)&nbsp;objects,&nbsp;4825/0/1898&nbsp;sweeps,&nbsp;0(0)&nbsp;handoff,&nbsp;6(93)&nbsp;steal,&nbsp;16/10/2&nbsp;yields</code></div><div class="line number3 index2 alt2"><code class="plain plain">gc11(2):&nbsp;799+3+2050+3&nbsp;us,&nbsp;1&nbsp;-&gt;&nbsp;69&nbsp;MB,&nbsp;831819&nbsp;(1484009-652190)&nbsp;objects,&nbsp;4825/691/0&nbsp;sweeps,&nbsp;0(0)&nbsp;handoff,&nbsp;5(105)&nbsp;steal,&nbsp;16/1/0&nbsp;yields</code></div></div></td></tr></tbody></table></div></div> 
+<p> 来看看这些数字的意思。每个GC输出一行。第一个数字（"gc9"）是GC的编号（这是从程序开始后的第九个GC），在括号中的数字（"(2)"）是参与GC的工作线程的编号。随后的四个数字（"12+1+744+8 us"）分别是工作线程完成GC的stop-the-world, sweeping, marking和waiting时间，单位是微秒。接下来的两个数字（"2 -&gt; 10 MB"）表示前一个GC过后的存活堆大小和当前GC开始前完整的堆（包括垃圾）的大小。再接下来的三个数字 （"108615 (593983-485368) objects"）是堆中的对象总数（包括垃圾）和和分配的内存总数以及空闲内存总数。后面的三个数字（"4825/3620/0 sweeps"）表示清理阶段（对于前一个GC）：总共有4825个存储器容量，3620立即或在后台清除，0个在stop-the-world阶段清除（剩余的是没有使用的容量）。再后面的四个数字（"0(0) handoff, 6(91) steal"）表示在平行的标志阶段的负载平衡：0个切换操作（0个对象被切换）和六个steal&nbsp;操作（91个对象被窃取）最后的三个数字（"16/1/0 yields"）表示平行标志阶段的系数：在等候其它线程的过程中共有十七个yield操作。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42749">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42749);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42063" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p>GC 是 <a href="http://www.brpreiss.com/books/opus5/html/page424.html" rel="nofollow">mark-and-sweep</a> 类型。总的 GC 可以表示成：</p>
+<p>Tgc = Tseq + Tmark + Tsweep</p>
+<p>这里的 Tseq 是停止用户的 goroutine 和做一些准备活动（通常很小）需要的时间；Tmark 是堆标记时间，标记发生在所有用户 goroutine 停止时，因此可以显著地影响处理的延迟；Tsweep 是堆清除时间，清除通常与正常的程序运行同时发生，所以对延迟来说是不太关键的。</p>
+<p>标记时间大概可以表示成：</p>
+<p>Tmark = C1*Nlive + C2*MEMlive_ptr + C3*Nlive_ptr</p>
+<p>这里的 Nlive 是垃圾回收过程中堆中的活动对象的数量，MEMlive_ptr 是带有指针的活动对象占据的内存总量，Nlive_ptr 是活动对象中的指针数量。</p>
+<p>清除时间大概可以表示成：</p>
+<p>Tsweep = C4*MEMtotal + C5*MEMgarbage</p>
+<p>这里的 MEMtotal 是堆内存的总量，MEMgarbage 是堆中的垃圾总量。</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42757">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42757);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42064" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p>下一次垃圾回收发生在程序被分配了一块与其当前所用内存成比例的额外内存时。这个比例通常是由 GOGC 的环境变量（默认值是100）控制的。如果 GOGC=100，而且程序使用了 4M 堆内存，当程序使用达到 8M 时，运行时（runtime）就会再次触发垃圾回收器。这使垃圾回收的消耗与分配的消耗保持线性比例。调整 GOGC，会改变线性常数和使用的额外内存的总量。</p>
+<p>只有清除是依赖于堆总量的，且清除与正常的程序运行同时发生。如果你可以承受额外的内存开销，设置 GOGC 到以一个较高的值（200, 300, 500,等）是有意义的。例如，GOGC=300 可以在延迟相同的情况下减小垃圾回收开销高达原来的二分之一（但会占用两倍大的堆）。</p>
+<p>GC 是并行的，而且一般在并行硬件上具有良好可扩展性。所以给 GOMAXPROCS 设置较高的值是有意义的，就算是对连续的程序来说也能够提高垃圾回收速度。但是，要注意，目前垃圾回收器线程的数量被限制在 8 个以内。</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42759">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42759);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42065" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_20_5"><strong>内存分配器跟踪</strong><br></h2>
+<p> 内存分配器跟踪只是简单地将所有的内存分配和释放操作转储到控制台。通过设置环境变量“GODEBUG=allocfreetrace=1”就可以开启该功能。输出看起来像下面的内容：</p>
+<div><div id="highlighter_962779" class="syntaxhighlighter  cpp"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div><div class="line number10 index9 alt1">10</div><div class="line number11 index10 alt2">11</div><div class="line number12 index11 alt1">12</div><div class="line number13 index12 alt2">13</div><div class="line number14 index13 alt1">14</div><div class="line number15 index14 alt2">15</div><div class="line number16 index15 alt1">16</div><div class="line number17 index16 alt2">17</div><div class="line number18 index17 alt1">18</div><div class="line number19 index18 alt2">19</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp plain">tracealloc(0xc208062500,&nbsp;0x100,&nbsp;array&nbsp;of&nbsp;parse.Node)</code></div><div class="line number2 index1 alt1"><code class="cpp plain">goroutine&nbsp;16&nbsp;[running]:</code></div><div class="line number3 index2 alt2"><code class="cpp plain">runtime.mallocgc(0x100,&nbsp;0x3eb7c1,&nbsp;0x0)</code></div><div class="line number4 index3 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">runtime/</code><code class="cpp functions bold">malloc</code><code class="cpp plain">.goc:190&nbsp;+0x145&nbsp;fp=0xc2080b39f8</code></div><div class="line number5 index4 alt2"><code class="cpp plain">runtime.growslice(0x31f840,&nbsp;0xc208060700,&nbsp;0x8,&nbsp;0x8,&nbsp;0x1,&nbsp;0x0,&nbsp;0x0,&nbsp;0x0)</code></div><div class="line number6 index5 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">runtime/slice.goc:76&nbsp;+0xbb&nbsp;fp=0xc2080b3a90</code></div><div class="line number7 index6 alt2"><code class="cpp plain">text/</code><code class="cpp keyword bold">template</code><code class="cpp plain">/parse.(*Tree).parse(0xc2080820e0,&nbsp;0xc208023620,&nbsp;0x0,&nbsp;0x0)</code></div><div class="line number8 index7 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">text/</code><code class="cpp keyword bold">template</code><code class="cpp plain">/parse/parse.go:289&nbsp;+0x549&nbsp;fp=0xc2080b3c50</code></div><div class="line number9 index8 alt2"><code class="cpp plain">...</code></div><div class="line number10 index9 alt1">&nbsp;</div><div class="line number11 index10 alt2"><code class="cpp plain">tracefree(0xc208002d80,&nbsp;0x120)</code></div><div class="line number12 index11 alt1"><code class="cpp plain">goroutine&nbsp;16&nbsp;[running]:</code></div><div class="line number13 index12 alt2"><code class="cpp plain">runtime.MSpan_Sweep(0x73b080)</code></div><div class="line number14 index13 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">runtime/mgc0.c:1880&nbsp;+0x514&nbsp;fp=0xc20804b8f0</code></div><div class="line number15 index14 alt2"><code class="cpp plain">runtime.MCentral_CacheSpan(0x69c858)</code></div><div class="line number16 index15 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">runtime/mcentral.c:48&nbsp;+0x2b5&nbsp;fp=0xc20804b920</code></div><div class="line number17 index16 alt2"><code class="cpp plain">runtime.MCache_Refill(0x737000,&nbsp;0xc200000012)</code></div><div class="line number18 index17 alt1"><code class="cpp spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="cpp plain">runtime/mcache.c:78&nbsp;+0x119&nbsp;fp=0xc20804b950</code></div><div class="line number19 index18 alt2"><code class="cpp plain">...</code></div></div></td></tr></tbody></table></div></div>
+<p>跟踪信息包括内存块地址、大小、类型、执行程序ID和堆栈踪迹。它可能更有助于调试，但也可以给内存分配优化提供非常详细的信息。</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2000608" title="ScriptKid" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2000608_50.jpg" align="absmiddle" alt="ScriptKid" title="ScriptKid" class="SmallPortrait" user="2000608"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2000608" target="_blank">ScriptKid</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42120">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42120);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42066" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_21_5"><span style="font-family:Microsoft YaHei;">调度器追踪<br></span> </h2>
+<p><span style="font-family:Microsoft YaHei;">调度器追踪可以提供对 goroutine 调度的动态行为的内视，并且允许调试负载平衡和可扩展性问题。要启用调度器追踪，可以带有环境变量 GODEBUG=schedtrace=1000 来运行程序（这个值的意思是输入的周期，单位 ms，这种情况下是每秒一次）：</span> </p>
+<p> $ GODEBUG=schedtrace=1000 ./myserver</p>
+<p><span style="font-family:Microsoft YaHei;">程序在运行过程中将会输出类似结果：</span> </p>
+<div><div id="highlighter_901803" class="syntaxhighlighter  plain"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="plain plain">SCHED&nbsp;1004ms:&nbsp;gomaxprocs=4&nbsp;idleprocs=0&nbsp;threads=11&nbsp;idlethreads=4&nbsp;runqueue=8&nbsp;[0&nbsp;1&nbsp;0&nbsp;3]</code></div><div class="line number2 index1 alt1"><code class="plain plain">SCHED&nbsp;2005ms:&nbsp;gomaxprocs=4&nbsp;idleprocs=0&nbsp;threads=11&nbsp;idlethreads=5&nbsp;runqueue=6&nbsp;[1&nbsp;5&nbsp;4&nbsp;0]</code></div><div class="line number3 index2 alt2"><code class="plain plain">SCHED&nbsp;3008ms:&nbsp;gomaxprocs=4&nbsp;idleprocs=0&nbsp;threads=11&nbsp;idlethreads=4&nbsp;runqueue=10&nbsp;[2&nbsp;2&nbsp;2&nbsp;1]</code></div></div></td></tr></tbody></table></div></div>
+<p><span style="font-family:Microsoft YaHei;">第一个数字（"1004ms"）是从程序开始后的时间。Gomaxprocs 是当前的 GOMAXPROCS 值。 Idleprocs 是空载的处理器数（剩下的在执行 Go 代码）。Threads 是调度器产生的工作线程总数（线程有三种状态：执行 Go 代码（gomaxprocs-idleprocs），执行 syscalls/cgocalls，闲置）。Idlethreads是闲置的工作线程数。Runqueue 是运行的 goroutine 的全局队列长度。方括号中的数字（"[0 1 0 3]"）是可执行的 goroutine 的预处理器队列的长度。全局和局部队列的长度总和表示运行中可用的 goroutine 的总数。</span> </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42761">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42761);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42067" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 注意：你可以随意组合追踪器，如：GODEBUG = gctrace = 1，allocfreetrace = 1，schedtrace = 1000。</p>
+<p> 注意：同样有详细的调度器追踪，你可以这样启用它：GODEBUG = schedtrace = 1000，scheddetail = 1。它将会输出每一个 goroutine、工作线程和处理器的详细信息。我们将不会在这里讨论它的格式，因为它主要是给调度器开发者使用；你可以在这里<a href="https://code.google.com/p/go/source/browse/src/pkg/runtime/proc.c" rel="nofollow">src/pkg/runtime/proc.c</a>找到它的详细信息。</p>
+<p> 当一个程序不与 GOMAXPROCS 成线性比例和/或没有消耗 100% 的 CPU 时间，调度器追踪就显得非常有用。理想的情况是：所有的处理器都在忙碌地运行 Go 代码，线程数合理，所有队列都有充足的任务且任务是合理均匀的分布的：</p>
+<p> gomaxprocs=8 idleprocs=0 threads=40 idlethreads=5 runqueue=10 [20 20 20 20 20 20 20 20]</p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42763">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42763);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42068" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><p> 不好的情况是上面所列的东西并没有完全达到。例如下面这个演示，没有足够的任务来保持所有的处理器繁忙： </p> 
+<p> gomaxprocs=8 idleprocs=6 threads=40 idlethreads=30 runqueue=0 [0 2 0 0 0 1 0 0] </p> 
+<p> 注意：这里使用操作系统提供的实际CPU利用率作为最终的标准。在 Unix 系操作系统中是 top 命令。在 Windows 系统中是任务管理器。 </p> 
+<p> 你可以使用 goroutine 分析器来了解哪些 goroutine 块处于任务短缺状态。注意，只要所有的处理器处于忙绿状态，负载失衡就不是最坏的，它只会导致适度的负载平衡开销。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42775">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42775);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42069" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_24_5"> 内存统计<br> </h2> 
+<p> Go 运行时可以通过 <a href="http://golang.org/pkg/runtime/#ReadMemStats" rel="nofollow">runtime.ReadMemStats</a> 函数提供粗糙的内存统计。这个统计同样可以通过 <a href="http://myserver:6060/debug/pprof/heap?debug=1" rel="nofollow">http://myserver:6060/debug/pprof/heap?debug=1</a>&nbsp; 底部的net/http/pprof提供。统计资料，点击<a target="_blank" href="http://golang.org/pkg/runtime/#MemStats" rel="nofollow">此处</a>。 </p> 
+<p> 一些值得关注的地方是: </p> 
+<p> 1. HeapAlloc - 当前堆大小。 </p> 
+<p> 2. HeapSys - 总的堆大小。 </p> 
+<p> 3. HeapObjects - 堆中对象的总数。 </p> 
+<p> 4. HeapReleased - 释放到操作系统中的内存；如果内存超过五分钟没有使用，运行时将会把它释放到操作系统中，你可以通过 runtime/debug.FreeOSMemory 来强制改变这个过程。 </p> 
+<p> 5. Sys - 操作系统分配的总内存。 </p> 
+<p> 6. Sys-HeapReleased - 程序的有效内存消耗。 </p> 
+<p> 7. StackSys - goroutine 栈的内存消耗（注意：一些栈是从堆中分配的，因此没有计入这里，不幸的是，没有办法得到栈的总大小（<a target="_blank" href="https://code.google.com/p/go/issues/detail?id=7468" rel="nofollow">https://code.google.com/p/go/issues/detail?id=7468</a>））。 </p> 
+<p> 8. MSpanSys/MCacheSys/BuckHashSys/GCSys/OtherSys - 运行时为各种辅助用途分配的内存；它们没什么好关注的，除非过高的话。 </p> 
+<p> 9. PauseNs - 最后一次垃圾回收的持续时间。 </p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2265702" title="社会主义好" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2265702_50.jpg" align="absmiddle" alt="社会主义好" title="社会主义好" class="SmallPortrait" user="2265702"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2265702" target="_blank">社会主义好</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42777">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42777);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        		                    <div id="translate_42070" class="translate_chs">
+<table class="paragraph_chs">
+    <tbody><tr>
+        <td style="border-right:1px solid #E3E3E3;"><div class="TextContent"><h2 id="content_h2_25_5"><strong>堆倾卸器</strong></h2>
+<p>最后一个可用的工具是堆倾卸器，它可以将整个堆的状态写入一个文件中，留作以后进行探索。它有助于识别内存泄露，并能够洞悉程序的内存消耗。<br>首先，你需要使用函数<a href="http://tip.golang.org/pkg/runtime/debug/#WriteHeapDump" target="_blank" rel="nofollow">runtime/debug.WriteHeapDump</a>函数编写倾卸器（dump）：<br></p>
+<div><div id="highlighter_618500" class="syntaxhighlighter  cpp"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="cpp spaces">&nbsp;</code><code class="cpp plain">f,&nbsp;err&nbsp;:=&nbsp;os.Create(</code><code class="cpp string">"heapdump"</code><code class="cpp plain">)</code></div><div class="line number2 index1 alt1"><code class="cpp spaces">&nbsp;</code><code class="cpp keyword bold">if</code>&nbsp;<code class="cpp plain">err&nbsp;!=&nbsp;nil&nbsp;{&nbsp;...&nbsp;}</code></div><div class="line number3 index2 alt2"><code class="cpp spaces">&nbsp;</code><code class="cpp plain">debug.WriteHeapDump(f.Fd())</code></div></div></td></tr></tbody></table></div></div>
+<p>然后，你既可以将堆以图形化的表现形式保存为.dot文件，也可以将它转换为hprof格式。为了将它保存为.dot文件，你需要执行以下指令：<br></p>
+<div><div id="highlighter_798692" class="syntaxhighlighter  shell"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="shell plain">$&nbsp;go&nbsp;get&nbsp;github.com</code><code class="shell plain">/randall77/hprof/dumptodot</code></div><div class="line number2 index1 alt1"><code class="shell plain">$&nbsp;dumptodot&nbsp;heapdump&nbsp;mybinary&nbsp;&gt;&nbsp;heap.dot</code></div></div></td></tr></tbody></table></div></div>
+<p>最后，使用Graphviz工具打开heap.dot文件。<br>为了将堆转换成hprof格式，需要执行以下指令：<br></p>
+<div><div id="highlighter_565211" class="syntaxhighlighter  shell"><div class="toolbar"><span><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="shell plain">$&nbsp;go&nbsp;get&nbsp;github.com</code><code class="shell plain">/randall77/hprof/dumptohprof</code></div><div class="line number2 index1 alt1"><code class="shell plain">$&nbsp;dumptohprof&nbsp;heapdump&nbsp;heap.hprof</code></div><div class="line number3 index2 alt2"><code class="shell plain">$&nbsp;jhat&nbsp;heap.hprof</code></div></div></td></tr></tbody></table></div></div>
+<p>最后，将浏览器导航到http://localhost:7000。<br></p>
+<h2 id="content_h2_25_21"><strong>结束语</strong></h2>
+<p>优化是一个开放的问题，你可以使用很多简单的方法来提高性能。然而，有时优化需要对程序进行完整地重新架构。但我们希望这些工具能够成为你工具箱中一个有价值的新增成员，至少你可以使用它们分析并理解到底发生了什么。</p>
+<p>《<a href="http://blog.golang.org/profiling-go-programs" target="_blank" rel="nofollow">剖析Go程序</a>》是一个很好的教程，它讲解了如何利用CPU和内存分析器来优化简单的程序。<br></p></div></td>
+        <td class="translater" valign="top">
+                        <a href="http://my.oschina.net/u/2000608" title="ScriptKid" target="_blank"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2000608_50.jpg" align="absmiddle" alt="ScriptKid" title="ScriptKid" class="SmallPortrait" user="2000608"></a>
+            <div class="info">
+                <h6><a href="http://my.oschina.net/u/2000608" target="_blank">ScriptKid</a><br>翻译于 10个月前</h6>
+                <p><em id="vote_count_42123">0</em>人顶</p>
+            </div>
+            <div class="clear"></div>
+            <p class="vote">
+            <a href="javascript:vote_block(42123);" class="rndbutton"><span>顶</span></a>&nbsp;翻译的不错哦!
+            			            </p>
+        </td>
+    </tr>
+    </tbody></table>
+</div>
+        				<div class="copyright">
+			本文中的所有译文仅用于学习和交流目的，转载请务必注明文章译者、出处、和本文链接<br>
+			我们的翻译工作遵照 <a href="http://zh.wikipedia.org/wiki/Wikipedia:CC" target="_blank">CC 协议</a>，如果我们的工作有侵犯到您的权益，请及时联系我们
+		</div>
+	</div>
+	<div style="margin:10px 0;">
+	    </div>
+		<div class="Bottom">
+		<div class="google_ads" style="float:right;width:300px;">
+			<script type="text/javascript"><!--
+            google_ad_client = "ca-pub-7090564139599510";
+            /* translate-comments */
+            google_ad_slot = "8977750911";
+            google_ad_width = 300;
+            google_ad_height = 250;
+            //-->
+            </script>
+            <script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/show_ads.js">
+            </script><ins id="aswift_0_expand" style="display:inline-table;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:250px;margin:0;padding:0;position:relative;visibility:visible;width:300px;background-color:transparent"><iframe width="300" height="250" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;"></iframe></ins></ins>
+		</div>
+		
+				<div class="comments">
+			<a name="comments"></a>
+			<h2>
+                <a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#top" class="more">回页面顶部</a><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#commentForm" class="more" style="margin-right:10px;color:#080;">发表评论</a>
+                网友评论<span>共<em class="reply_count">15</em>条</span>
+            </h2>
+						<ul class="list"><li class="comment" id="cmt_2725_123890_23253">
+	<div class="user"><a href="http://my.oschina.net/yaky" name="rpl_23253"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/123890_50.jpg" align="absmiddle" alt="yak" title="yak" class="SmallPortrait" user="123890"></a></div>
+	<div class="body">
+		<div class="time"><b>yak</b>   发表于 2015-03-30 08:45</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">golang的gc相比java的gc有什么优势吗?</div>
+		<div id="inline_reply_of_2725_123890_23253" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_179535_23254">
+	<div class="user"><a href="http://my.oschina.net/Jamesx" name="rpl_23254"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/179535_50.jpg" align="absmiddle" alt="kernel64" title="kernel64" class="SmallPortrait" user="179535"></a></div>
+	<div class="body">
+		<div class="time"><b>kernel64</b>   发表于 2015-03-30 09:18</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">写得非常好,谢谢分享</div>
+		<div id="inline_reply_of_2725_179535_23254" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_561214_23255">
+	<div class="user"><a href="http://my.oschina.net/eechen" name="rpl_23255"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/561214_50.jpg" align="absmiddle" alt="eechen" title="eechen" class="SmallPortrait" user="561214"></a></div>
+	<div class="body">
+		<div class="time"><b>eechen</b>   发表于 2015-03-30 09:21</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">开启xdebug,bench.php测试花费的时间是原来的2.34倍.<br>xdebug对PHP性能影响比较大,线上调试时建议使用轻量级的xhprof:<br>http://php.net/manual/zh/function.xhprof-enable.php<br>http://avnpc.com/pages/profiler-php-performance-online-by-xhprof<br>&lt;?php<br>function foo() { usleep(1000); }<br>xhprof_enable(XHPROF_FLAGS_NO_BUILTINS | XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);<br>foo();<br>$xhprof_data = xhprof_disable();<br>print_r($xhprof_data);<br>其中XHPROF_FLAGS_NO_BUILTINS表示不跟踪内建函数.<br>输出:<br>Array<br>(<br>    [main()==&gt;foo] =&gt; Array<br>        (<br>            [ct] =&gt; 1    // number of calls.<br>            [wt] =&gt; 1198 // wall/wait time (ms,1s=1000000ms). <br>            [cpu] =&gt; 156 // cpu time.<br>            [mu] =&gt; 872  // memory usage (bytes).<br>            [pmu] =&gt; 0   // peak memory usage.<br>        )<br>    // 下面这个是总的统计<br>    [main()] =&gt; Array<br>        (<br>            [ct] =&gt; 1<br>            [wt] =&gt; 1342<br>            [cpu] =&gt; 271<br>            [mu] =&gt; 1856<br>            [pmu] =&gt; 0<br>        )<br>)<br></div>
+		<div id="inline_reply_of_2725_561214_23255" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_561214_23256">
+	<div class="user"><a href="http://my.oschina.net/eechen" name="rpl_23256"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/561214_50.jpg" align="absmiddle" alt="eechen" title="eechen" class="SmallPortrait" user="561214"></a></div>
+	<div class="body">
+		<div class="time"><b>eechen</b>   发表于 2015-03-30 09:25</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“yak”的评论</h4>golang的gc相比java的gc有什么优势吗?</div>优势不知道,劣势都一样,也就是程序在应对大量并发占用大量内存时进行一次垃圾回收会很慢,甚至应用"雪崩".这是小米第二版抢购系统用Go实现的经验教训.
+http://www.csdn.net/article/2014-11-07/2822545</div>
+		<div id="inline_reply_of_2725_561214_23256" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_567782_23257">
+	<div class="user"><a href="http://my.oschina.net/encro" name="rpl_23257"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/567782_50.png" align="absmiddle" alt="encro" title="encro" class="SmallPortrait" user="567782"></a></div>
+	<div class="body">
+		<div class="time"><b>encro</b>   发表于 2015-03-30 09:48</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“eechen”的评论</h4>开启xdebug,bench.php测试花费的时间是原来的2.34倍.<br>xdebug对PHP性能影响比较大,线上调试时建议使用轻量级的xhprof:<br>http://php.net/manual/zh/function.xhprof-enable.php<br>http://avnpc.com/pages/profiler-php-performance-online-by-xhprof<br>&lt;?php<br>function foo() { usleep(1000); }<br>xhprof_enable(XHPROF_FLAGS_NO_BUILTINS | XHPROF_FLAGS_CPU | XHPROF_FLAGS_MEMORY);<br>foo();<br>$xhprof_data = xhprof_disable();<br>print_r($xhprof_data);<br>其中XHPROF_FLAGS_NO_BUILTINS表示不跟踪内建函数.<br>输出:<br>Array<br>(<br>    [main()==&gt;foo] =&gt; Array<br>        (<br>            [ct] =&gt; 1    // number of calls.<br>            [wt] =&gt; 1198 // wall/wait time (ms,1s=1000000ms). <br>            [cpu] =&gt; 156 // cpu time.<br>            [mu] =&gt; 872  // memory usage (bytes).<br>            [pmu] =&gt; 0   // peak memory usage.<br>        )<br>    // 下面这个是总的统计<br>    [main()] =&gt; Array<br>        (<br>            [ct] =&gt; 1<br>            [wt] =&gt; 1342<br>            [cpu] =&gt; 271<br>            [mu] =&gt; 1856<br>            [pmu] =&gt; 0<br>        )<br>)<br></div>你可以默认不tigger，带参数再trigger</div>
+		<div id="inline_reply_of_2725_567782_23257" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_1182150_23259">
+	<div class="user"><a href="http://my.oschina.net/u/1182150" name="rpl_23259"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/1182150_50.jpg" align="absmiddle" alt="OSC首席键客" title="OSC首席键客" class="SmallPortrait" user="1182150"></a></div>
+	<div class="body">
+		<div class="time"><b>OSC首席键客</b>   发表于 2015-03-30 10:29</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“yak”的评论</h4>golang的gc相比java的gc有什么优势吗?</div>好像没有没优势吧！看到有文章说算法是原始的，别人都不用的算法。听说要改吧！</div>
+		<div id="inline_reply_of_2725_1182150_23259" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_218633_23260">
+	<div class="user"><a href="http://my.oschina.net/samuraill" name="rpl_23260"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/218633_50.jpg" align="absmiddle" alt="root_root" title="root_root" class="SmallPortrait" user="218633"></a></div>
+	<div class="body">
+		<div class="time"><b>root_root</b>   发表于 2015-03-30 14:18</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><div class="ref"><h4>引用来自“yak”的评论</h4>golang的gc相比java的gc有什么优势吗?</div><h4>引用来自“OSC首席键客”的评论</h4>好像没有没优势吧！看到有文章说算法是原始的，别人都不用的算法。听说要改吧！</div>golang的gc还在完善中呢，每个版本都在改。。
+比不上java</div>
+		<div id="inline_reply_of_2725_218633_23260" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_241799_23262">
+	<div class="user"><a href="http://my.oschina.net/u/241799" name="rpl_23262"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/portrait.gif" align="absmiddle" alt="妹子说名字长丁丁长" title="妹子说名字长丁丁长" class="SmallPortrait" user="241799"></a></div>
+	<div class="body">
+		<div class="time"><b>妹子说名字长丁丁长</b> 来自 <a href="http://www.oschina.net/mobile" target="_blank">            iPhone    </a>  发表于 2015-03-30 14:36</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">go马上要打败php，成为宇宙第一语言了</div>
+		<div id="inline_reply_of_2725_241799_23262" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_1054462_23263">
+	<div class="user"><a href="http://my.oschina.net/gongxufan" name="rpl_23263"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/1054462_50.jpg" align="absmiddle" alt="with_you" title="with_you" class="SmallPortrait" user="1054462"></a></div>
+	<div class="body">
+		<div class="time"><b>with_you</b>   发表于 2015-03-30 15:56</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">rust粉哪去了～～～～～～～</div>
+		<div id="inline_reply_of_2725_1054462_23263" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_81455_23267">
+	<div class="user"><a href="http://my.oschina.net/tinydust" name="rpl_23267"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/81455_50.jpg" align="absmiddle" alt="灵剑子" title="灵剑子" class="SmallPortrait" user="81455"></a></div>
+	<div class="body">
+		<div class="time"><b>灵剑子</b>   发表于 2015-03-30 19:53</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“yak”的评论</h4>golang的gc相比java的gc有什么优势吗?</div>只有劣势，但没有见识的go粉认为比java的强</div>
+		<div id="inline_reply_of_2725_81455_23267" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_2321543_23268">
+	<div class="user"><a href="http://my.oschina.net/os2015" name="rpl_23268"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2321543_50.jpg" align="absmiddle" alt="开元中国2015" title="开元中国2015" class="SmallPortrait" user="2321543"></a></div>
+	<div class="body">
+		<div class="time"><b>开元中国2015</b>   发表于 2015-03-30 22:11</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">哈厉害的样子</div>
+		<div id="inline_reply_of_2725_2321543_23268" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_2338653_23283">
+	<div class="user"><a href="http://my.oschina.net/yuweitaous" name="rpl_23283"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/2338653_50.jpg" align="absmiddle" alt="Raynar1" title="Raynar1" class="SmallPortrait" user="2338653"></a></div>
+	<div class="body">
+		<div class="time"><b>Raynar1</b>   发表于 2015-03-31 11:08</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail">这一个golang的gc和java的gc一比就是狗屎，说他是狗屎其实算是侮辱狗屎，嗯</div>
+		<div id="inline_reply_of_2725_2338653_23283" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_919675_23287">
+	<div class="user"><a href="http://my.oschina.net/zisu123" name="rpl_23287"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/919675_50.jpg" align="absmiddle" alt="BGP之子" title="BGP之子" class="SmallPortrait" user="919675"></a></div>
+	<div class="body">
+		<div class="time"><b>BGP之子</b>   发表于 2015-03-31 15:06</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“Raynar1”的评论</h4>这一个golang的gc和java的gc一比就是狗屎，说他是狗屎其实算是侮辱狗屎，嗯</div>我觉得你说的有点过火了</div>
+		<div id="inline_reply_of_2725_919675_23287" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_932809_25623">
+	<div class="user"><a href="http://my.oschina.net/yang1992" name="rpl_25623"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/932809_50.jpg" align="absmiddle" alt="golang_yh" title="golang_yh" class="SmallPortrait" user="932809"></a></div>
+	<div class="body">
+		<div class="time"><b>golang_yh</b>   发表于 2015-07-28 18:02</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><h4>引用来自“Raynar1”的评论</h4>这一个golang的gc和java的gc一比就是狗屎，说他是狗屎其实算是侮辱狗屎，嗯</div>golang很年轻，怎么不说java性能慢啊</div>
+		<div id="inline_reply_of_2725_932809_25623" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li><li class="comment" id="cmt_2725_932809_25624">
+	<div class="user"><a href="http://my.oschina.net/yang1992" name="rpl_25624"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/932809_50.jpg" align="absmiddle" alt="golang_yh" title="golang_yh" class="SmallPortrait" user="932809"></a></div>
+	<div class="body">
+		<div class="time"><b>golang_yh</b>   发表于 2015-07-28 18:04</div>
+		<div class="opts">
+						</div>
+		<div class="clear"></div>
+		<div class="detail"><div class="ref"><div class="ref"><div class="ref"><h4>引用来自“yak”的评论</h4>golang的gc相比java的gc有什么优势吗?</div><h4>引用来自“OSC首席键客”的评论</h4>好像没有没优势吧！看到有文章说算法是原始的，别人都不用的算法。听说要改吧！</div><h4>引用来自“root_root”的评论</h4>golang的gc还在完善中呢，每个版本都在改。。
+比不上java</div>虽然都是gc，完全解决不同场景下的问题，没有可比性的</div>
+		<div id="inline_reply_of_2725_932809_25624" class="inline_reply"></div>
+	</div>
+	<div class="clear"></div>
+</li></ul>
+                    			<div class="clear"></div>
+			<div class="commentForm">
+				<div class="user"><a href="" name="commentForm"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/portrait.gif" align="absmiddle" alt="非会员用户" title="非会员用户" class="SmallPortrait" user=""></a></div>
+    			<form id="form_comment" action="http://www.oschina.net/action/translate/comment?" method="post">
+					<input type="hidden" value="2725" name="article">
+    				<textarea id="txt_comment" name="content" onkeydown="if((event.metaKey || event.ctrlKey)&amp;&amp;event.keyCode==13){$(&#39;#form_comment&#39;).submit();}" style="width:600px;height:100px;"></textarea><br>
+    				<input type="submit" value=" 发表评论 " id="FormSubmitButton" class="SUBMIT rndbutton">
+    				<span id="form_msg" style="display:none;"></span>
+					<p style="margin-top:36px;"><a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#comments">回评论顶部</a> | <a href="http://www.oschina.net/translate/debugging-performance-issues-in-go-programs#top">回页面顶部</a></p>
+    			</form>
+			</div>
+		</div>
+        <div class="clear"></div>
+	</div>
+	</div>
+<div class="clear"></div>
+<div id="inline_reply_editor" style="display:none;">
+    <div class="CommentForm">
+        <form id="form_inline_comment" method="POST" action="http://www.oschina.net/action/translate/comment">
+            <input id="inline_reply_id" type="hidden" value="" name="reply_id">
+			<input type="hidden" value="2725" name="article">
+            <textarea id="txt_focus" onkeydown="if((event.metaKey || event.ctrlKey)&amp;&amp;event.keyCode==13){$(&#39;#form_inline_comment&#39;).submit();}" style="width:400px;height:80px;" name="content"></textarea>
+            <br>
+            <input class="SUBMIT" type="submit" value="回复">
+            <input id="btn_close_inline_reply" class="SUBMIT" type="button" value="关闭">
+            文明上网，理性发言
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/xregexp-min.js"></script>
+<script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/shCore.min.js"></script>
+<script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/shAutoloader.js"></script>
+<link type="text/css" rel="stylesheet" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/shCore.css">
+<link type="text/css" rel="Stylesheet" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/shThemeDefault.css">
+
+<script type="text/javascript">
+    SyntaxHighlighter.autoloader(
+            'applescript			/js/sh309/scripts/shBrushAppleScript.js?t=1451964199000',
+            'actionscript3 as3		/js/sh309/scripts/shBrushAS3.js?t=1451964199000',
+            'bash shell				/js/sh309/scripts/shBrushBash.js?t=1451964199000',
+            'coldfusion cf			/js/sh309/scripts/shBrushColdFusion.js?t=1451964199000',
+            'cpp c					/js/sh309/scripts/shBrushCpp.js?t=1451964199000',
+            'obj-c objc				/js/sh309/scripts/shBrushObjC.js?t=1451964199000',
+            'c# c-sharp csharp		/js/sh309/scripts/shBrushCSharp.js?t=1451964199000',
+            'css					/js/sh309/scripts/shBrushCss.js?t=1451964199000',
+            'delphi pascal			/js/sh309/scripts/shBrushDelphi.js?t=1451964199000',
+            'diff patch pas			/js/sh309/scripts/shBrushDiff.js?t=1451964199000',
+            'erl erlang				/js/sh309/scripts/shBrushErlang.js?t=1451964199000',
+            'groovy					/js/sh309/scripts/shBrushGroovy.js?t=1451964199000',
+            'haxe hx				/js/sh309/scripts/shBrushHaxe.js?t=1451964199000',
+            'java					/js/sh309/scripts/shBrushJava.js?t=1451964199000',
+            'jfx javafx				/js/sh309/scripts/shBrushJavaFX.js?t=1451964199000',
+            'js jscript javascript	/js/sh309/scripts/shBrushJScript.js?t=1451964199000',
+            'perl pl				/js/sh309/scripts/shBrushPerl.js?t=1451964199000',
+            'php					/js/sh309/scripts/shBrushPhp.js?t=1451964199000',
+            'text plain				/js/sh309/scripts/shBrushPlain.js?t=1451964199000',
+            'py python				/js/sh309/scripts/shBrushPython.js?t=1451964199000',
+            'ruby rails ror rb		/js/sh309/scripts/shBrushRuby.js?t=1451964199000',
+            'scala					/js/sh309/scripts/shBrushScala.js?t=1451964199000',
+            'sql					/js/sh309/scripts/shBrushSql.js?t=1451964199000',
+            'vb vbnet				/js/sh309/scripts/shBrushVb.js?t=1451964199000',
+            'xml xhtml xslt html	/js/sh309/scripts/shBrushXml.js?t=1451964199000'
+    );
+    SyntaxHighlighter.all();
+</script>
+<script type="text/javascript" src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/translate"></script>
+<link type="text/css" rel="stylesheet" href="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/shThemeDefault(1).css">
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#form_comment').ajaxForm({
+    	dataType: 'json',
+		beforeSubmit: function(){
+			$('#FormSubmitButton').attr('disabled','disabled');
+			$('#form_msg').html("<span class='ajax_processing'>正在提交评论，请稍候...</span>");	
+			$('#form_msg').show();	
+		},
+        success: function(json) {
+			$('#FormSubmitButton').removeAttr('disabled');
+			    		if(json.msg){
+				$('#form_msg').html("<span class='error_msg'>"+json.msg+"</span>");
+				$('#form_msg').show();
+			}
+    		else if(json.id){
+    			ajax_get("/translate/show_comment?_cmt_id="+json.id, true, function(data){
+    				$('.comments ul.list').append(data);
+					$('#txt_comment').val('');
+					$('.reply_count').html(json.reply_count);
+    			});
+				$('#form_msg').hide();
+    		}
+        }
+    });
+});
+function delete_c(aid,uid,cid) {
+	if(confirm("您确认要删除此评论？")){
+        ajax_post("/action/translate/delete_comments",{cmt:cid},function(html){
+			if(html.length>0)
+				alert(html);
+			else {
+				$("#cmt_"+aid+"_"+uid+"_"+cid).fadeOut();
+				$('.reply_count').html(parseInt($('.reply_count').html())-1);
+			}
+		});
+	}
+}
+function reply_c(aid,uid,cid) {
+	$('.inline_reply').empty();
+	var div_id = '#inline_reply_of_'+aid+'_'+uid+'_'+cid;
+	$('#inline_reply_id').val(uid+'_'+cid);
+	$(div_id).html($('#inline_reply_editor').html());
+	$('#txt_focus').focus();
+	$('#btn_close_inline_reply').click(function(){
+		$(div_id).empty();
+	});
+	$('#form_inline_comment').ajaxForm({
+    	dataType: 'json',
+    	success: function(json) {
+        	if(json.msg){
+        		alert(json.msg);
+        	}
+			else if(json.id){
+				ajax_get("/translate/show_comment?_cmt_id="+json.id, true, function(data){
+    				$('.comments ul.list').append(data);
+					$('.reply_count').html(json.reply_count);
+					$(div_id).empty();
+    			});
+			}
+    	}
+	});
+}
+function vote_article(id) {
+		alert("必须登录后才能操作 :)");
+	}
+function vote_block(id) {
+		alert("必须登录后才能操作 :)");
+	}
+function show_other(pid,ppid) {
+	if($('#other_translate_'+pid+' .paragraph_chs').length==0) {
+    	$('#other_translate_'+pid).show();
+    	ajax_post("/translate/show_other_translate","pid="+pid+"&ppid="+ppid,function(html){
+    		$('#other_translate_'+pid).hide().html(html);
+			// 代码着色
+			$('#other_translate_'+pid+' pre').each(function(){
+				SyntaxHighlighter.highlight(null,this);
+			});
+			$('#other_translate_'+pid).slideDown();
+    	});
+    	}
+	else {
+		$('#other_translate_'+pid).slideToggle();
+	}
+	$('#btn_show_other_'+pid).toggleClass('closeOthers');
+	$('#translate_'+pid).toggleClass('bd10');
+}
+function edit_tags(id) {
+    popup("/translate/edit_tags?article="+id);
+}
+</script><div class="clear"></div></div>
+	<div id="OSC_Footer" class="CenterDiv"><style>
+.oscapp {text-align:left; width:220px;}
+.oscapp span {float:left;width:140px;}
+.oscapp a {float:left;text-indent:-9999em;width:16px;margin-left:8px;}
+.oscapp a.android {background:url('/img/android.gif') no-repeat left center;}
+.oscapp a.iphone {background:url('/img/iphone.gif') no-repeat left center;}
+.oscapp a.wp7 {background:url('/img/wp7.gif') no-repeat left center;}
+</style>
+<table width="100%"><tbody><tr>
+<td align="left">© 开源中国(OSChina.NET) | <a href="http://www.oschina.net/home/aboutosc">关于我们</a> | <a href="mailto:market@oschina.cn">广告联系</a> | <a href="http://weibo.com/oschina2010" target="_blank">@新浪微博</a> | <a href="http://m.oschina.net/">开源中国手机版</a> | <a href="http://www.miitbeian.gov.cn/" target="_blank" style="color:#737573;text-decoration:none;">粤ICP备12009483号-3</a></td>
+<td class="oscapp">
+	<span>开源中国手机客户端：</span>
+	<a href="http://www.oschina.net/app" class="android" title="Android客户端">Android</a>
+	<a href="http://www.oschina.net/app" class="iphone" title="iPhone 客户端">iPhone</a>
+	<a href="http://www.oschina.net/app" class="wp7" title="Windows Phone 客户端">WP7</a>
+</td>
+</tr>
+<tr>
+<td colspan="2" align="left">开源中国社区(OSChina.net)是工信部 <a href="http://www.copu.org.cn/" target="_blank">开源软件推进联盟</a> 指定的官方社区</td>
+</tr>
+</tbody></table>
+<script type="text/javascript">
+<!--
+if (top.location != self.location)top.location=self.location;
+//-->
+</script></div>
+</div>
+
+
+<!-- Generated by OsChina.NET (init:0[ms],page:44[ms],ip:219.117.237.174) --><div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div><div id="topcontrol" title="回到顶部" style="position: fixed; bottom: 120px; right: 100px; cursor: pointer; display: block;"><img src="./Go 程序的性能调试问题 - 技术翻译 - 开源中国社区_files/gotop.gif" style="width:31px; height:31px;"></div><iframe id="google_osd_static_frame_683380642440" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;"></iframe></body></html>

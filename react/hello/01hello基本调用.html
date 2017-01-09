@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta charset="UTF-8">
+	<title>hellp,world</title>
+	<script type="text/javascript" src="../react-0.13.3/build/react.js"></script>
+	<script type="text/javascript" src="../react-0.13.3/build/JSXTransformer.js"></script>
+	<script type="text/jsx">
+
+		var style = {
+			color : "red",
+			border : "1px #000 solid",
+		}
+
+		var HelloWorld = React.createClass({
+
+			getName : function () {
+				if (this.props.name)
+					return this.props
+				else
+					return "World"
+			},
+
+			render: function () {
+
+				var name = this.getName();
+
+				return <p/*
+						注释
+					*/
+					//注释
+
+					>Hello,{
+						(function (obj) {
+							if (obj.props.name)
+								return obj.props.name
+							else
+								return "World"
+						})(this)
+					}{name} {this.getName()} {this.props.name || "World"} {this.props.name ? this.props.name : "World"}{
+					
+					/*
+						注释
+					*/
+					
+					"hello"
+
+					//注释
+				}</p>
+			}
+		});
+		React.render(<div style={style}><HelloWorld name="my_name"></HelloWorld></div>, document.body)
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

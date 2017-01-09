@@ -1,0 +1,108 @@
+------------------------------------------------------------------------------------------
+URL
+http://nodeapi.ucdok.com/#/api/url.html
+
+url.parse url变成js对象
+url.format js对象变成url
+url.resolve('主域名/'，'子路径名'） 变成完整的url路径
+
+解析地址:
+> url.parse('http://www.imooc.com/video/6710/?sad=dgdsa#sd=asd')
+{ protocol: 'http:',
+  slashes: true,
+  auth: null,
+  host: 'www.imooc.com',
+  port: null,
+  hostname: 'www.imooc.com',
+  hash: '#sd=asd',
+  search: '?sad=dgdsa',
+  query: 'sad=dgdsa',
+  pathname: '/video/6710/',
+  path: '/video/6710/?sad=dgdsa',
+  href: 'http://www.imooc.com/video/6710/?sad=dgdsa#sd=asd' }
+>
+
+> url.parse('http://www.imooc.com/video/6710/?sad=dgdsa#sd=asd', true)
+{ protocol: 'http:',
+  slashes: true,
+  auth: null,
+  host: 'www.imooc.com',
+  port: null,
+  hostname: 'www.imooc.com',
+  hash: '#sd=asd',
+  search: '?sad=dgdsa',
+  query: { sad: 'dgdsa' },
+  pathname: '/video/6710/',
+  path: '/video/6710/?sad=dgdsa',
+  href: 'http://www.imooc.com/video/6710/?sad=dgdsa#sd=asd' }
+>
+
+> url.parse('//www.imooc.com/video/6710/?sad=dgdsa#sd=asd', true, true)
+{ protocol: null,
+  slashes: true,
+  auth: null,
+  host: 'www.imooc.com',
+  port: null,
+  hostname: 'www.imooc.com',
+  hash: '#sd=asd',
+  search: '?sad=dgdsa',
+  query: { sad: 'dgdsa' },
+  pathname: '/video/6710/',
+  path: '/video/6710/?sad=dgdsa',
+  href: '//www.imooc.com/video/6710/?sad=dgdsa#sd=asd' }
+>
+
+利用对象生成地址
+> url.format({ protocol: 'http:',)
+...   slashes: true,
+...   auth: null,
+...   host: 'www.imooc.com',
+...   port: null,
+...   hostname: 'www.imooc.com',
+...   hash: '#sd=asd',
+...   search: '?sad=dgdsa',
+...   query: { sad: 'dgdsa' },
+...   pathname: '/video/6710/',
+...   path: '/video/6710/?sad=dgdsa',
+...   href: 'http://www.imooc.com/video/6710/?sad=dgdsa#sd=asd' }
+... >
+
+------------------------------------------------------------------------------------------
+querystring
+http://nodeapi.ucdok.com/#/api/querystring.html
+
+1.序列化
+querystring.stringify({name:'scott',course:['jade','node'],from:''})
+'name=scott&course=jade&course=node&from='
+
+querystring.stringify({name:'scott',course:['jade','node'],from:''}, '/')
+'name=scott/course=jade/course=node/from='
+
+querystring.stringify({name:'scott',course:['jade','node'],from:''}, '/', '/')
+'name/scott/course/jade/course/node/from/'
+
+2.反序列化
+querystring.parse(string)
+querystring.parse(string, '/')
+querystring.parse(string, '/', '=', 100) //100为限制个数(DOS攻击有效)
+3.转义
+querystring.escape
+querystring.unescape
+
+---------------------------------------------------------------------------------------------
+js 的对象继承
+call
+
+---------------------------------------------------------------------------------------------
+cheerio模块(为服务器特别定制的，快速、灵活、实施的jQuery核心实现.)
+npm install cheerio
+
+---------------------------------------------------------------------------------------------
+node 对象继承
+var events = require('events');
+var util = require('util');
+util.inherits(Watcher, events.EventEmitter);
+
+--------------------------------------------------------------------------------------------
+nimble流程控制工具
+npm install nimble

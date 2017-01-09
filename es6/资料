@@ -1,0 +1,8 @@
+http://es6.ruanyifeng.com/#README   ECMAScript 6入门
+
+npm install -g babel
+npm install -g babel-core
+npm install -g babel-cli
+
+
+npm start

@@ -1,0 +1,7 @@
+.idea
+test.tmp
+test.tmp2
+*.exe
+*.prof
+*.iml
+*.log

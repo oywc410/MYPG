@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+	<script src="https://fb.me/react-0.13.3.js"></script>
+	<script type="text/jsx">
+		var Radio = React.createClass({
+			getInitialState: function() {
+				return {
+					value: this.props.defaultValue
+				};
+			},
+			handleChange: function(event) {
+				if(this.props.onChange) {
+					this.props.onChange(event);
+				}
+				this.setState({
+					value: event.target.value
+				});
+			},
+			render: function() {
+				var children = {};
+				var value = this.props.value || this.state.value;
+
+				//获取子元素 并进行for处理
+				React.Children.forEach(this.props.children, function(child, i) {
+         			var label = <label>
+         				<input type="radio" name={this.props.name} value={child.props.value} checked={child.props.value == value} onChange={this.handleChange} />
+         				{child.props.children}
+         				<br />
+         				</label>
+         			children['label' + i] = label;
+				}.bind(this));
+				return <span>{children}</span>;//返回为空 或者一个元素对象 所以 使用<span>包裹
+			}
+		});
+
+		var MyForm = React.createClass({
+			getInitialState: function() {
+				return {my_radio: "B"};
+			},
+			submitHandler: function(event) {
+				event.preventDefault();
+				alert(this.state.my_radio);
+			},
+			handleChange: function(event) {
+				this.setState({
+					my_radio: event.target.value
+				});
+			},
+			render: function() {
+				//使用父组件的值
+				return <form onSubmit={this.submitHandler}>
+					<Radio ref="radio" name="my_radio" defaultValue={this.state.my_radio} onChange={this.handleChange}>
+						<option value="A">First Option</option>
+						<option value="B">Second Option</option>
+						<option value="C">Third Option</option>
+					</Radio>
+					<button type="submit">Speek</button>
+				</form>
+			}
+		});
+
+		React.render(<MyForm></MyForm>, document.body);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
