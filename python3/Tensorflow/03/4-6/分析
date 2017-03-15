@@ -1,0 +1,37 @@
+下载数据:   http://ufldl.stanford.edu/housenumbers/
+
+>>> train = load('data/train_32x32.mat')
+>>> from scipy.io import loadmat as load
+>>> train = load('data/train_32x32.mat')
+>>> train.keys()
+dict_keys(['y', 'X', '__globals__', '__header__', '__version__'])
+>>> train['__version__']
+'1.0'
+>>> train['__globals__']
+[]
+>>> train['__header__']
+b'MATLAB 5.0 MAT-file, Platform: GLNXA64, Created on: Mon Dec  5 21:09:26 2011'
+>>> train['X'] #数据集
+array([[[[ 33,  84,  19, ...,  92, 190, 216],
+         [ 30,  76,  54, ...,  78, 188, 217],
+         [ 38,  59, 110, ..., 101, 191, 212]],
+
+        [[ 15,  86,  20, ...,  94, 205, 221],
+         [ 23,  73,  52, ...,  82, 203, 222],
+         [ 19,  66, 111, ..., 105, 206, 217]],
+
+          [[103, 103,  63, ..., 218, 218, 181],
+         [106,  98, 145, ..., 217, 213, 178],
+         [ 79,  80, 231, ..., 218, 209, 171]]]], dtype=uint8)
+>>> train['y'] #标记
+array([[1],
+       [9],
+       [2],
+       ...,
+       [1],
+       [6],
+       [9]], dtype=uint8)
+>>> train['X'].shape
+(32, 32, 3, 73257) #32 x 32 的矩阵 3色通道 73257个
+>>> train['y'].shape
+(73257, 1)
