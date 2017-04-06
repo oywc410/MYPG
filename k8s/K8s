@@ -1,5 +1,9 @@
 K8s
 
+https://kubernetes.io/docs/getting-started-guides/kubeadm/
+http://blog.csdn.net/xingwangc2014/article/details/51204224
+https://dickingwithdocker.com/deploying-kubernetes-1-4-on-ubuntu-xenial-with-kubeadm/
+
 #集群
 	1.修改计算机名 
 		sudo hostnamectl --static set-hostname master / node1 / node2

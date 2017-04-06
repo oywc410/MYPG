@@ -118,7 +118,7 @@ def conv2d(x, W):#卷积
     return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME') # x输入值 W 权重 strides定义跨步长度 padding抽取模式 SAME or VALID
 
 def max_pool_2x2(x):#pool (max)
-    return tf.nn.max_pool(x, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME')
+    return tf.nn.max_pool(x, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME') # 缩小图片 ksize缩小内核的大小 strides跨度
     
 # define placeholder for inputs to network
 xs = tf.placeholder(tf.float32, [None, 784])  # 28 x 28

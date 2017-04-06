@@ -54,6 +54,30 @@ def normalize(samples):
 	a = a/3.0 #灰度
 	return a/128.0 - 1.0 #映射到 -1.0 ~ +1.0
 
+def distribution(labels, name):
+        count = {}
+	for label in labels:
+		key = 0 if label[0] == 10 else label[0]
+		if key in count:
+			count[key] += 1
+		else:
+			count[key] = 1
+
+	x = []
+	y = []
+	for k, v in count.items():
+		# print(k, v)
+		x.append(k)
+		y.append(v)
+
+        y_pos = np.arange(len(x))
+	plt.bar(y_pos, y, align='center', alpha=0.5)
+	plt.xticks(y_pos, x)
+	plt.ylabel('Count')
+	plt.title(name + ' Label Distribution')
+	plt.show()
+
+
 def inspect(dataset, labels, i):
 	# 显示图片看看
 	if dataset.shape[3] == 1:
@@ -70,7 +94,8 @@ _train_samples, _train_labels = reformat(train_samples, train_labels)
 
 if __name__ == '__main__':
         #inspect(_train_samples, _train_labels, 0)
-        inspect(_train_samples, _train_labels, 1234)
-        _train_samples = normalize(_train_smples)
-        inspect(_train_samples, _train_labels, 1234)
+        #inspect(_train_samples, _train_labels, 1234)
+        #_train_samples = normalize(_train_smples)
+        #inspect(_train_samples, _train_labels, 1234)
+        distribution(train_labels, 'Train Labels')
 

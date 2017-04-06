@@ -1,0 +1,28 @@
+# IDE
+.idea*
+
+# 1
+*/data/
+*__pycache__*
+*/20/model/checkpoint
+*/20/model/default.ckpt.meta
+*/20/model/default.ckpt.index
+
+# 2
+*log/
+*data/
+
+# TensorBoard
+*events.out.tfevents*
+
+# NodeJS
+*node_modules/
+
+# Notebook
+.ipynb_checkpoints/
+
+# File Extension
+*.ckpt*
+*.zip
+*.7z
+*.pyc
