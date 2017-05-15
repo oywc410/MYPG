@@ -170,7 +170,7 @@ func chtmpdir(t *testing.T) func() {
 	if err != nil {
 		t.Fatalf("chtmpdir: %v", err)
 	}
-	d, err := ioutil.TempDir("", "test")
+	d, err := ioutil.TempDir("", "mapTest")
 	if err != nil {
 		t.Fatalf("chtmpdir: %v", err)
 	}

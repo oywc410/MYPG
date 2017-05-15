@@ -100,7 +100,7 @@ package html // import "golang.org/x/net/html"
 // specification. A more direct approach is used instead, where the program
 // counter implies the state, such as whether it is tokenizing a tag or a text
 // node. Specification compliance is verified by checking expected and actual
-// outputs over a test suite rather than aiming for algorithmic fidelity.
+// outputs over a mapTest suite rather than aiming for algorithmic fidelity.
 
 // TODO(nigeltao): Does a DOM API belong in this package or a separate one?
 // TODO(nigeltao): How does parsing interact with a JavaScript engine?

@@ -291,7 +291,7 @@ func TestWithProtocol(t *testing.T) {
 }
 
 func TestWithTwoProtocol(t *testing.T) {
-	proto, err := testWithProtocol(t, []string{"test", "chat"})
+	proto, err := testWithProtocol(t, []string{"mapTest", "chat"})
 	if err != nil {
 		t.Errorf("SubProto: unexpected error: %v", err)
 	}
@@ -301,7 +301,7 @@ func TestWithTwoProtocol(t *testing.T) {
 }
 
 func TestWithBadProtocol(t *testing.T) {
-	_, err := testWithProtocol(t, []string{"test"})
+	_, err := testWithProtocol(t, []string{"mapTest"})
 	if err != ErrBadStatus {
 		t.Errorf("SubProto: expected %v, got %v", ErrBadStatus, err)
 	}

@@ -308,19 +308,19 @@ func TestWriteHeaders(t *testing.T) {
 	for _, tt := range tests {
 		fr, buf := testFramer()
 		if err := fr.WriteHeaders(tt.p); err != nil {
-			t.Errorf("test %q: %v", tt.name, err)
+			t.Errorf("mapTest %q: %v", tt.name, err)
 			continue
 		}
 		if buf.String() != tt.wantEnc {
-			t.Errorf("test %q: encoded %q; want %q", tt.name, buf.Bytes(), tt.wantEnc)
+			t.Errorf("mapTest %q: encoded %q; want %q", tt.name, buf.Bytes(), tt.wantEnc)
 		}
 		f, err := fr.ReadFrame()
 		if err != nil {
-			t.Errorf("test %q: failed to read the frame back: %v", tt.name, err)
+			t.Errorf("mapTest %q: failed to read the frame back: %v", tt.name, err)
 			continue
 		}
 		if !reflect.DeepEqual(f, tt.wantFrame) {
-			t.Errorf("test %q: mismatch.\n got: %#v\nwant: %#v\n", tt.name, f, tt.wantFrame)
+			t.Errorf("mapTest %q: mismatch.\n got: %#v\nwant: %#v\n", tt.name, f, tt.wantFrame)
 		}
 	}
 }
@@ -385,17 +385,17 @@ func TestWriteContinuation(t *testing.T) {
 	for _, tt := range tests {
 		fr, _ := testFramer()
 		if err := fr.WriteContinuation(streamID, tt.end, tt.frag); err != nil {
-			t.Errorf("test %q: %v", tt.name, err)
+			t.Errorf("mapTest %q: %v", tt.name, err)
 			continue
 		}
 		fr.AllowIllegalReads = true
 		f, err := fr.ReadFrame()
 		if err != nil {
-			t.Errorf("test %q: failed to read the frame back: %v", tt.name, err)
+			t.Errorf("mapTest %q: failed to read the frame back: %v", tt.name, err)
 			continue
 		}
 		if !reflect.DeepEqual(f, tt.wantFrame) {
-			t.Errorf("test %q: mismatch.\n got: %#v\nwant: %#v\n", tt.name, f, tt.wantFrame)
+			t.Errorf("mapTest %q: mismatch.\n got: %#v\nwant: %#v\n", tt.name, f, tt.wantFrame)
 		}
 	}
 }
@@ -454,16 +454,16 @@ func TestWritePriority(t *testing.T) {
 	for _, tt := range tests {
 		fr, _ := testFramer()
 		if err := fr.WritePriority(streamID, tt.priority); err != nil {
-			t.Errorf("test %q: %v", tt.name, err)
+			t.Errorf("mapTest %q: %v", tt.name, err)
 			continue
 		}
 		f, err := fr.ReadFrame()
 		if err != nil {
-			t.Errorf("test %q: failed to read the frame back: %v", tt.name, err)
+			t.Errorf("mapTest %q: failed to read the frame back: %v", tt.name, err)
 			continue
 		}
 		if !reflect.DeepEqual(f, tt.wantFrame) {
-			t.Errorf("test %q: mismatch.\n got: %#v\nwant: %#v\n", tt.name, f, tt.wantFrame)
+			t.Errorf("mapTest %q: mismatch.\n got: %#v\nwant: %#v\n", tt.name, f, tt.wantFrame)
 		}
 	}
 }
@@ -721,7 +721,7 @@ func TestWritePushPromise(t *testing.T) {
 	}
 }
 
-// test checkFrameOrder and that HEADERS and CONTINUATION frames can't be intermingled.
+// mapTest checkFrameOrder and that HEADERS and CONTINUATION frames can't be intermingled.
 func TestReadFrameOrder(t *testing.T) {
 	head := func(f *Framer, id uint32, end bool) {
 		f.WriteHeaders(HeadersFrameParam{
@@ -821,7 +821,7 @@ func TestReadFrameOrder(t *testing.T) {
 		f := NewFramer(buf, buf)
 		f.AllowIllegalWrites = true
 		tt.w(f)
-		f.WriteData(1, true, nil) // to test transition away from last step
+		f.WriteData(1, true, nil) // to mapTest transition away from last step
 
 		var err error
 		n := 0
@@ -1055,7 +1055,7 @@ func TestMetaFrameHeader(t *testing.T) {
 
 		name := tt.name
 		if name == "" {
-			name = fmt.Sprintf("test index %d", i)
+			name = fmt.Sprintf("mapTest index %d", i)
 		}
 
 		var got interface{}
@@ -1065,7 +1065,7 @@ func TestMetaFrameHeader(t *testing.T) {
 			got = err
 
 			// Ignore the StreamError.Cause field, if it matches the wantErrReason.
-			// The test table above predates the Cause field.
+			// The mapTest table above predates the Cause field.
 			if se, ok := err.(StreamError); ok && se.Cause != nil && se.Cause.Error() == tt.wantErrReason {
 				se.Cause = nil
 				got = se

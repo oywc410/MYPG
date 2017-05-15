@@ -21,7 +21,7 @@ import (
 	"golang.org/x/net/html/atom"
 )
 
-// readParseTest reads a single test case from r.
+// readParseTest reads a single mapTest case from r.
 func readParseTest(r *bufio.Reader) (text, want, context string, err error) {
 	line, err := r.ReadSlice('\n')
 	if err != nil {
@@ -223,13 +223,13 @@ func TestParser(t *testing.T) {
 			err = testParseCase(text, want, context)
 
 			if err != nil {
-				t.Errorf("%s test #%d %q, %s", tf, i, text, err)
+				t.Errorf("%s mapTest #%d %q, %s", tf, i, text, err)
 			}
 		}
 	}
 }
 
-// testParseCase tests one test case from the test files. If the test does not
+// testParseCase tests one mapTest case from the mapTest files. If the mapTest does not
 // pass, it returns an error that explains the failure.
 // text is the HTML to be parsed, want is a dump of the correct parse tree,
 // and context is the name of the context node, if any.
@@ -306,10 +306,10 @@ func testParseCase(text, want, context string) (err error) {
 	return nil
 }
 
-// Some test input result in parse trees are not 'well-formed' despite
+// Some mapTest input result in parse trees are not 'well-formed' despite
 // following the HTML5 recovery algorithms. Rendering and re-parsing such a
 // tree will not result in an exact clone of that tree. We blacklist such
-// inputs from the render test.
+// inputs from the render mapTest.
 var renderTestBlacklist = map[string]bool{
 	// The second <a> will be reparented to the first <table>'s parent. This
 	// results in an <a> whose parent is an <a>, which is not 'well-formed'.

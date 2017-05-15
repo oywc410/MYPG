@@ -11,7 +11,7 @@ import (
 )
 
 func TestParseIfHeader(t *testing.T) {
-	// The "section x.y.z" test cases come from section x.y.z of the spec at
+	// The "section x.y.z" mapTest cases come from section x.y.z of the spec at
 	// http://www.webdav.org/specs/rfc4918.html
 	testCases := []struct {
 		desc  string

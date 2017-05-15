@@ -48,7 +48,7 @@ func waitState(t *testing.T, s *mgr.Service, want svc.State) {
 
 func TestExample(t *testing.T) {
 	if testing.Short() {
-		t.Skip("skipping test in short mode - it modifies system services")
+		t.Skip("skipping mapTest in short mode - it modifies system services")
 	}
 
 	const name = "myservice"

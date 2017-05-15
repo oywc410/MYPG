@@ -17,7 +17,7 @@ import (
 )
 
 // otherContext is a Context that's not one of the types defined in context.go.
-// This lets us test code paths that differ based on the underlying type of the
+// This lets us mapTest code paths that differ based on the underlying type of the
 // Context.
 type otherContext struct {
 	Context

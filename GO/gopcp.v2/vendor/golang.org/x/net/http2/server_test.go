@@ -53,7 +53,7 @@ type serverTester struct {
 	decodedHeaders [][2]string
 
 	// If http2debug!=2, then we capture Frame debug logs that will be written
-	// to t.Log after a test fails. The read and write logs use separate locks
+	// to t.Log after a mapTest fails. The read and write logs use separate locks
 	// and buffers so we don't accidentally introduce synchronization between
 	// the read and write goroutines, which may hide data races.
 	frameReadLogMu   sync.Mutex
@@ -133,7 +133,7 @@ func newServerTester(t testing.TB, handler http.HandlerFunc, opts ...interface{}
 	ts.StartTLS()
 
 	if VerboseLogs {
-		t.Logf("Running test server at: %s", ts.URL)
+		t.Logf("Running mapTest server at: %s", ts.URL)
 	}
 	testHookGetServerConn = func(v *serverConn) {
 		st.scMu.Lock()
@@ -331,7 +331,7 @@ func (st *serverTester) encodeHeader(headers ...string) []byte {
 	defaultAuthority := st.ts.Listener.Addr().String()
 
 	if len(headers) == 0 {
-		// Fast path, mostly for benchmarks, so test code doesn't pollute
+		// Fast path, mostly for benchmarks, so mapTest code doesn't pollute
 		// profiles when we're looking to improve server allocations.
 		st.encodeHeaderField(":method", "GET")
 		st.encodeHeaderField(":scheme", "https")
@@ -655,7 +655,7 @@ func TestServer_Request_Get_PathSlashes(t *testing.T) {
 	})
 }
 
-// TODO: add a test with EndStream=true on the HEADERS but setting a
+// TODO: add a mapTest with EndStream=true on the HEADERS but setting a
 // Content-Length anyway.  Should we just omit it and force it to
 // zero?
 
@@ -1303,7 +1303,7 @@ func TestServer_RSTStream_Unblocks_Read(t *testing.T) {
 }
 
 func TestServer_RSTStream_Unblocks_Header_Write(t *testing.T) {
-	// Run this test a bunch, because it doesn't always
+	// Run this mapTest a bunch, because it doesn't always
 	// deadlock. But with a bunch, it did.
 	n := 50
 	if testing.Short() {
@@ -1449,7 +1449,7 @@ func TestServer_StateTransitions(t *testing.T) {
 	}
 }
 
-// test HEADERS w/o EndHeaders + another HEADERS (should get rejected)
+// mapTest HEADERS w/o EndHeaders + another HEADERS (should get rejected)
 func TestServer_Rejects_HeadersNoEnd_Then_Headers(t *testing.T) {
 	testServerRejectsConn(t, func(st *serverTester) {
 		st.writeHeaders(HeadersFrameParam{
@@ -1467,7 +1467,7 @@ func TestServer_Rejects_HeadersNoEnd_Then_Headers(t *testing.T) {
 	})
 }
 
-// test HEADERS w/o EndHeaders + PING (should get rejected)
+// mapTest HEADERS w/o EndHeaders + PING (should get rejected)
 func TestServer_Rejects_HeadersNoEnd_Then_Ping(t *testing.T) {
 	testServerRejectsConn(t, func(st *serverTester) {
 		st.writeHeaders(HeadersFrameParam{
@@ -1482,7 +1482,7 @@ func TestServer_Rejects_HeadersNoEnd_Then_Ping(t *testing.T) {
 	})
 }
 
-// test HEADERS w/ EndHeaders + a continuation HEADERS (should get rejected)
+// mapTest HEADERS w/ EndHeaders + a continuation HEADERS (should get rejected)
 func TestServer_Rejects_HeadersEnd_Then_Continuation(t *testing.T) {
 	testServerRejectsConn(t, func(st *serverTester) {
 		st.writeHeaders(HeadersFrameParam{
@@ -1498,7 +1498,7 @@ func TestServer_Rejects_HeadersEnd_Then_Continuation(t *testing.T) {
 	})
 }
 
-// test HEADERS w/o EndHeaders + a continuation HEADERS on wrong stream ID
+// mapTest HEADERS w/o EndHeaders + a continuation HEADERS on wrong stream ID
 func TestServer_Rejects_HeadersNoEnd_Then_ContinuationWrongStream(t *testing.T) {
 	testServerRejectsConn(t, func(st *serverTester) {
 		st.writeHeaders(HeadersFrameParam{
@@ -1970,7 +1970,7 @@ func TestServer_Response_LargeWrite_FlowControlled(t *testing.T) {
 		}
 		return nil
 	}, func(st *serverTester) {
-		// Set the window size to something explicit for this test.
+		// Set the window size to something explicit for this mapTest.
 		// It's also how much initial data we expect.
 		if err := st.fr.WriteSettings(Setting{SettingInitialWindowSize, uint32(reads[0])}); err != nil {
 			t.Fatal(err)
@@ -2488,7 +2488,7 @@ func readBodyHandler(t *testing.T, want string) func(w http.ResponseWriter, r *h
 	}
 }
 
-// TestServerWithCurl currently fails, hence the LenientCipherSuites test. See:
+// TestServerWithCurl currently fails, hence the LenientCipherSuites mapTest. See:
 //   https://github.com/tatsuhiro-t/nghttp2/issues/140 &
 //   http://sourceforge.net/p/curl/bugs/1472/
 func TestServerWithCurl(t *testing.T)                     { testServerWithCurl(t, false) }
@@ -2496,10 +2496,10 @@ func TestServerWithCurl_LenientCipherSuites(t *testing.T) { testServerWithCurl(t
 
 func testServerWithCurl(t *testing.T, permitProhibitedCipherSuites bool) {
 	if runtime.GOOS != "linux" {
-		t.Skip("skipping Docker test when not on Linux; requires --net which won't work with boot2docker anyway")
+		t.Skip("skipping Docker mapTest when not on Linux; requires --net which won't work with boot2docker anyway")
 	}
 	if testing.Short() {
-		t.Skip("skipping curl test in short mode")
+		t.Skip("skipping curl mapTest in short mode")
 	}
 	requireCurl(t)
 	var gotConn int32
@@ -2518,7 +2518,7 @@ func testServerWithCurl(t *testing.T, permitProhibitedCipherSuites bool) {
 	ts.StartTLS()
 	defer ts.Close()
 
-	t.Logf("Running test server for curl to hit at: %s", ts.URL)
+	t.Logf("Running mapTest server for curl to hit at: %s", ts.URL)
 	container := curl(t, "--silent", "--http2", "--insecure", "-v", ts.URL)
 	defer kill(container)
 	resc := make(chan interface{}, 1)
@@ -2560,14 +2560,14 @@ func testServerWithCurl(t *testing.T, permitProhibitedCipherSuites bool) {
 	}
 }
 
-var doh2load = flag.Bool("h2load", false, "Run h2load test")
+var doh2load = flag.Bool("h2load", false, "Run h2load mapTest")
 
 func TestServerWithH2Load(t *testing.T) {
 	if !*doh2load {
 		t.Skip("Skipping without --h2load flag.")
 	}
 	if runtime.GOOS != "linux" {
-		t.Skip("skipping Docker test when not on Linux; requires --net which won't work with boot2docker anyway")
+		t.Skip("skipping Docker mapTest when not on Linux; requires --net which won't work with boot2docker anyway")
 	}
 	requireH2load(t)
 
@@ -2685,7 +2685,7 @@ func TestCompressionErrorOnWrite(t *testing.T) {
 	// Crank this up, now that we have a conn connected with the
 	// hpack.Decoder's max string length set has been initialized
 	// from the earlier low ~8K value. We want this higher so don't
-	// hit the max header list size. We only want to test hitting
+	// hit the max header list size. We only want to mapTest hitting
 	// the max string size.
 	serverConfig.MaxHeaderBytes = 1 << 20
 
@@ -2758,9 +2758,9 @@ func TestCompressionErrorOnClose(t *testing.T) {
 	}
 }
 
-// test that a server handler can read trailers from a client
+// mapTest that a server handler can read trailers from a client
 func TestServerReadsTrailers(t *testing.T) {
-	const testBody = "some test body"
+	const testBody = "some mapTest body"
 	writeReq := func(st *serverTester) {
 		st.writeHeaders(HeadersFrameParam{
 			StreamID:      1, // clients send odd numbers
@@ -2809,7 +2809,7 @@ func TestServerReadsTrailers(t *testing.T) {
 	testServerRequest(t, writeReq, checkReq)
 }
 
-// test that a server handler can send trailers
+// mapTest that a server handler can send trailers
 func TestServerWritesTrailers_WithFlush(t *testing.T)    { testServerWritesTrailers(t, true) }
 func TestServerWritesTrailers_WithoutFlush(t *testing.T) { testServerWritesTrailers(t, false) }
 

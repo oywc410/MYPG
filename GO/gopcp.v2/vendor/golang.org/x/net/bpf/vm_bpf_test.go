@@ -43,7 +43,7 @@ func testVM(t *testing.T, filter []bpf.Instruction) (virtualMachine, func(), err
 	goVM, err := bpf.NewVM(filter)
 	if err != nil {
 		// Some tests expect an error, so this error must be returned
-		// instead of fatally exiting the test
+		// instead of fatally exiting the mapTest
 		return nil, nil, err
 	}
 

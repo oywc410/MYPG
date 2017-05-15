@@ -56,7 +56,7 @@ var ipv4HeaderLittleEndianTest = ipv4HeaderTest{
 func TestParseIPv4Header(t *testing.T) {
 	tt := &ipv4HeaderLittleEndianTest
 	if nativeEndian != binary.LittleEndian {
-		t.Skip("no test for non-little endian machine yet")
+		t.Skip("no mapTest for non-little endian machine yet")
 	}
 
 	var wh []byte

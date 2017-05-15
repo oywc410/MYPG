@@ -245,7 +245,7 @@ func TestServer_Push_Success(t *testing.T) {
 }
 
 func TestServer_Push_SuccessNoRace(t *testing.T) {
-	// Regression test for issue #18326. Ensure the request handler can mutate
+	// Regression mapTest for issue #18326. Ensure the request handler can mutate
 	// pushed request headers without racing with the PUSH_PROMISE write.
 	errc := make(chan error, 2)
 	st := newServerTester(t, func(w http.ResponseWriter, r *http.Request) {
@@ -392,7 +392,7 @@ func TestServer_Push_RejectMissingHost(t *testing.T) {
 func TestServer_Push_RejectRelativePath(t *testing.T) {
 	testServer_Push_RejectSingleRequest(t,
 		func(p http.Pusher, r *http.Request) error {
-			if err := p.Push("../test", nil); err == nil {
+			if err := p.Push("../mapTest", nil); err == nil {
 				return errors.New("Push() should have failed (push target is a relative path)")
 			}
 			return nil
@@ -417,8 +417,8 @@ func TestServer_Push_RejectForbiddenHeader(t *testing.T) {
 				"Content-Encoding": {"gzip"},
 				"Trailer":          {"Foo"},
 				"Te":               {"trailers"},
-				"Host":             {"test.com"},
-				":authority":       {"test.com"},
+				"Host":             {"mapTest.com"},
+				":authority":       {"mapTest.com"},
 			}
 			if err := p.Push("https://"+r.Host+"/pushed", &http.PushOptions{Header: header}); err == nil {
 				return errors.New("Push() should have failed (forbidden headers)")

@@ -608,7 +608,7 @@ func TestTrailingToken(t *testing.T) {
 }
 
 func TestEntityInsideCDATA(t *testing.T) {
-	input := `<test><![CDATA[ &val=foo ]]></test>`
+	input := `<mapTest><![CDATA[ &val=foo ]]></mapTest>`
 	d := NewDecoder(strings.NewReader(input))
 	var err error
 	for _, err = d.Token(); err == nil; _, err = d.Token() {

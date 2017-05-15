@@ -291,7 +291,7 @@ type PointerFieldsTest struct {
 }
 
 type ChardataEmptyTest struct {
-	XMLName  Name    `xml:"test"`
+	XMLName  Name    `xml:"mapTest"`
 	Contents *string `xml:",chardata"`
 }
 
@@ -342,12 +342,12 @@ type OuterStruct struct {
 
 type OuterNamedStruct struct {
 	InnerStruct
-	XMLName Name `xml:"outerns test"`
+	XMLName Name `xml:"outerns mapTest"`
 	IntAttr int  `xml:"int,attr"`
 }
 
 type OuterNamedOrderedStruct struct {
-	XMLName Name `xml:"outerns test"`
+	XMLName Name `xml:"outerns mapTest"`
 	InnerStruct
 	IntAttr int `xml:"int,attr"`
 }
@@ -372,7 +372,7 @@ type XMLNSFieldStruct struct {
 }
 
 type NamedXMLNSFieldStruct struct {
-	XMLName struct{} `xml:"testns test"`
+	XMLName struct{} `xml:"testns mapTest"`
 	Ns      string   `xml:"xmlns,attr"`
 	Body    string
 }
@@ -383,7 +383,7 @@ type XMLNSFieldStructWithOmitEmpty struct {
 }
 
 type NamedXMLNSFieldStructWithEmptyNamespace struct {
-	XMLName struct{} `xml:"test"`
+	XMLName struct{} `xml:"mapTest"`
 	Ns      string   `xml:"xmlns,attr"`
 	Body    string
 }
@@ -448,7 +448,7 @@ var marshalTests = []struct {
 		ExpectXML: `<Plain><V>2001-09-09T01:46:40.123456789Z</V></Plain>`,
 	},
 
-	// A pointer to struct{} may be used to test for an element's presence.
+	// A pointer to struct{} may be used to mapTest for an element's presence.
 	{
 		Value:     &PresenceTest{new(struct{})},
 		ExpectXML: `<PresenceTest><Exists></Exists></PresenceTest>`,
@@ -458,7 +458,7 @@ var marshalTests = []struct {
 		ExpectXML: `<PresenceTest></PresenceTest>`,
 	},
 
-	// A pointer to struct{} may be used to test for an element's presence.
+	// A pointer to struct{} may be used to mapTest for an element's presence.
 	{
 		Value:     &PresenceTest{new(struct{})},
 		ExpectXML: `<PresenceTest><Exists></Exists></PresenceTest>`,
@@ -882,7 +882,7 @@ var marshalTests = []struct {
 	// empty chardata pointer field
 	{
 		Value:       &ChardataEmptyTest{},
-		ExpectXML:   `<test></test>`,
+		ExpectXML:   `<mapTest></mapTest>`,
 		MarshalOnly: true,
 	},
 
@@ -1042,35 +1042,35 @@ var marshalTests = []struct {
 		Value:     &OuterStruct{IntAttr: 10},
 	},
 	{
-		ExpectXML: `<test xmlns="outerns" int="10"></test>`,
-		Value:     &OuterNamedStruct{XMLName: Name{Space: "outerns", Local: "test"}, IntAttr: 10},
+		ExpectXML: `<mapTest xmlns="outerns" int="10"></mapTest>`,
+		Value:     &OuterNamedStruct{XMLName: Name{Space: "outerns", Local: "mapTest"}, IntAttr: 10},
 	},
 	{
-		ExpectXML: `<test xmlns="outerns" int="10"></test>`,
-		Value:     &OuterNamedOrderedStruct{XMLName: Name{Space: "outerns", Local: "test"}, IntAttr: 10},
+		ExpectXML: `<mapTest xmlns="outerns" int="10"></mapTest>`,
+		Value:     &OuterNamedOrderedStruct{XMLName: Name{Space: "outerns", Local: "mapTest"}, IntAttr: 10},
 	},
 	{
 		ExpectXML: `<outer xmlns="testns" int="10"></outer>`,
 		Value:     &OuterOuterStruct{OuterStruct{IntAttr: 10}},
 	},
 	{
-		ExpectXML: `<NestedAndChardata><A><B></B><B></B></A>test</NestedAndChardata>`,
-		Value:     &NestedAndChardata{AB: make([]string, 2), Chardata: "test"},
+		ExpectXML: `<NestedAndChardata><A><B></B><B></B></A>mapTest</NestedAndChardata>`,
+		Value:     &NestedAndChardata{AB: make([]string, 2), Chardata: "mapTest"},
 	},
 	{
-		ExpectXML: `<NestedAndComment><A><B></B><B></B></A><!--test--></NestedAndComment>`,
-		Value:     &NestedAndComment{AB: make([]string, 2), Comment: "test"},
+		ExpectXML: `<NestedAndComment><A><B></B><B></B></A><!--mapTest--></NestedAndComment>`,
+		Value:     &NestedAndComment{AB: make([]string, 2), Comment: "mapTest"},
 	},
 	{
 		ExpectXML: `<XMLNSFieldStruct xmlns="http://example.com/ns"><Body>hello world</Body></XMLNSFieldStruct>`,
 		Value:     &XMLNSFieldStruct{Ns: "http://example.com/ns", Body: "hello world"},
 	},
 	{
-		ExpectXML: `<testns:test xmlns:testns="testns" xmlns="http://example.com/ns"><Body>hello world</Body></testns:test>`,
+		ExpectXML: `<testns:mapTest xmlns:testns="testns" xmlns="http://example.com/ns"><Body>hello world</Body></testns:mapTest>`,
 		Value:     &NamedXMLNSFieldStruct{Ns: "http://example.com/ns", Body: "hello world"},
 	},
 	{
-		ExpectXML: `<testns:test xmlns:testns="testns"><Body>hello world</Body></testns:test>`,
+		ExpectXML: `<testns:mapTest xmlns:testns="testns"><Body>hello world</Body></testns:mapTest>`,
 		Value:     &NamedXMLNSFieldStruct{Ns: "", Body: "hello world"},
 	},
 	{
@@ -1078,10 +1078,10 @@ var marshalTests = []struct {
 		Value:     &XMLNSFieldStructWithOmitEmpty{Body: "hello world"},
 	},
 	{
-		// The xmlns attribute must be ignored because the <test>
+		// The xmlns attribute must be ignored because the <mapTest>
 		// element is in the empty namespace, so it's not possible
 		// to set the default namespace to something non-empty.
-		ExpectXML:   `<test><Body>hello world</Body></test>`,
+		ExpectXML:   `<mapTest><Body>hello world</Body></mapTest>`,
 		Value:       &NamedXMLNSFieldStructWithEmptyNamespace{Ns: "foo", Body: "hello world"},
 		MarshalOnly: true,
 	},
@@ -1198,7 +1198,7 @@ func TestMarshalErrors(t *testing.T) {
 	}
 }
 
-// Do invertibility testing on the various structures that we test
+// Do invertibility testing on the various structures that we mapTest
 func TestUnmarshal(t *testing.T) {
 	for i, test := range marshalTests {
 		if test.MarshalOnly {

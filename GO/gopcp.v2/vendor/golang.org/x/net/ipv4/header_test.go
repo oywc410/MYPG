@@ -88,7 +88,7 @@ var headerLittleEndianTest = headerTest{
 func TestMarshalHeader(t *testing.T) {
 	tt := &headerLittleEndianTest
 	if nativeEndian != binary.LittleEndian {
-		t.Skip("no test for non-little endian machine yet")
+		t.Skip("no mapTest for non-little endian machine yet")
 	}
 
 	b, err := tt.Header.Marshal()
@@ -119,7 +119,7 @@ func TestMarshalHeader(t *testing.T) {
 func TestParseHeader(t *testing.T) {
 	tt := &headerLittleEndianTest
 	if nativeEndian != binary.LittleEndian {
-		t.Skip("no test for big endian machine yet")
+		t.Skip("no mapTest for big endian machine yet")
 	}
 
 	var wh []byte

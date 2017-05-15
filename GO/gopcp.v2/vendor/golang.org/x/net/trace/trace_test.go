@@ -74,7 +74,7 @@ func benchmarkTrace(b *testing.B, maxEvents, numEvents int) {
 	numSpans := (b.N + numEvents + 1) / numEvents
 
 	for i := 0; i < numSpans; i++ {
-		tr := New("test", "test")
+		tr := New("mapTest", "mapTest")
 		tr.SetMaxEvents(maxEvents)
 		for j := 0; j < numEvents; j++ {
 			tr.LazyPrintf("%d", j)

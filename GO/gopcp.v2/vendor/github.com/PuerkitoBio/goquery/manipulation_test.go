@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	wrapHtml = "<div id=\"ins\">test string<div><p><em><b></b></em></p></div></div>"
+	wrapHtml = "<div id=\"ins\">mapTest string<div><p><em><b></b></em></p></div></div>"
 )
 
 func TestAfter(t *testing.T) {

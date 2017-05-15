@@ -287,7 +287,7 @@ type Framer struct {
 
 	// AllowIllegalWrites permits the Framer's Write methods to
 	// write frames that do not conform to the HTTP/2 spec. This
-	// permits using the Framer to test other HTTP/2
+	// permits using the Framer to mapTest other HTTP/2
 	// implementations' conformance to the spec.
 	// If false, the Write methods will prefer to return an error
 	// rather than comply.
@@ -295,7 +295,7 @@ type Framer struct {
 
 	// AllowIllegalReads permits the Framer's ReadFrame method
 	// to return non-compliant frames or frame orders.
-	// This is for testing and permits using the Framer to test
+	// This is for testing and permits using the Framer to mapTest
 	// other HTTP/2 implementations' conformance to the spec.
 	// It is not compatible with ReadMetaHeaders.
 	AllowIllegalReads bool

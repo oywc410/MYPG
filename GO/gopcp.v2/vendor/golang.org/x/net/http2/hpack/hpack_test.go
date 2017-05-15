@@ -536,7 +536,7 @@ func TestHuffmanDecodeExcessPadding(t *testing.T) {
 	for i, in := range tests {
 		var buf bytes.Buffer
 		if _, err := HuffmanDecode(&buf, in); err != ErrInvalidHuffman {
-			t.Errorf("test-%d: decode(%q) = %v; want ErrInvalidHuffman", i, in, err)
+			t.Errorf("mapTest-%d: decode(%q) = %v; want ErrInvalidHuffman", i, in, err)
 		}
 	}
 }
@@ -714,7 +714,7 @@ func TestHuffmanDecodeFuzz(t *testing.T) {
 	}
 	t.Logf("%0.02f%% are invalid (%d / %d)", 100*float64(numFail)/float64(n), numFail, n)
 	if numFail < 1 {
-		t.Error("expected at least one invalid huffman encoding (test starts with one)")
+		t.Error("expected at least one invalid huffman encoding (mapTest starts with one)")
 	}
 }
 

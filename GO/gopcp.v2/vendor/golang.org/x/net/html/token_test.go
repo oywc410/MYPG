@@ -15,7 +15,7 @@ import (
 )
 
 type tokenTest struct {
-	// A short description of the test case.
+	// A short description of the mapTest case.
 	desc string
 	// The HTML to parse.
 	html string
@@ -521,7 +521,7 @@ tests:
 				continue tests
 			}
 			// EOF indicates that we completed tokenization and hence found the max
-			// maxBuf that generates ErrBufferExceeded, so continue to the next test.
+			// maxBuf that generates ErrBufferExceeded, so continue to the next mapTest.
 			if z.Err() == io.EOF {
 				break
 			}

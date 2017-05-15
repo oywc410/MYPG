@@ -58,44 +58,44 @@ func LogAndAssertText(t *testing.T, log func(*Logger), assertions func(fields ma
 
 func TestPrint(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.Print("test")
+		log.Print("mapTest")
 	}, func(fields Fields) {
-		assert.Equal(t, fields["msg"], "test")
+		assert.Equal(t, fields["msg"], "mapTest")
 		assert.Equal(t, fields["level"], "info")
 	})
 }
 
 func TestInfo(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.Info("test")
+		log.Info("mapTest")
 	}, func(fields Fields) {
-		assert.Equal(t, fields["msg"], "test")
+		assert.Equal(t, fields["msg"], "mapTest")
 		assert.Equal(t, fields["level"], "info")
 	})
 }
 
 func TestWarn(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.Warn("test")
+		log.Warn("mapTest")
 	}, func(fields Fields) {
-		assert.Equal(t, fields["msg"], "test")
+		assert.Equal(t, fields["msg"], "mapTest")
 		assert.Equal(t, fields["level"], "warning")
 	})
 }
 
 func TestInfolnShouldAddSpacesBetweenStrings(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.Infoln("test", "test")
+		log.Infoln("mapTest", "mapTest")
 	}, func(fields Fields) {
-		assert.Equal(t, fields["msg"], "test test")
+		assert.Equal(t, fields["msg"], "mapTest mapTest")
 	})
 }
 
 func TestInfolnShouldAddSpacesBetweenStringAndNonstring(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.Infoln("test", 10)
+		log.Infoln("mapTest", 10)
 	}, func(fields Fields) {
-		assert.Equal(t, fields["msg"], "test 10")
+		assert.Equal(t, fields["msg"], "mapTest 10")
 	})
 }
 
@@ -117,7 +117,7 @@ func TestInfoShouldAddSpacesBetweenTwoNonStrings(t *testing.T) {
 
 func TestInfoShouldNotAddSpacesBetweenStringAndNonstring(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.Info("test", 10)
+		log.Info("mapTest", 10)
 	}, func(fields Fields) {
 		assert.Equal(t, fields["msg"], "test10")
 	})
@@ -125,7 +125,7 @@ func TestInfoShouldNotAddSpacesBetweenStringAndNonstring(t *testing.T) {
 
 func TestInfoShouldNotAddSpacesBetweenStrings(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.Info("test", "test")
+		log.Info("mapTest", "mapTest")
 	}, func(fields Fields) {
 		assert.Equal(t, fields["msg"], "testtest")
 	})
@@ -143,7 +143,7 @@ func TestWithFieldsShouldAllowAssignments(t *testing.T) {
 		"key1": "value1",
 	})
 
-	localLog.WithField("key2", "value2").Info("test")
+	localLog.WithField("key2", "value2").Info("mapTest")
 	err := json.Unmarshal(buffer.Bytes(), &fields)
 	assert.Nil(t, err)
 
@@ -152,7 +152,7 @@ func TestWithFieldsShouldAllowAssignments(t *testing.T) {
 
 	buffer = bytes.Buffer{}
 	fields = Fields{}
-	localLog.Info("test")
+	localLog.Info("mapTest")
 	err = json.Unmarshal(buffer.Bytes(), &fields)
 	assert.Nil(t, err)
 
@@ -163,24 +163,24 @@ func TestWithFieldsShouldAllowAssignments(t *testing.T) {
 
 func TestUserSuppliedFieldDoesNotOverwriteDefaults(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.WithField("msg", "hello").Info("test")
+		log.WithField("msg", "hello").Info("mapTest")
 	}, func(fields Fields) {
-		assert.Equal(t, fields["msg"], "test")
+		assert.Equal(t, fields["msg"], "mapTest")
 	})
 }
 
 func TestUserSuppliedMsgFieldHasPrefix(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.WithField("msg", "hello").Info("test")
+		log.WithField("msg", "hello").Info("mapTest")
 	}, func(fields Fields) {
-		assert.Equal(t, fields["msg"], "test")
+		assert.Equal(t, fields["msg"], "mapTest")
 		assert.Equal(t, fields["fields.msg"], "hello")
 	})
 }
 
 func TestUserSuppliedTimeFieldHasPrefix(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.WithField("time", "hello").Info("test")
+		log.WithField("time", "hello").Info("mapTest")
 	}, func(fields Fields) {
 		assert.Equal(t, fields["fields.time"], "hello")
 	})
@@ -188,7 +188,7 @@ func TestUserSuppliedTimeFieldHasPrefix(t *testing.T) {
 
 func TestUserSuppliedLevelFieldHasPrefix(t *testing.T) {
 	LogAndAssertJSON(t, func(log *Logger) {
-		log.WithField("level", 1).Info("test")
+		log.WithField("level", 1).Info("mapTest")
 	}, func(fields Fields) {
 		assert.Equal(t, fields["level"], "info")
 		assert.Equal(t, fields["fields.level"], 1.0) // JSON has floats only
@@ -343,19 +343,19 @@ func TestLoggingRace(t *testing.T) {
 	wg.Wait()
 }
 
-// Compile test
+// Compile mapTest
 func TestLogrusInterface(t *testing.T) {
 	var buffer bytes.Buffer
 	fn := func(l FieldLogger) {
 		b := l.WithField("key", "value")
 		b.Debug("Test")
 	}
-	// test logger
+	// mapTest logger
 	logger := New()
 	logger.Out = &buffer
 	fn(logger)
 
-	// test Entry
+	// mapTest Entry
 	e := logger.WithField("another", "value")
 	fn(e)
 }

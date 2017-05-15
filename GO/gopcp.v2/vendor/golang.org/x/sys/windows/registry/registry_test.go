@@ -389,7 +389,7 @@ func testValues(t *testing.T, k registry.Key) {
 				_, gottype, err := k.GetIntegerValue(test.Name)
 				testErrUnexpectedType(t, test, gottype, err)
 				// Size of utf16 string in bytes is not perfect,
-				// but correct for current test values.
+				// but correct for current mapTest values.
 				// Size also includes terminating 0.
 				testGetValue(t, k, test, (len(test.Value.(string))+1)*2)
 			}
@@ -597,7 +597,7 @@ func walkKey(t *testing.T, k registry.Key, kname string) {
 
 func TestWalkFullRegistry(t *testing.T) {
 	if testing.Short() {
-		t.Skip("skipping long running test in short mode")
+		t.Skip("skipping long running mapTest in short mode")
 	}
 	walkKey(t, registry.CLASSES_ROOT, "CLASSES_ROOT")
 	walkKey(t, registry.CURRENT_USER, "CURRENT_USER")

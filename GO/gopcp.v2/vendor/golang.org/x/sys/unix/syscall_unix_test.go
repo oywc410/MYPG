@@ -80,19 +80,19 @@ func TestFcntlFlock(t *testing.T) {
 
 // TestPassFD tests passing a file descriptor over a Unix socket.
 //
-// This test involved both a parent and child process. The parent
-// process is invoked as a normal test, with "go test", which then
-// runs the child process by running the current test binary with args
-// "-test.run=^TestPassFD$" and an environment variable used to signal
-// that the test should become the child process instead.
+// This mapTest involved both a parent and child process. The parent
+// process is invoked as a normal mapTest, with "go mapTest", which then
+// runs the child process by running the current mapTest binary with args
+// "-mapTest.run=^TestPassFD$" and an environment variable used to signal
+// that the mapTest should become the child process instead.
 func TestPassFD(t *testing.T) {
 	switch runtime.GOOS {
 	case "dragonfly":
 		// TODO(jsing): Figure out why sendmsg is returning EINVAL.
-		t.Skip("skipping test on dragonfly")
+		t.Skip("skipping mapTest on dragonfly")
 	case "solaris":
 		// TODO(aram): Figure out why ReadMsgUnix is returning empty message.
-		t.Skip("skipping test on solaris, see issue 7402")
+		t.Skip("skipping mapTest on solaris, see issue 7402")
 	}
 	if os.Getenv("GO_WANT_HELPER_PROCESS") == "1" {
 		passFDChild()
@@ -116,7 +116,7 @@ func TestPassFD(t *testing.T) {
 	defer writeFile.Close()
 	defer readFile.Close()
 
-	cmd := exec.Command(os.Args[0], "-test.run=^TestPassFD$", "--", tempDir)
+	cmd := exec.Command(os.Args[0], "-mapTest.run=^TestPassFD$", "--", tempDir)
 	cmd.Env = []string{"GO_WANT_HELPER_PROCESS=1"}
 	if lp := os.Getenv("LD_LIBRARY_PATH"); lp != "" {
 		cmd.Env = append(cmd.Env, "LD_LIBRARY_PATH="+lp)

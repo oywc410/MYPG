@@ -129,7 +129,7 @@ func (s *Selection) Closest(selector string) *Selection {
 // element itself and traversing up through its ancestors in the DOM tree.
 func (s *Selection) ClosestMatcher(m Matcher) *Selection {
 	return pushStack(s, mapNodes(s.Nodes, func(i int, n *html.Node) []*html.Node {
-		// For each node in the selection, test the node itself, then each parent
+		// For each node in the selection, mapTest the node itself, then each parent
 		// until a match is found.
 		for ; n != nil; n = n.Parent {
 			if m.Match(n) {
@@ -148,7 +148,7 @@ func (s *Selection) ClosestNodes(nodes ...*html.Node) *Selection {
 		set[n] = true
 	}
 	return pushStack(s, mapNodes(s.Nodes, func(i int, n *html.Node) []*html.Node {
-		// For each node in the selection, test the node itself, then each parent
+		// For each node in the selection, mapTest the node itself, then each parent
 		// until a match is found.
 		for ; n != nil; n = n.Parent {
 			if set[n] {
@@ -578,7 +578,7 @@ func getParentsNodes(nodes []*html.Node, stopm Matcher, stopNodes []*html.Node) 
 func getSiblingNodes(nodes []*html.Node, st siblingType, untilm Matcher, untilNodes []*html.Node) []*html.Node {
 	var f func(*html.Node) bool
 
-	// If the requested siblings are ...Until, create the test function to
+	// If the requested siblings are ...Until, create the mapTest function to
 	// determine if the until condition is reached (returns true if it is)
 	if st == siblingNextUntil || st == siblingPrevUntil {
 		f = func(n *html.Node) bool {
@@ -657,7 +657,7 @@ func getChildrenWithSiblingType(parent *html.Node, st siblingType, skipNode *htm
 	}
 
 	for c := iter(nil); c != nil; c = iter(c) {
-		// If this is an ...Until case, test before append (returns true
+		// If this is an ...Until case, mapTest before append (returns true
 		// if the until condition is reached)
 		if st == siblingNextUntil || st == siblingPrevUntil {
 			if untilFunc(c) {

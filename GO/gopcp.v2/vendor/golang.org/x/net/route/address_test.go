@@ -85,7 +85,7 @@ var parseAddrsLittleEndianTests = []parseAddrsTest{
 func TestParseAddrs(t *testing.T) {
 	tests := parseAddrsLittleEndianTests
 	if nativeEndian != littleEndian {
-		t.Skip("no test for non-little endian machine yet")
+		t.Skip("no mapTest for non-little endian machine yet")
 	}
 
 	for i, tt := range tests {

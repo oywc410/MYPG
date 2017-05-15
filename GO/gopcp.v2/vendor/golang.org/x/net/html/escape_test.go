@@ -7,7 +7,7 @@ package html
 import "testing"
 
 type unescapeTest struct {
-	// A short description of the test case.
+	// A short description of the mapTest case.
 	desc string
 	// The HTML text.
 	html string

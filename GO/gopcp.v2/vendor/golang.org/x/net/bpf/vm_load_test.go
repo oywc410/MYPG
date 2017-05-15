@@ -208,7 +208,7 @@ func TestVMLoadMemShiftLoadIndirectOK(t *testing.T) {
 }
 
 func testDHCPv4(t *testing.T) (virtualMachine, []byte, func()) {
-	// DHCPv4 test data courtesy of David Anderson:
+	// DHCPv4 mapTest data courtesy of David Anderson:
 	// https://github.com/google/netboot/blob/master/dhcp4/conn_linux.go#L59-L70
 	vm, done, err := testVM(t, []bpf.Instruction{
 		// Load IPv4 packet length

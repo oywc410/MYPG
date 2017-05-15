@@ -25,7 +25,7 @@ var punycodeTestCases = [...]struct {
 	{"ü", "tda"},
 	{"üý", "tdac"},
 
-	// The test cases below come from RFC 3492 section 7.1 with Errata 3026.
+	// The mapTest cases below come from RFC 3492 section 7.1 with Errata 3026.
 	{
 		// (A) Arabic (Egyptian).
 		"\u0644\u064A\u0647\u0645\u0627\u0628\u062A\u0643\u0644" +

@@ -11,8 +11,8 @@ func TestQuoting(t *testing.T) {
 	tf := &TextFormatter{DisableColors: true}
 
 	checkQuoting := func(q bool, value interface{}) {
-		b, _ := tf.Format(WithField("test", value))
-		idx := bytes.Index(b, ([]byte)("test="))
+		b, _ := tf.Format(WithField("mapTest", value))
+		idx := bytes.Index(b, ([]byte)("mapTest="))
 		cont := bytes.Contains(b[idx+5:], []byte{'"'})
 		if cont != q {
 			if q {
@@ -36,7 +36,7 @@ func TestQuoting(t *testing.T) {
 func TestTimestampFormat(t *testing.T) {
 	checkTimeStr := func(format string) {
 		customFormatter := &TextFormatter{DisableColors: true, TimestampFormat: format}
-		customStr, _ := customFormatter.Format(WithField("test", "test"))
+		customStr, _ := customFormatter.Format(WithField("mapTest", "mapTest"))
 		timeStart := bytes.Index(customStr, ([]byte)("time="))
 		timeEnd := bytes.Index(customStr, ([]byte)("level="))
 		timeStr := customStr[timeStart+5 : timeEnd-1]

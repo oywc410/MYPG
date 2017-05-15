@@ -22,7 +22,7 @@ func TestOpenLanManServer(t *testing.T) {
 	m, err := mgr.Connect()
 	if err != nil {
 		if errno, ok := err.(syscall.Errno); ok && errno == syscall.ERROR_ACCESS_DENIED {
-			t.Skip("Skipping test: we don't have rights to manage services.")
+			t.Skip("Skipping mapTest: we don't have rights to manage services.")
 		}
 		t.Fatalf("SCM connection failed: %s", err)
 	}
@@ -42,7 +42,7 @@ func TestOpenLanManServer(t *testing.T) {
 
 func install(t *testing.T, m *mgr.Mgr, name, exepath string, c mgr.Config) {
 	// Sometimes it takes a while for the service to get
-	// removed after previous test run.
+	// removed after previous mapTest run.
 	for i := 0; ; i++ {
 		s, err := m.OpenService(name)
 		if err != nil {
@@ -104,7 +104,7 @@ func remove(t *testing.T, s *mgr.Service) {
 
 func TestMyService(t *testing.T) {
 	if testing.Short() {
-		t.Skip("skipping test in short mode - it modifies system services")
+		t.Skip("skipping mapTest in short mode - it modifies system services")
 	}
 
 	const name = "myservice"
@@ -112,7 +112,7 @@ func TestMyService(t *testing.T) {
 	m, err := mgr.Connect()
 	if err != nil {
 		if errno, ok := err.(syscall.Errno); ok && errno == syscall.ERROR_ACCESS_DENIED {
-			t.Skip("Skipping test: we don't have rights to manage services.")
+			t.Skip("Skipping mapTest: we don't have rights to manage services.")
 		}
 		t.Fatalf("SCM connection failed: %s", err)
 	}
@@ -121,7 +121,7 @@ func TestMyService(t *testing.T) {
 	c := mgr.Config{
 		StartType:    mgr.StartDisabled,
 		DisplayName:  "my service",
-		Description:  "my service is just a test",
+		Description:  "my service is just a mapTest",
 		Dependencies: []string{"LanmanServer", "W32Time"},
 	}
 

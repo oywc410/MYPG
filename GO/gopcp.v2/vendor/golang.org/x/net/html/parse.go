@@ -1040,7 +1040,7 @@ func (p *parser) inBodyEndTagFormatting(tagAtom a.Atom) {
 	// https://html.spec.whatwg.org/multipage/syntax.html#adoptionAgency
 
 	// TODO: this is a fairly literal line-by-line translation of that algorithm.
-	// Once the code successfully parses the comprehensive test suite, we should
+	// Once the code successfully parses the comprehensive mapTest suite, we should
 	// refactor this code to be more idiomatic.
 
 	// Steps 1-4. The outer loop.

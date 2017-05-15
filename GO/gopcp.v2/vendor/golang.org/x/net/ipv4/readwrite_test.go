@@ -112,7 +112,7 @@ func TestPacketConnConcurrentReadWriteUnicastUDP(t *testing.T) {
 	cf := ipv4.FlagTTL | ipv4.FlagSrc | ipv4.FlagDst | ipv4.FlagInterface
 	wb := []byte("HELLO-R-U-THERE")
 
-	if err := p.SetControlMessage(cf, true); err != nil { // probe before test
+	if err := p.SetControlMessage(cf, true); err != nil { // probe before mapTest
 		if nettest.ProtocolNotSupported(err) {
 			t.Skipf("not supported on %s", runtime.GOOS)
 		}

@@ -97,7 +97,7 @@ func TestInterop(t *testing.T) {
 	// empty. We just ignore both and rely on slice length.
 	stmts := strings.Split(string(bs), ",")
 	if len(stmts)-2 != len(out) {
-		t.Fatalf("test program lengths don't match: %s has %d, Go implementation has %d", allInstructionsExpected, len(stmts)-2, len(allInstructions))
+		t.Fatalf("mapTest program lengths don't match: %s has %d, Go implementation has %d", allInstructionsExpected, len(stmts)-2, len(allInstructions))
 	}
 
 	for i, stmt := range stmts[1 : len(stmts)-2] {

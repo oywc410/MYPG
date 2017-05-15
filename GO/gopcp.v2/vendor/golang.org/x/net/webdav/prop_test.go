@@ -111,7 +111,7 @@ func TestMemPS(t *testing.T) {
 					InnerXML: []byte("dir"),
 				}, {
 					XMLName:  xml.Name{Space: "DAV:", Local: "getlastmodified"},
-					InnerXML: nil, // Calculated during test.
+					InnerXML: nil, // Calculated during mapTest.
 				}, {
 					XMLName:  xml.Name{Space: "DAV:", Local: "supportedlock"},
 					InnerXML: []byte(lockEntry),
@@ -133,13 +133,13 @@ func TestMemPS(t *testing.T) {
 					InnerXML: []byte("9"),
 				}, {
 					XMLName:  xml.Name{Space: "DAV:", Local: "getlastmodified"},
-					InnerXML: nil, // Calculated during test.
+					InnerXML: nil, // Calculated during mapTest.
 				}, {
 					XMLName:  xml.Name{Space: "DAV:", Local: "getcontenttype"},
 					InnerXML: []byte("text/plain; charset=utf-8"),
 				}, {
 					XMLName:  xml.Name{Space: "DAV:", Local: "getetag"},
-					InnerXML: nil, // Calculated during test.
+					InnerXML: nil, // Calculated during mapTest.
 				}, {
 					XMLName:  xml.Name{Space: "DAV:", Local: "supportedlock"},
 					InnerXML: []byte(lockEntry),
@@ -165,13 +165,13 @@ func TestMemPS(t *testing.T) {
 					InnerXML: []byte("9"),
 				}, {
 					XMLName:  xml.Name{Space: "DAV:", Local: "getlastmodified"},
-					InnerXML: nil, // Calculated during test.
+					InnerXML: nil, // Calculated during mapTest.
 				}, {
 					XMLName:  xml.Name{Space: "DAV:", Local: "getcontenttype"},
 					InnerXML: []byte("text/plain; charset=utf-8"),
 				}, {
 					XMLName:  xml.Name{Space: "DAV:", Local: "getetag"},
-					InnerXML: nil, // Calculated during test.
+					InnerXML: nil, // Calculated during mapTest.
 				}, {
 					XMLName:  xml.Name{Space: "DAV:", Local: "supportedlock"},
 					InnerXML: []byte(lockEntry),
@@ -253,7 +253,7 @@ func TestMemPS(t *testing.T) {
 				Status: http.StatusOK,
 				Props: []Property{{
 					XMLName:  xml.Name{Space: "DAV:", Local: "getetag"},
-					InnerXML: nil, // Calculated during test.
+					InnerXML: nil, // Calculated during mapTest.
 				}},
 			}},
 		}},
@@ -506,7 +506,7 @@ func TestMemPS(t *testing.T) {
 	for _, tc := range testCases {
 		fs, err := buildTestFS(tc.buildfs)
 		if err != nil {
-			t.Fatalf("%s: cannot create test filesystem: %v", tc.desc, err)
+			t.Fatalf("%s: cannot create mapTest filesystem: %v", tc.desc, err)
 		}
 		if tc.noDeadProps {
 			fs = noDeadPropsFS{fs}

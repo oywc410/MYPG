@@ -5,9 +5,9 @@
 // +build ignore
 
 /*
-This program is a server for the WebDAV 'litmus' compliance test at
+This program is a server for the WebDAV 'litmus' compliance mapTest at
 http://www.webdav.org/neon/litmus/
-To run the test:
+To run the mapTest:
 
 go run litmus_test_server.go
 

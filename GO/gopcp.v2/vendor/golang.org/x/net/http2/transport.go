@@ -937,7 +937,7 @@ func (cs *clientStream) writeRequestBody(body io.Reader, bodyCloser io.Closer) (
 
 	defer func() {
 		traceWroteRequest(cs.trace, err)
-		// TODO: write h12Compare test showing whether
+		// TODO: write h12Compare mapTest showing whether
 		// Request.Body is closed by the Transport,
 		// and in multiple cases: server replies <=299 and >299
 		// while still writing request body

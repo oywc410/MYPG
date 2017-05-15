@@ -81,7 +81,7 @@ var selectorTests = []selectorTest{
 		},
 	},
 	{
-		`<div class="test">`,
+		`<div class="mapTest">`,
 		"div.teST",
 		[]string{},
 	},

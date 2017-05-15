@@ -46,7 +46,7 @@ var parseAddrsOnDarwinLittleEndianTests = []parseAddrsOnDarwinTest{
 func TestParseAddrsOnDarwin(t *testing.T) {
 	tests := parseAddrsOnDarwinLittleEndianTests
 	if nativeEndian != littleEndian {
-		t.Skip("no test for non-little endian machine yet")
+		t.Skip("no mapTest for non-little endian machine yet")
 	}
 
 	for i, tt := range tests {

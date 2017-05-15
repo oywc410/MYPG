@@ -363,22 +363,22 @@ func TestMemLSExpiry(t *testing.T) {
 	for i, tc := range testCases {
 		j := strings.IndexByte(tc, ' ')
 		if j < 0 {
-			t.Fatalf("test case #%d %q: invalid command", i, tc)
+			t.Fatalf("mapTest case #%d %q: invalid command", i, tc)
 		}
 		op, arg := tc[:j], tc[j+1:]
 		switch op {
 		default:
-			t.Fatalf("test case #%d %q: invalid operation %q", i, tc, op)
+			t.Fatalf("mapTest case #%d %q: invalid operation %q", i, tc, op)
 
 		case "create", "refresh":
 			parts := strings.Split(arg, ".")
 			if len(parts) != 2 {
-				t.Fatalf("test case #%d %q: invalid create", i, tc)
+				t.Fatalf("mapTest case #%d %q: invalid create", i, tc)
 			}
 			root := parts[0]
 			d, err := strconv.Atoi(parts[1])
 			if err != nil {
-				t.Fatalf("test case #%d %q: invalid duration", i, tc)
+				t.Fatalf("mapTest case #%d %q: invalid duration", i, tc)
 			}
 			dur := time.Unix(0, 0).Add(time.Duration(d) * time.Second).Sub(now)
 
@@ -390,18 +390,18 @@ func TestMemLSExpiry(t *testing.T) {
 					ZeroDepth: true,
 				})
 				if err != nil {
-					t.Fatalf("test case #%d %q: Create: %v", i, tc, err)
+					t.Fatalf("mapTest case #%d %q: Create: %v", i, tc, err)
 				}
 				tokens[root] = token
 
 			case "refresh":
 				token := tokens[root]
 				if token == "" {
-					t.Fatalf("test case #%d %q: no token for %q", i, tc, root)
+					t.Fatalf("mapTest case #%d %q: no token for %q", i, tc, root)
 				}
 				got, err := m.Refresh(now, token, dur)
 				if err != nil {
-					t.Fatalf("test case #%d %q: Refresh: %v", i, tc, err)
+					t.Fatalf("mapTest case #%d %q: Refresh: %v", i, tc, err)
 				}
 				want := LockDetails{
 					Root:      root,
@@ -409,14 +409,14 @@ func TestMemLSExpiry(t *testing.T) {
 					ZeroDepth: true,
 				}
 				if got != want {
-					t.Fatalf("test case #%d %q:\ngot  %v\nwant %v", i, tc, got, want)
+					t.Fatalf("mapTest case #%d %q:\ngot  %v\nwant %v", i, tc, got, want)
 				}
 			}
 
 		case "setNow":
 			d, err := strconv.Atoi(arg)
 			if err != nil {
-				t.Fatalf("test case #%d %q: invalid duration", i, tc)
+				t.Fatalf("mapTest case #%d %q: invalid duration", i, tc)
 			}
 			now = time.Unix(0, 0).Add(time.Duration(d) * time.Second)
 
@@ -435,12 +435,12 @@ func TestMemLSExpiry(t *testing.T) {
 				want = strings.Split(arg, " ")
 			}
 			if !reflect.DeepEqual(got, want) {
-				t.Fatalf("test case #%d %q:\ngot  %q\nwant %q", i, tc, got, want)
+				t.Fatalf("mapTest case #%d %q:\ngot  %q\nwant %q", i, tc, got, want)
 			}
 		}
 
 		if err := m.consistent(); err != nil {
-			t.Fatalf("test case #%d %q: inconsistent state: %v", i, tc, err)
+			t.Fatalf("mapTest case #%d %q: inconsistent state: %v", i, tc, err)
 		}
 	}
 }
@@ -709,7 +709,7 @@ func TestParseTimeout(t *testing.T) {
 		0,
 		errInvalidTimeout,
 	}, {
-		// This test case comes from section 9.10.9 of the spec. It says,
+		// This mapTest case comes from section 9.10.9 of the spec. It says,
 		//
 		// "In this request, the client has specified that it desires an
 		// infinite-length lock, if available, otherwise a timeout of 4.1

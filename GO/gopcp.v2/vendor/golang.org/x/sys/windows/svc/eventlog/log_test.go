@@ -14,7 +14,7 @@ import (
 
 func TestLog(t *testing.T) {
 	if testing.Short() {
-		t.Skip("skipping test in short mode - it modifies system logs")
+		t.Skip("skipping mapTest in short mode - it modifies system logs")
 	}
 
 	const name = "mylog"

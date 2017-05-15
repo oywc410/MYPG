@@ -83,7 +83,7 @@ func TestPipeCloseWithError(t *testing.T) {
 	p := &pipe{b: new(bytes.Buffer)}
 	const body = "foo"
 	io.WriteString(p, body)
-	a := errors.New("test error")
+	a := errors.New("mapTest error")
 	p.CloseWithError(a)
 	all, err := ioutil.ReadAll(p)
 	if string(all) != body {
@@ -97,7 +97,7 @@ func TestPipeCloseWithError(t *testing.T) {
 func TestPipeBreakWithError(t *testing.T) {
 	p := &pipe{b: new(bytes.Buffer)}
 	io.WriteString(p, "foo")
-	a := errors.New("test err")
+	a := errors.New("mapTest err")
 	p.BreakWithError(a)
 	all, err := ioutil.ReadAll(p)
 	if string(all) != "" {

@@ -206,9 +206,9 @@ func TestPrefix(t *testing.T) {
 }
 
 func TestEscapeXML(t *testing.T) {
-	// These test cases aren't exhaustive, and there is more than one way to
+	// These mapTest cases aren't exhaustive, and there is more than one way to
 	// escape e.g. a quot (as "&#34;" or "&quot;") or an apos. We presume that
-	// the encoding/xml package tests xml.EscapeText more thoroughly. This test
+	// the encoding/xml package tests xml.EscapeText more thoroughly. This mapTest
 	// here is just a sanity check for this package's escapeXML function, and
 	// its attempt to provide a fast path (and avoid a bytes.Buffer allocation)
 	// when escaping filenames is obviously a no-op.

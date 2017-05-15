@@ -6,12 +6,12 @@ import (
 	"github.com/Sirupsen/logrus"
 )
 
-// test.Hook is a hook designed for dealing with logs in test scenarios.
+// mapTest.Hook is a hook designed for dealing with logs in mapTest scenarios.
 type Hook struct {
 	Entries []*logrus.Entry
 }
 
-// Installs a test hook for the global logger.
+// Installs a mapTest hook for the global logger.
 func NewGlobal() *Hook {
 
 	hook := new(Hook)
@@ -21,7 +21,7 @@ func NewGlobal() *Hook {
 
 }
 
-// Installs a test hook for a given local logger.
+// Installs a mapTest hook for a given local logger.
 func NewLocal(logger *logrus.Logger) *Hook {
 
 	hook := new(Hook)
@@ -31,7 +31,7 @@ func NewLocal(logger *logrus.Logger) *Hook {
 
 }
 
-// Creates a discarding logger and installs the test hook.
+// Creates a discarding logger and installs the mapTest hook.
 func NewNullLogger() (*logrus.Logger, *Hook) {
 
 	logger := logrus.New()
@@ -61,7 +61,7 @@ func (t *Hook) LastEntry() (l *logrus.Entry) {
 
 }
 
-// Reset removes all Entries from this test hook.
+// Reset removes all Entries from this mapTest hook.
 func (t *Hook) Reset() {
 	t.Entries = make([]*logrus.Entry, 0)
 }

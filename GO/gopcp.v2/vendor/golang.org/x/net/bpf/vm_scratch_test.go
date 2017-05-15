@@ -188,7 +188,7 @@ func TestVMStoreScratchLoadScratchMultipleValues(t *testing.T) {
 			Val:      10,
 			SkipTrue: 1,
 		},
-		// Fail test if incorrect
+		// Fail mapTest if incorrect
 		bpf.RetConstant{
 			Val: 0,
 		},
@@ -203,7 +203,7 @@ func TestVMStoreScratchLoadScratchMultipleValues(t *testing.T) {
 			Val:      20,
 			SkipTrue: 1,
 		},
-		// Fail test if incorrect
+		// Fail mapTest if incorrect
 		bpf.RetConstant{
 			Val: 0,
 		},
@@ -218,7 +218,7 @@ func TestVMStoreScratchLoadScratchMultipleValues(t *testing.T) {
 			Val:      30,
 			SkipTrue: 1,
 		},
-		// Fail test if incorrect
+		// Fail mapTest if incorrect
 		bpf.RetConstant{
 			Val: 0,
 		},

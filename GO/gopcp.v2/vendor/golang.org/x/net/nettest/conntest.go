@@ -30,7 +30,7 @@ type MakePipe func() (c1, c2 net.Conn, stop func(), err error)
 
 // TestConn tests that a net.Conn implementation properly satisfies the interface.
 // The tests should not produce any false positives, but may experience
-// false negatives. Thus, some issues may only be detected when the test is
+// false negatives. Thus, some issues may only be detected when the mapTest is
 // run multiple times. For maximal effectiveness, run the tests under the
 // race detector.
 func TestConn(t *testing.T, mp MakePipe) {
@@ -48,7 +48,7 @@ func timeoutWrapper(t *testing.T, mp MakePipe, f connTester) {
 	defer once.Do(func() { stop() })
 	timer := time.AfterFunc(time.Minute, func() {
 		once.Do(func() {
-			t.Error("test timed out; terminating pipe")
+			t.Error("mapTest timed out; terminating pipe")
 			stop()
 		})
 	})

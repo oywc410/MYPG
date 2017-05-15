@@ -188,7 +188,7 @@ func TestWalk(t *testing.T) {
 			{"a", "b", false},
 			{"b", "c", true},
 		}},
-		// The following test case is the one mentioned explicitly
+		// The following mapTest case is the one mentioned explicitly
 		// in the method description.
 		{"/foo/bar/x", []walkStep{
 			{"", "foo", false},
@@ -211,7 +211,7 @@ func TestWalk(t *testing.T) {
 		}
 
 		i, prevFrag := 0, ""
-		err := fs.walk("test", tc.dir, func(dir *memFSNode, frag string, final bool) error {
+		err := fs.walk("mapTest", tc.dir, func(dir *memFSNode, frag string, final bool) error {
 			got := walkStep{
 				name:  prevFrag,
 				frag:  frag,
@@ -274,8 +274,8 @@ func testFS(t *testing.T, fs FileSystem) {
 		return "ok"
 	}
 
-	// The non-"find" non-"stat" test cases should change the file system state. The
-	// indentation of the "find"s and "stat"s helps distinguish such test cases.
+	// The non-"find" non-"stat" mapTest cases should change the file system state. The
+	// indentation of the "find"s and "stat"s helps distinguish such mapTest cases.
 	testCases := []string{
 		"  stat / want dir",
 		"  stat /a want errNotExist",
@@ -413,41 +413,41 @@ func testFS(t *testing.T, fs FileSystem) {
 		tc = strings.TrimSpace(tc)
 		j := strings.IndexByte(tc, ' ')
 		if j < 0 {
-			t.Fatalf("test case #%d %q: invalid command", i, tc)
+			t.Fatalf("mapTest case #%d %q: invalid command", i, tc)
 		}
 		op, arg := tc[:j], tc[j+1:]
 
 		switch op {
 		default:
-			t.Fatalf("test case #%d %q: invalid operation %q", i, tc, op)
+			t.Fatalf("mapTest case #%d %q: invalid operation %q", i, tc, op)
 
 		case "create":
 			parts := strings.Split(arg, " ")
 			if len(parts) != 4 || parts[2] != "want" {
-				t.Fatalf("test case #%d %q: invalid write", i, tc)
+				t.Fatalf("mapTest case #%d %q: invalid write", i, tc)
 			}
 			f, opErr := fs.OpenFile(ctx, parts[0], os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
 			if got := errStr(opErr); got != parts[3] {
-				t.Fatalf("test case #%d %q: OpenFile: got %q (%v), want %q", i, tc, got, opErr, parts[3])
+				t.Fatalf("mapTest case #%d %q: OpenFile: got %q (%v), want %q", i, tc, got, opErr, parts[3])
 			}
 			if f != nil {
 				if _, err := f.Write([]byte(parts[1])); err != nil {
-					t.Fatalf("test case #%d %q: Write: %v", i, tc, err)
+					t.Fatalf("mapTest case #%d %q: Write: %v", i, tc, err)
 				}
 				if err := f.Close(); err != nil {
-					t.Fatalf("test case #%d %q: Close: %v", i, tc, err)
+					t.Fatalf("mapTest case #%d %q: Close: %v", i, tc, err)
 				}
 			}
 
 		case "find":
 			got, err := find(ctx, nil, fs, "/")
 			if err != nil {
-				t.Fatalf("test case #%d %q: find: %v", i, tc, err)
+				t.Fatalf("mapTest case #%d %q: find: %v", i, tc, err)
 			}
 			sort.Strings(got)
 			want := strings.Split(arg, " ")
 			if !reflect.DeepEqual(got, want) {
-				t.Fatalf("test case #%d %q:\ngot  %s\nwant %s", i, tc, got, want)
+				t.Fatalf("mapTest case #%d %q:\ngot  %s\nwant %s", i, tc, got, want)
 			}
 
 		case "copy__", "mk-dir", "move__", "rm-all", "stat":
@@ -460,7 +460,7 @@ func testFS(t *testing.T, fs FileSystem) {
 			}
 			parts := strings.Split(arg, " ")
 			if len(parts) != nParts {
-				t.Fatalf("test case #%d %q: invalid %s", i, tc, op)
+				t.Fatalf("mapTest case #%d %q: invalid %s", i, tc, op)
 			}
 
 			got, opErr := "", error(nil)
@@ -492,7 +492,7 @@ func testFS(t *testing.T, fs FileSystem) {
 						// real file system name like "/tmp/webdav-test012345", which does
 						// not end with "/". We skip such cases.
 					} else if statName := stat.Name(); path.Base(fileName) != statName {
-						t.Fatalf("test case #%d %q: file name %q inconsistent with stat name %q",
+						t.Fatalf("mapTest case #%d %q: file name %q inconsistent with stat name %q",
 							i, tc, fileName, statName)
 					}
 				}
@@ -502,10 +502,10 @@ func testFS(t *testing.T, fs FileSystem) {
 			}
 
 			if parts[len(parts)-2] != "want" {
-				t.Fatalf("test case #%d %q: invalid %s", i, tc, op)
+				t.Fatalf("mapTest case #%d %q: invalid %s", i, tc, op)
 			}
 			if want := parts[len(parts)-1]; got != want {
-				t.Fatalf("test case #%d %q: got %q (%v), want %q", i, tc, got, opErr, want)
+				t.Fatalf("mapTest case #%d %q: got %q (%v), want %q", i, tc, got, opErr, want)
 			}
 		}
 	}
@@ -519,7 +519,7 @@ func TestDir(t *testing.T) {
 		t.Skip("see golang.org/issue/11453")
 	}
 
-	td, err := ioutil.TempDir("", "webdav-test")
+	td, err := ioutil.TempDir("", "webdav-mapTest")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -670,7 +670,7 @@ func TestMemFile(t *testing.T) {
 	for i, tc := range testCases {
 		j := strings.IndexByte(tc, ' ')
 		if j < 0 {
-			t.Fatalf("test case #%d %q: invalid command", i, tc)
+			t.Fatalf("mapTest case #%d %q: invalid command", i, tc)
 		}
 		op, arg := tc[:j], tc[j+1:]
 
@@ -681,7 +681,7 @@ func TestMemFile(t *testing.T) {
 				repeatCount, repeatStr := part[:k], part[k+1:]
 				n, err := strconv.Atoi(repeatCount)
 				if err != nil {
-					t.Fatalf("test case #%d %q: invalid repeat count %q", i, tc, repeatCount)
+					t.Fatalf("mapTest case #%d %q: invalid repeat count %q", i, tc, repeatCount)
 				}
 				parts[j] = strings.Repeat(repeatStr, n)
 			}
@@ -690,27 +690,27 @@ func TestMemFile(t *testing.T) {
 
 		switch op {
 		default:
-			t.Fatalf("test case #%d %q: invalid operation %q", i, tc, op)
+			t.Fatalf("mapTest case #%d %q: invalid operation %q", i, tc, op)
 
 		case "read":
 			buf := make([]byte, len(arg))
 			if _, err := io.ReadFull(f, buf); err != nil {
-				t.Fatalf("test case #%d %q: ReadFull: %v", i, tc, err)
+				t.Fatalf("mapTest case #%d %q: ReadFull: %v", i, tc, err)
 			}
 			if got := string(buf); got != arg {
-				t.Fatalf("test case #%d %q:\ngot  %q\nwant %q", i, tc, got, arg)
+				t.Fatalf("mapTest case #%d %q:\ngot  %q\nwant %q", i, tc, got, arg)
 			}
 
 		case "seek":
 			parts := strings.Split(arg, " ")
 			if len(parts) != 4 {
-				t.Fatalf("test case #%d %q: invalid seek", i, tc)
+				t.Fatalf("mapTest case #%d %q: invalid seek", i, tc)
 			}
 
 			whence := 0
 			switch parts[0] {
 			default:
-				t.Fatalf("test case #%d %q: invalid seek whence", i, tc)
+				t.Fatalf("mapTest case #%d %q: invalid seek whence", i, tc)
 			case "set":
 				whence = os.SEEK_SET
 			case "cur":
@@ -720,48 +720,48 @@ func TestMemFile(t *testing.T) {
 			}
 			offset, err := strconv.Atoi(parts[1])
 			if err != nil {
-				t.Fatalf("test case #%d %q: invalid offset %q", i, tc, parts[1])
+				t.Fatalf("mapTest case #%d %q: invalid offset %q", i, tc, parts[1])
 			}
 
 			if parts[2] != "want" {
-				t.Fatalf("test case #%d %q: invalid seek", i, tc)
+				t.Fatalf("mapTest case #%d %q: invalid seek", i, tc)
 			}
 			if parts[3] == "err" {
 				_, err := f.Seek(int64(offset), whence)
 				if err == nil {
-					t.Fatalf("test case #%d %q: Seek returned nil error, want non-nil", i, tc)
+					t.Fatalf("mapTest case #%d %q: Seek returned nil error, want non-nil", i, tc)
 				}
 			} else {
 				got, err := f.Seek(int64(offset), whence)
 				if err != nil {
-					t.Fatalf("test case #%d %q: Seek: %v", i, tc, err)
+					t.Fatalf("mapTest case #%d %q: Seek: %v", i, tc, err)
 				}
 				want, err := strconv.Atoi(parts[3])
 				if err != nil {
-					t.Fatalf("test case #%d %q: invalid want %q", i, tc, parts[3])
+					t.Fatalf("mapTest case #%d %q: invalid want %q", i, tc, parts[3])
 				}
 				if got != int64(want) {
-					t.Fatalf("test case #%d %q: got %d, want %d", i, tc, got, want)
+					t.Fatalf("mapTest case #%d %q: got %d, want %d", i, tc, got, want)
 				}
 			}
 
 		case "write":
 			n, err := f.Write([]byte(arg))
 			if err != nil {
-				t.Fatalf("test case #%d %q: write: %v", i, tc, err)
+				t.Fatalf("mapTest case #%d %q: write: %v", i, tc, err)
 			}
 			if n != len(arg) {
-				t.Fatalf("test case #%d %q: write returned %d bytes, want %d", i, tc, n, len(arg))
+				t.Fatalf("mapTest case #%d %q: write returned %d bytes, want %d", i, tc, n, len(arg))
 			}
 
 		case "wantData":
 			g, err := fs.OpenFile(ctx, filename, os.O_RDONLY, 0666)
 			if err != nil {
-				t.Fatalf("test case #%d %q: OpenFile: %v", i, tc, err)
+				t.Fatalf("mapTest case #%d %q: OpenFile: %v", i, tc, err)
 			}
 			gotBytes, err := ioutil.ReadAll(g)
 			if err != nil {
-				t.Fatalf("test case #%d %q: ReadAll: %v", i, tc, err)
+				t.Fatalf("mapTest case #%d %q: ReadAll: %v", i, tc, err)
 			}
 			for i, c := range gotBytes {
 				if c == '\x00' {
@@ -770,23 +770,23 @@ func TestMemFile(t *testing.T) {
 			}
 			got := string(gotBytes)
 			if got != arg {
-				t.Fatalf("test case #%d %q:\ngot  %q\nwant %q", i, tc, got, arg)
+				t.Fatalf("mapTest case #%d %q:\ngot  %q\nwant %q", i, tc, got, arg)
 			}
 			if err := g.Close(); err != nil {
-				t.Fatalf("test case #%d %q: Close: %v", i, tc, err)
+				t.Fatalf("mapTest case #%d %q: Close: %v", i, tc, err)
 			}
 
 		case "wantSize":
 			n, err := strconv.Atoi(arg)
 			if err != nil {
-				t.Fatalf("test case #%d %q: invalid size %q", i, tc, arg)
+				t.Fatalf("mapTest case #%d %q: invalid size %q", i, tc, arg)
 			}
 			fi, err := fs.Stat(ctx, filename)
 			if err != nil {
-				t.Fatalf("test case #%d %q: Stat: %v", i, tc, err)
+				t.Fatalf("mapTest case #%d %q: Stat: %v", i, tc, err)
 			}
 			if got, want := fi.Size(), int64(n); got != want {
-				t.Fatalf("test case #%d %q: got %d, want %d", i, tc, got, want)
+				t.Fatalf("mapTest case #%d %q: got %d, want %d", i, tc, got, want)
 			}
 		}
 	}
@@ -1116,7 +1116,7 @@ func TestWalkFS(t *testing.T) {
 	for _, tc := range testCases {
 		fs, err := buildTestFS(tc.buildfs)
 		if err != nil {
-			t.Fatalf("%s: cannot create test filesystem: %v", tc.desc, err)
+			t.Fatalf("%s: cannot create mapTest filesystem: %v", tc.desc, err)
 		}
 		var got []string
 		traceFn := func(path string, info os.FileInfo, err error) error {

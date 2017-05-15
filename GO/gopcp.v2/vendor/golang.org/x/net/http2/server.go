@@ -15,7 +15,7 @@
 // returns.
 
 // TODO (maybe): add a mechanism for Handlers to going into
-// half-closed-local mode (rw.(io.Closer) test?) but not exit their
+// half-closed-local mode (rw.(io.Closer) mapTest?) but not exit their
 // handler, and continue to be able to read from the
 // Request.Body. This would be a somewhat semantic change from HTTP/1
 // (or at least what we expose in net/http), so I'd probably want to
@@ -1142,7 +1142,7 @@ func (sc *serverConn) processFrameFromReader(res readFrameResult) bool {
 			// sending frames but they're still wanting
 			// our open replies?  Investigate.
 			// TODO: add CloseWrite to crypto/tls.Conn first
-			// so we have a way to test this? I suppose
+			// so we have a way to mapTest this? I suppose
 			// just for testing we could have a non-TLS mode.
 			return false
 		}
@@ -2725,7 +2725,7 @@ func h1ServerShutdownChan(hs *http.Server) <-chan struct{} {
 	return nil
 }
 
-// optional test hook for h1ServerShutdownChan.
+// optional mapTest hook for h1ServerShutdownChan.
 var testh1ServerShutdownChan func(hs *http.Server) <-chan struct{}
 
 // h1ServerKeepAlivesDisabled reports whether hs has its keep-alives

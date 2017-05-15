@@ -27,13 +27,13 @@ func (s *Selection) NotMatcher(m Matcher) *Selection {
 	return pushStack(s, winnow(s, m, false))
 }
 
-// FilterFunction reduces the set of matched elements to those that pass the function's test.
+// FilterFunction reduces the set of matched elements to those that pass the function's mapTest.
 // It returns a new Selection object for this subset of elements.
 func (s *Selection) FilterFunction(f func(int, *Selection) bool) *Selection {
 	return pushStack(s, winnowFunction(s, f, true))
 }
 
-// NotFunction removes elements from the Selection that pass the function's test.
+// NotFunction removes elements from the Selection that pass the function's mapTest.
 // It returns a new Selection object with the matching elements removed.
 func (s *Selection) NotFunction(f func(int, *Selection) bool) *Selection {
 	return pushStack(s, winnowFunction(s, f, false))
@@ -154,7 +154,7 @@ func winnowNodes(sel *Selection, nodes []*html.Node, keep bool) []*html.Node {
 	})
 }
 
-// Filter based on a function test, and the indicator to keep (Filter) or
+// Filter based on a function mapTest, and the indicator to keep (Filter) or
 // to get rid of (Not) the matching elements.
 func winnowFunction(sel *Selection, f func(int, *Selection) bool, keep bool) []*html.Node {
 	return grep(sel, func(i int, s *Selection) bool {

@@ -8,7 +8,7 @@ install:
   - go get github.com/andybalholm/cascadia
 
 script:
- - go test -v
+ - go mapTest -v
 
 notifications:
   email: false

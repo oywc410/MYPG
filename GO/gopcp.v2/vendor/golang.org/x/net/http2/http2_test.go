@@ -22,7 +22,7 @@ var knownFailing = flag.Bool("known_failing", false, "Run known-failing tests.")
 
 func condSkipFailingTest(t *testing.T) {
 	if !*knownFailing {
-		t.Skip("Skipping known-failing test without --known_failing")
+		t.Skip("Skipping known-failing mapTest without --known_failing")
 	}
 }
 
@@ -84,10 +84,10 @@ func encodeHeaderNoImplicit(t *testing.T, headers ...string) []byte {
 func requireCurl(t *testing.T) {
 	out, err := dockerLogs(curl(t, "--version"))
 	if err != nil {
-		t.Skipf("failed to determine curl features; skipping test")
+		t.Skipf("failed to determine curl features; skipping mapTest")
 	}
 	if !strings.Contains(string(out), "HTTP2") {
-		t.Skip("curl doesn't support HTTP2; skipping test")
+		t.Skip("curl doesn't support HTTP2; skipping mapTest")
 	}
 }
 
@@ -103,10 +103,10 @@ func curl(t *testing.T, args ...string) (container string) {
 func requireH2load(t *testing.T) {
 	out, err := dockerLogs(h2load(t, "--version"))
 	if err != nil {
-		t.Skipf("failed to probe h2load; skipping test: %s", out)
+		t.Skipf("failed to probe h2load; skipping mapTest: %s", out)
 	}
 	if !strings.Contains(string(out), "h2load nghttp2/") {
-		t.Skipf("h2load not present; skipping test. (Output=%q)", out)
+		t.Skipf("h2load not present; skipping mapTest. (Output=%q)", out)
 	}
 }
 
